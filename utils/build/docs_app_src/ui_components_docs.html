@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UI Components Documentation</title>
+
+    <link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="ui-components-docs.css">
+
+    <link type="text/css" rel="stylesheet" href="../isis-ui-components.css">
+
+</head>
+<body>
+<div ng-controller="UIComponentsDemoController" class="container">
+
+    <h1>isis.ui.components</h1>
+
+    <section ng-repeat="component in components" id="{{ component.name }}">
+        <div class="page-header"><h1>{{ component.name }} <small>(isis.ui.{{ component.name }})</small></h1></div>
+
+        <div class="row">
+            <div class="col-md-6 show-grid" ng-include="component.template">
+
+            </div>
+            <div btf-markdown class="col-md-6" ng-include="component.docs">
+
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
+<script src="../isis-ui-components.js"></script>
+<script src="../isis-ui-components-docs.js"></script>
+</body>
+</html>
