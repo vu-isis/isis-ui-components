@@ -1,0 +1,35 @@
+.item-list ul.list-group li.item-list-item {
+  background-color: transparent;
+  transition: background-color .25s; }
+  .item-list ul.list-group li.item-list-item .description {
+    margin: 1.5ex 0;
+    color: #666; }
+  .item-list ul.list-group li.item-list-item .last-updated-time {
+    font-size: 80%;
+    color: #999; }
+  .item-list ul.list-group li.item-list-item .stats {
+    position: absolute;
+    bottom: 0;
+    right: 1em;
+    font-size: 95%; }
+    .item-list ul.list-group li.item-list-item .stats li.list-group-item {
+      border: none;
+      background-color: transparent;
+      opacity: .62;
+      padding: 1ex; }
+    .item-list ul.list-group li.item-list-item .stats .count {
+      margin-left: 0.5ex; }
+.item-list ul.list-group.ui-sortable > li:hover {
+  background-color: #f2f9fc;
+  cursor: move; }
+.item-list .item-menu .dropdown-toggle {
+  border-color: #ddd;
+  border-top: 0;
+  border-right: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0; }
+.item-list .item-menu a {
+  cursor: pointer; }
+.item-list .item-menu .dropdown-toggle {
+  box-shadow: none;
+  border-color: #ddd; }
