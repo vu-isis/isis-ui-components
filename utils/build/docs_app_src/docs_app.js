@@ -1,28 +1,34 @@
-    requirejs( [
-            'angular-ui-bootstrap',
-            'angular-markdown',
-            'css!./isis_ui_components/docs/styles/ui_components_demo.css'
-        ].concat(
-            components.map( function ( e ) { return 'isis-ui-components/' + e + '/docs/demo'; } )
-        ), function ( ngBootstrap ) {
+'use script';
 
-            angular.module(
-                'demoApp',
-                [ 'btford.markdown' ].concat(components.map( function( e ) { return 'isis.ui.' + e + '.demo';} ))
-            ).controller(
-                'UIComponentsDemoController',
-                function ( $scope ) {
+/*globals angular, require*/
 
-                    $scope.components = components.map(function( component ) {
-                        return {
-                            name: component,
-                            template: '../' + component + '/docs/demo.html',
-                            docs: '../' + component + '/docs/readme.md'
-                        }
-                    });
+var components = [
+  'simpleDialog'
+//  'dropDownNavigator',
+//  'hierarchicalMenu'
+];
 
-            } );
+require( 'angular-markdown-directive' );
+//require('../../../src/simpleDialog/docs/demo.js');
 
-            angular.bootstrap(document, ['demoApp']);
+angular.module('templates', []);
 
-        } );
+angular.module(
+    'demoApp',
+    [
+      'btford.markdown',
+      'templates'
+    ]
+  ).controller(
+  'UIComponentsDemoController',
+  function ( $scope ) {
+
+    $scope.components = components.map( function ( component ) {
+      return {
+        name: component,
+        template: '../' + component + '/docs/demo.html',
+        docs: '../' + component + '/docs/readme.md'
+      };
+    } );
+
+  } );

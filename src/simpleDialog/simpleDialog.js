@@ -1,83 +1,78 @@
-/*globals define, console, window, angular*/
+/*globals window, angular*/
+'use strict';
 
-define( [
-  'angular',
+angular.module(
+    'isis.ui.simpleDialog',
+    [
+      'ui.bootstrap',
+      'templates'
+    ]
+  ).provider( '$simpleDialog', function () {
 
-  'text!./templates/simpleDialog.html'
+    var $simpleDialogProvider = {
 
-], function ( ng, ConfirmDialogTemplate ) {
-  "use strict";
+      options: {
+      },
+      $get: ['$modal',
+        function ( $modal ) {
 
-  angular.module(
-      'isis.ui.simpleDialog',
-      [ 'ui.bootstrap' ]
-    ).provider( '$simpleDialog', function () {
+          var $simpleDialog = {},
+            ConfirmDialogController;
 
-      var $simpleDialogProvider = {
+          ConfirmDialogController = function ( $scope, $modalInstance, dialogTitle, dialogContentTemplate, onOk,
+                                               onCancel, validator ) {
 
-        options: {
-        },
-        $get: ['$modal',
-          function ( $modal ) {
+            $scope.dialogTitle = dialogTitle;
+            $scope.dialogContentTemplate = dialogContentTemplate;
 
-            var $simpleDialog = {},
-              ConfirmDialogController;
+            $scope.ok = function () {
 
-            ConfirmDialogController = function ( $scope, $modalInstance,
-                                                 dialogTitle, dialogContentTemplate, onOk, onCancel, validator ) {
-
-              $scope.dialogTitle = dialogTitle;
-              $scope.dialogContentTemplate = dialogContentTemplate;
-
-              $scope.ok = function () {
-
-                if ( angular.isFunction(validator) ? validator($scope) : true ) {
-                  $modalInstance.close();
-                  if ( angular.isFunction( onOk ) ) {
-                    onOk();
-                  }
+              if ( angular.isFunction( validator ) ? validator( $scope ) : true ) {
+                $modalInstance.close();
+                if ( angular.isFunction( onOk ) ) {
+                  onOk();
                 }
-              };
-
-              $scope.cancel = function () {
-                $modalInstance.dismiss( 'cancel' );
-                if ( angular.isFunction( onCancel ) ) {
-                  onCancel();
-                }
-              };
+              }
             };
 
-            $simpleDialog.open = function ( options ) {
+            $scope.cancel = function () {
+              $modalInstance.dismiss( 'cancel' );
+              if ( angular.isFunction( onCancel ) ) {
+                onCancel();
+              }
+            };
+          };
 
-              var modalOptions = {
-                template: ConfirmDialogTemplate,
-                controller: ConfirmDialogController
-              };
+          $simpleDialog.open = function ( options ) {
 
-              modalOptions = angular.extend(modalOptions, options);
-
-              modalOptions.resolve = angular.extend(modalOptions.resolve || {
-                  dialogTitle: function() { return options.dialogTitle; },
-                  dialogContentTemplate: function() {  return options.dialogContentTemplate; },
-                  onOk: function() { return options.onOk; },
-                  onCancel: function() { return options.onCancel; },
-                  validator: function() { return options.validator; }
-              });
-
-
-              var simpleDialogInstance = $modal.open( modalOptions );
-
-
-              return simpleDialogInstance;
-
+            var modalOptions = {
+              templateUrl: 'simpleDialog/templates/simpleDialog.html',
+              controller: ConfirmDialogController
             };
 
-            return $simpleDialog;
+            modalOptions = angular.extend( modalOptions, options );
 
-          }]
-      };
+            modalOptions.resolve = angular.extend( modalOptions.resolve || {
+              dialogTitle: function () { return options.dialogTitle; },
+              dialogContentTemplate: function () { return options.dialogContentTemplate; },
+              onOk: function () { return options.onOk; },
+              onCancel: function () { return options.onCancel; },
+              validator: function () { return options.validator; }
+            } );
 
-      return $simpleDialogProvider;
 
-    } );
-} );
+            var simpleDialogInstance = $modal.open( modalOptions );
+
+
+            return simpleDialogInstance;
+
+          };
+
+          return $simpleDialog;
+
+        }]
+    };
+
+    return $simpleDialogProvider;
+
+  } );
