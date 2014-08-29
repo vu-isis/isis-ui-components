@@ -14,10 +14,10 @@ require( 'angular-markdown-directive' );
 
 require('../library/simpleDialog/docs/demo.js');
 
-
 var demoApp = angular.module(
   'isis.ui.demoApp',
   [
+    'isis.ui.demoApp.templates',
     'btford.markdown'
   ].concat(components.map( function( e ) { return 'isis.ui.' + e + '.demo';} ))
 );

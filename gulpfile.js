@@ -10,7 +10,7 @@ var
   libraryName = 'isis-ui-components',
   libraryTemplatesModule = 'isis.ui.components.templates',
 
-  docTemplatesModule = 'isis.ui.demoApp',
+  docTemplatesModule = 'isis.ui.demoApp.templates',
 
   sourcePaths = {
 
@@ -32,8 +32,7 @@ var
 
     libraryModuleScript: 'src/library/isis-ui-components.js',
     libraryScripts: [
-      'src/library/isis-ui-components.js',
-      'src/simpleDialog/*.js' // Add here rest of the components
+      'src/library/**/*.js'
     ],
     libraryTemplates: [
       'src/**/templates/**/*.html'
@@ -122,13 +121,16 @@ gulp.task( 'compile-docs-templates', function () {
   gulp.src( sourcePaths.docsTemplates )
     .pipe( templateCache( libraryName + '-doc-templates.js', {
       root: '/',
-      module: docTemplatesModule
+      module: docTemplatesModule,
+      standalone: true
     } ) )
     .pipe( gulp.dest( buildPaths.docsRoot ) );
 } );
 
 
-gulp.task( 'compile-docs', [ 'lint-docs', 'browserify-docs', 'compile-docs-templates' ], function () {
+gulp.task( 'compile-docs',
+  [ 'lint-docs', 'browserify-docs', 'compile-docs-templates', 'compile-docs-styles' ],
+  function () {
 
   console.log( 'Compiling docs...' );
 
@@ -147,6 +149,25 @@ gulp.task( 'compile-docs', [ 'lint-docs', 'browserify-docs', 'compile-docs-templ
     .pipe( concat( libraryName + '-docs.css' ) )
     .pipe( gulp.dest( buildPaths.docsRoot ) );
 } );
+
+
+gulp.task( 'compile-docs-styles', function () {
+
+  console.log( 'Compiling styles...' );
+
+  gulp.src( sourcePaths.docsStyles )
+    // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
+    .pipe( sass( {
+      errLogToConsole: true,
+      sourceComments: 'map'
+    } ) )
+    .pipe( rename( function ( path ) {
+      path.dirname = '';
+    } ) )
+    .pipe( concat( libraryName + '.css' ) )
+    .pipe( gulp.dest( buildPaths.root ) );
+} );
+
 
 // Library tasks
 
@@ -196,10 +217,46 @@ gulp.task( 'compile-library-templates', function () {
 } );
 
 
-gulp.task( 'compile-library', [ 'lint-library', 'browserify-library', 'compile-library-templates' ], function () {
-  console.log( 'Compiling scripts...' );
+gulp.task( 'compile-library-styles', function () {
+
+  console.log( 'Compiling styles...' );
+
+  gulp.src( sourcePaths.libraryStyles )
+    // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
+    .pipe( sass( {
+      errLogToConsole: true,
+      sourceComments: 'map'
+    } ) )
+    .pipe( rename( function ( path ) {
+      path.dirname = '';
+    } ) )
+    .pipe( concat( libraryName + '.css' ) )
+    .pipe( gulp.dest( buildPaths.root ) );
 } );
 
+gulp.task( 'compile-library-images', function () {
+
+  console.log( 'Compiling images...' );
+
+  gulp.src( sourcePaths.libraryImages )
+    .pipe( rename( function ( path ) {
+      path.dirname = '';
+    } ) )
+    .pipe( gulp.dest( buildPaths.images ) );
+} );
+
+
+gulp.task( 'compile-library',
+  [ 'lint-library', 'browserify-library', 'compile-library-templates', 'compile-library-styles', 'compile-library-images'],
+  function () {
+    console.log( 'Compiling scripts...' );
+} );
+
+
+gulp.task( 'compile-all', function ( cb ) {
+  runSequence( 'clean-build', [
+    'compile-docs', 'compile-library'], cb );
+} );
 
 
 // Server scripts
@@ -232,48 +289,20 @@ gulp.task( 'refresh-server', function () {
 } );
 
 
-gulp.task( 'compile-styles', function () {
-
-  console.log( 'Compiling styles...' );
-
-  gulp.src( sourcePaths.styles )
-    // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
-    .pipe( sass( {
-      errLogToConsole: true,
-      sourceComments: 'map'
-    } ) )
-    .pipe( rename( function ( path ) {
-      path.dirname = '';
-    } ) )
-    .pipe( concat( libraryName + '.css' ) )
-    .pipe( gulp.dest( buildPaths.root ) );
-} );
-
-
-gulp.task( 'compile-images', function () {
-
-  console.log( 'Compiling images...' );
-
-  gulp.src( sourcePaths.images )
-    .pipe( rename( function ( path ) {
-      path.dirname = '';
-    } ) )
-    .pipe( gulp.dest( buildPaths.images ) );
-} );
-
-
-gulp.task( 'compile', function ( cb ) {
-  runSequence( 'clean-build', [
-    'compile-docs', 'compile-scripts', 'compile-templates', 'compile-styles', 'compile-images'], cb );
-} );
-
 gulp.task( 'register-watchers', function ( cb ) {
   gulp.watch( sourcePaths.index, [ 'compile-index', 'refresh-server' ] );
-  gulp.watch( sourcePaths.scripts, [ 'compile-scripts', 'refresh-server' ] );
-  gulp.watch( sourcePaths.templates, [ 'compile-templates', 'refresh-server' ] );
-  gulp.watch( sourcePaths.styles, [ 'compile-styles', 'refresh-server' ] );
-  gulp.watch( sourcePaths.images, [ 'compile-images', 'refresh-server' ] );
-  gulp.watch( sourcePaths.samples, [ 'compile-samples', 'refresh-server' ] );
+
+  gulp.watch( sourcePaths.docsSourceIndex, [ 'compile-docs', 'refresh-server' ] );
+  gulp.watch( sourcePaths.docsApp, [ 'compile-docs', 'refresh-server' ] );
+  gulp.watch( sourcePaths.docsScripts, [ 'compile-docs', 'refresh-server' ] );
+  gulp.watch( sourcePaths.docsTemplates, [ 'compile-docs-templates', 'refresh-server' ] );
+  gulp.watch( sourcePaths.docsStyles, [ 'compile-docs-styles', 'refresh-server' ] );
+
+  gulp.watch( sourcePaths.libraryModuleScript, [ 'compile-library', 'refresh-server' ] );
+  gulp.watch( sourcePaths.libraryScripts, [ 'compile-library', 'refresh-server' ] );
+  gulp.watch( sourcePaths.libraryTemplates, [ 'compile-library-scripts', 'refresh-server' ] );
+  gulp.watch( sourcePaths.libraryStyles, [ 'compile-library-styles', 'refresh-server' ] );
+  gulp.watch( sourcePaths.libraryImages, [ 'compile-library-images', 'refresh-server' ] );
 
   return cb;
 } );

@@ -11,8 +11,7 @@ angular.module(
 
     var $simpleDialogProvider = {
 
-      options: {
-      },
+      options: {},
       $get: ['$modal',
         function ( $modal ) {
 
