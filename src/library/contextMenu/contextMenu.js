@@ -6,8 +6,8 @@ define([
   'angular',
   'text!./templates/contextmenu.html',
 
-  './../hierarchicalMenu/hierarchicalMenu',
-  'css!./styles/contextMenu.css'
+  '././hierarchicalMenu',
+  'css!./styles/contextmenu.css'
 
 ], function (ng, template) {
 

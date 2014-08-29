@@ -6,7 +6,7 @@ define( [
   'text!./templates/propertyValue.html',
   'css!./styles/propertyValue.css',
 
-  '../valueWidgets/valueWidgets'
+  './valueWidgets'
 
 ], function ( ng, defaultTemplate ) {
 

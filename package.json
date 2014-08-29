@@ -18,6 +18,19 @@
     "tiny-lr": "^0.1.1"
   },
   "dependencies": {
-    "angular-markdown-directive": "^0.3.0"
+    "angular-markdown-directive": "^0.3.0",
+    "angular-sanitize": "0.0.1",
+    "browserify-shim": "^3.7.0"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "showdown": "./vendor/showdown_for_browserify.js"
+  },
+  "browserify-shim": {
+    "showdown": "Showdown"
   }
 }

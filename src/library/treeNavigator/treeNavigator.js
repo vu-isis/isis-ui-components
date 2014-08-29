@@ -10,7 +10,7 @@ define([
     'text!./templates/treeNavigator.html',
     'css!./styles/treeNavigator.css',
 
-    './../contextmenu/contextmenu',
+    '././contextmenu',
     './../directives'
 
 ], function(

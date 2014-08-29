@@ -5,7 +5,7 @@ define([
     'text!./templates/dropdownNavigator.html',
     'css!./styles/dropdownNavigator.css',
 
-    './../hierarchicalMenu/hierarchicalMenu'
+    '././hierarchicalMenu'
 
 ], function(
     ng,

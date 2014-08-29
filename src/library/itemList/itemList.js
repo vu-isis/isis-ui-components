@@ -8,7 +8,7 @@ define( [
   './listItemGroup',
   './itemListNewItem',
 
-  '../isis-ui-filter-input/filterInput'
+  './filterInput'
 
 ], function ( ng, template ) {
 

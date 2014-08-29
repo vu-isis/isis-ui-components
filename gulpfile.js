@@ -7,44 +7,41 @@ var
 
   debug = true,
 
-  projectName = 'isis-ui-components',
+  libraryName = 'isis-ui-components',
+  libraryTemplatesModule = 'isis.ui.components.templates',
+
+  docTemplatesModule = 'isis.ui.demoApp',
 
   sourcePaths = {
 
-    docsSourceIndex: 'utils/build/docs_app_src/ui_components_docs.html',
-
-    docsApp: 'utils/build/docs_app_src/docs_app.js',
-//    bundleJS: 'src/isis-ui-components-bundle.js',
-
-    bundleScript: 'src/isis-ui-components-bundle.js',
-
-    scripts: [
-      'src/simpleDialog/*.js'
+    docsSourceIndex: 'src/docs/ui_components_docs.html',
+    docsApp: 'src/docs/docs_app.js',
+    docsScripts: [
+      'src/docs/docs_app.js',
+      'src/*/docs/*.js'
     ],
-
-    docScripts: [
-      'utils/build/docs_app_src/**/*.js',
-      'src/simpleDialog/docs/demo.js'
-    ],
-
-    templates: [
-      'src/**/templates/**/*.html'
-    ],
-
-    docTemplates: [
+    docsTemplates: [
       'src/**/demo.html',
       'src/**/readme.md'
     ],
-
-    styles: [
-      'src/**/*.scss'
-    ],
-
     docsStyles: [
-      'utils/build/docs_app_src/**/*.scss'
+      'src/docs/styles/*.scss',
+      'src/library/*/docs/**/*.scss'
     ],
 
-    images: [
+
+    libraryModuleScript: 'src/library/isis-ui-components.js',
+    libraryScripts: [
+      'src/library/isis-ui-components.js',
+      'src/simpleDialog/*.js' // Add here rest of the components
+    ],
+    libraryTemplates: [
+      'src/**/templates/**/*.html'
+    ],
+    libraryStyles: [
+      'src/library/*/styles/*.scss'
+    ],
+    libraryImages: [
       'src/**/*.png',
       'src/**/*.jpg',
       'src/**/*.svg'
@@ -87,59 +84,129 @@ gulp.task( 'clean-build', function () {
 } );
 
 
-gulp.task( 'lint', function () {
-  gulp.src( sourcePaths.scripts )
+// Docs tasks
+
+gulp.task( 'lint-docs', function () {
+
+  console.log( 'Linting docs...' );
+
+  gulp.src( sourcePaths.docsScripts )
     .pipe( jshint() )
     .pipe( jshint.reporter( 'default' ) );
 
 } );
 
+gulp.task( 'browserify-docs', function () {
 
-gulp.task( 'browserify', function () {
-
-  if ( debug ) {
-    process.env.BROWSERIFYSHIM_DIAGNOSTICS = 1;
-  }
-
-  gulp.src( sourcePaths.scripts, { read: false } )
-    .pipe( browserify( {
-      insertGlobals: true,
-      debug: true
-    } ) )
-    .on( 'error', console.log )
-    .pipe( concat( projectName + '.js' ) )
-    .pipe( gulp.dest( buildPaths.scripts ) );
-
-} );
-
-
-gulp.task( 'lint-doc-scripts', function () {
-  gulp.src( sourcePaths.docScripts )
-    .pipe( jshint() )
-    .pipe( jshint.reporter( 'default' ) );
-
-} );
-
-
-gulp.task( 'browserify-doc-scripts', function () {
+  console.log( 'Browserifying docs...' );
 
   if ( debug ) {
     process.env.BROWSERIFYSHIM_DIAGNOSTICS = 1;
   }
 
-  gulp.src( sourcePaths.docScripts, { read: false } )
+  gulp.src( sourcePaths.docsApp, { read: false } )
     .pipe( browserify( {
       insertGlobals: true,
       debug: true
     } ) )
     .on( 'error', console.log )
-    .pipe( concat( projectName + '-docs.js' ) )
+    .pipe( concat( libraryName + '-docs.js' ) )
     .pipe( gulp.dest( buildPaths.docsRoot ) );
 
 } );
 
+gulp.task( 'compile-docs-templates', function () {
+
+  console.log( 'Compiling docs templates...' );
+
+  gulp.src( sourcePaths.docsTemplates )
+    .pipe( templateCache( libraryName + '-doc-templates.js', {
+      root: '/',
+      module: docTemplatesModule
+    } ) )
+    .pipe( gulp.dest( buildPaths.docsRoot ) );
+} );
+
+
+gulp.task( 'compile-docs', [ 'lint-docs', 'browserify-docs', 'compile-docs-templates' ], function () {
+
+  console.log( 'Compiling docs...' );
+
+  gulp.src( sourcePaths.docsSourceIndex )
+    .pipe( rename( libraryName + '-docs.html' ) )
+    .pipe( gulp.dest( buildPaths.docsRoot ) );
+
+  gulp.src( sourcePaths.docsStyles )
+    .pipe( sass( {
+      errLogToConsole: true,
+      sourceComments: 'map'
+    } ) )
+    .pipe( rename( function ( path ) {
+      path.dirname = '';
+    } ) )
+    .pipe( concat( libraryName + '-docs.css' ) )
+    .pipe( gulp.dest( buildPaths.docsRoot ) );
+} );
+
+// Library tasks
+
+gulp.task( 'lint-library', function () {
+
+  console.log( 'Linting library...' );
+
+  gulp.src( sourcePaths.libraryScripts )
+    .pipe( jshint() )
+    .pipe( jshint.reporter( 'default' ) );
+
+} );
+
+gulp.task( 'browserify-library', function () {
+
+  console.log( 'Browserifying library...' );
+
+  if ( debug ) {
+    process.env.BROWSERIFYSHIM_DIAGNOSTICS = 1;
+  }
+
+  gulp.src( sourcePaths.libraryModuleScript, { read: false } )
+    .pipe( browserify( {
+      insertGlobals: true,
+      debug: true
+    } ) )
+    .on( 'error', console.log )
+    .pipe( concat( libraryName + '.js' ) )
+    .pipe( gulp.dest( buildPaths.scripts ) );
+
+} );
+
+gulp.task( 'compile-library-templates', function () {
+
+  console.log( 'Compiling templates...' );
+
+  gulp.src( sourcePaths.libraryTemplates )
+    .pipe( rename( function ( path ) {
+      path.dirname = 'templates';
+    } ) )
+    .pipe( templateCache( libraryName + '-templates.js', {
+      module: libraryTemplatesModule,
+      standalone: true,
+      root: '/'
+    } ) )
+    .pipe( gulp.dest( buildPaths.root ) );
+} );
+
+
+gulp.task( 'compile-library', [ 'lint-library', 'browserify-library', 'compile-library-templates' ], function () {
+  console.log( 'Compiling scripts...' );
+} );
+
+
+
+// Server scripts
 
 gulp.task( 'start-server', function () {
+
+  console.log( 'Starting server...' );
 
   server.use( livereload( { port: livereloadport } ) );
   server.use( express.static( buildPaths.root ) );
@@ -158,56 +225,12 @@ gulp.task( 'start-server', function () {
 
 
 gulp.task( 'refresh-server', function () {
+
+  console.log( 'Refreshing server...' );
+
   refresh( lrserver );
 } );
 
-
-// Compile tasks
-
-gulp.task( 'compile-docs', [ 'lint-doc-scripts', 'browserify-doc-scripts', 'compile-doc-templates' ], function () {
-
-  console.log( 'Compiling index...' );
-
-  gulp.src( sourcePaths.docsSourceIndex )
-    .pipe( rename( projectName + '-docs.html' ) )
-    .pipe( gulp.dest( buildPaths.docsRoot ) );
-
-  gulp.src( sourcePaths.docsStyles )
-    .pipe( sass( {
-      errLogToConsole: true,
-      sourceComments: 'map'
-    } ) )
-    .pipe( rename( function ( path ) {
-      path.dirname = '';
-    } ) )
-    .pipe( concat( projectName + '-docs.css' ) )
-    .pipe( gulp.dest( buildPaths.docsRoot ) );
-} );
-
-
-gulp.task( 'compile-scripts', [ 'lint', 'browserify' ], function () {
-  console.log( 'Compiling scripts...' );
-} );
-
-
-gulp.task( 'compile-templates', function () {
-
-  console.log( 'Compiling templates...' );
-
-  gulp.src( sourcePaths.templates )
-    .pipe( templateCache( projectName + '-templates.js' ) )
-    .pipe( gulp.dest( buildPaths.root ) );
-} );
-
-
-gulp.task( 'compile-doc-templates', function () {
-
-  console.log( 'Compiling doc templates...' );
-
-  gulp.src( sourcePaths.docTemplates )
-    .pipe( templateCache( projectName + '-doc-templates.js' ) )
-    .pipe( gulp.dest( buildPaths.docsRoot ) );
-} );
 
 gulp.task( 'compile-styles', function () {
 
@@ -222,7 +245,7 @@ gulp.task( 'compile-styles', function () {
     .pipe( rename( function ( path ) {
       path.dirname = '';
     } ) )
-    .pipe( concat( projectName + '.css' ) )
+    .pipe( concat( libraryName + '.css' ) )
     .pipe( gulp.dest( buildPaths.root ) );
 } );
 

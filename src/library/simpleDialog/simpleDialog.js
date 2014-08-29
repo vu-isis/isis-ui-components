@@ -5,7 +5,7 @@ angular.module(
     'isis.ui.simpleDialog',
     [
       'ui.bootstrap',
-      'templates'
+      'isis.ui.components'
     ]
   ).provider( '$simpleDialog', function () {
 
@@ -46,7 +46,7 @@ angular.module(
           $simpleDialog.open = function ( options ) {
 
             var modalOptions = {
-              templateUrl: 'simpleDialog/templates/simpleDialog.html',
+              templateUrl: '/templates/simpleDialog.html',
               controller: ConfirmDialogController
             };
 
