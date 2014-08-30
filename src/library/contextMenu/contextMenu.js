@@ -254,13 +254,13 @@ angular.module(
 
               if ($scope.contextmenuConfig.position === 'left bottom') {
 
-                position.pageX = bounds.left;
-                position.pageY = bounds.bottom;
+                position.pageX = bounds.left + window.pageXOffset;
+                position.pageY = bounds.bottom + window.pageYOffset;
 
               } else if ($scope.contextmenuConfig.position === 'right bottom') {
 
-                position.pageX = bounds.right;
-                position.pageY = bounds.bottom;
+                position.pageX = bounds.right + window.pageXOffset;
+                position.pageY = bounds.bottom + window.pageYOffset;
 
               }
             }

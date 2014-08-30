@@ -14,20 +14,20 @@
 
 <div data-ng-controller="ContextmenuDemoController">
     <p>Test context-menus here:</p>
-    <div class="btn-group-vertical">
     <button class="btn btn-default"
             isis-contextmenu
             contextmenu-data="menuData">
         Contextmenu default (right-click)</button>
+    <p></p>
     <button class="btn btn-default"
             isis-contextmenu
             contextmenu-data="menuData"
             contextmenu-config="menuConfig1">
         Contextmenu on click, positioned to left-right</button>
+    <p></p>
     <button class="btn btn-default"
             isis-contextmenu
             contextmenu-data="customData"
             contextmenu-config="menuConfig2">
             Custom content, appears on mouseover, positioned to left-right</button>
-    </div>
 </div>
