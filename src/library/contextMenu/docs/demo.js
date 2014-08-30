@@ -1,13 +1,12 @@
 /*globals console, angular*/
+
 'use strict';
 
-var demoApp = angular.module('isis.ui.hierarchicalMenu.demo', ['ui.bootstrap', 'isis.ui.hierarchicalMenu']);
+var demoApp = angular.module('isis.ui.contextmenu.demo', ['isis.ui.contextmenu']);
 
-demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
+demoApp.controller('ContextmenuDemoController', function ($scope, contextmenuService) {
 
-  var menu;
-
-  menu = [
+  var menuData = [
     {
       id: 'top',
       items: [
@@ -87,6 +86,27 @@ demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
     }
   ];
 
-  $scope.menu = menu;
+  $scope.menuConfig1 = {
+    triggerEvent: 'mouseover',
+    position: 'right bottom'
+  };
+
+  $scope.menuConfig2 = {
+    triggerEvent: 'click',
+    position: 'left bottom',
+    contentTemplateUrl: 'contextmenu-custom-content.html',
+    doNotAutoClose: true
+  };
+
+  $scope.menuData = menuData;
+
+  $scope.customData = {
+
+    closeClick: function () {
+      console.log('closing this manuyally');
+      contextmenuService.close();
+    }
+  };
 
 });
+

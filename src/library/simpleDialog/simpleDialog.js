@@ -1,77 +1,86 @@
-/*globals window, angular*/
+/*globals angular*/
 'use strict';
 
 angular.module(
-    'isis.ui.simpleDialog',
-    [
-      'ui.bootstrap',
-      'isis.ui.components'
-    ]
-  ).provider( '$simpleDialog', function () {
+  'isis.ui.simpleDialog',
+  [
+    'ui.bootstrap',
+    'isis.ui.components'
+  ]
+).provider('$simpleDialog', function () {
 
     var $simpleDialogProvider = {
-
       options: {},
       $get: ['$modal',
-        function ( $modal ) {
 
-          var $simpleDialog = {},
-            ConfirmDialogController;
+      function ($modal) {
 
-          ConfirmDialogController = function ( $scope, $modalInstance, dialogTitle, dialogContentTemplate, onOk,
-                                               onCancel, validator ) {
+        var $simpleDialog = {},
+          ConfirmDialogController;
 
-            $scope.dialogTitle = dialogTitle;
-            $scope.dialogContentTemplate = dialogContentTemplate;
+        ConfirmDialogController = function ($scope, $modalInstance, dialogTitle, dialogContentTemplate, onOk, onCancel, validator) {
 
-            $scope.ok = function () {
+          $scope.dialogTitle = dialogTitle;
+          $scope.dialogContentTemplate = dialogContentTemplate;
 
-              if ( angular.isFunction( validator ) ? validator( $scope ) : true ) {
-                $modalInstance.close();
-                if ( angular.isFunction( onOk ) ) {
-                  onOk();
-                }
+          $scope.ok = function () {
+
+            if (angular.isFunction(validator) ? validator($scope) : true) {
+              $modalInstance.close();
+              if (angular.isFunction(onOk)) {
+                onOk();
               }
-            };
-
-            $scope.cancel = function () {
-              $modalInstance.dismiss( 'cancel' );
-              if ( angular.isFunction( onCancel ) ) {
-                onCancel();
-              }
-            };
+            }
           };
 
-          $simpleDialog.open = function ( options ) {
+          $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+            if (angular.isFunction(onCancel)) {
+              onCancel();
+            }
+          };
+        };
 
-            var modalOptions = {
-              templateUrl: '/templates/simpleDialog.html',
-              controller: ConfirmDialogController
-            };
+        $simpleDialog.open = function (options) {
 
-            modalOptions = angular.extend( modalOptions, options );
-
-            modalOptions.resolve = angular.extend( modalOptions.resolve || {
-              dialogTitle: function () { return options.dialogTitle; },
-              dialogContentTemplate: function () { return options.dialogContentTemplate; },
-              onOk: function () { return options.onOk; },
-              onCancel: function () { return options.onCancel; },
-              validator: function () { return options.validator; }
-            } );
-
-
-            var simpleDialogInstance = $modal.open( modalOptions );
-
-
-            return simpleDialogInstance;
-
+          var modalOptions = {
+            templateUrl: '/isis-ui-components//templates/simpleDialog.html',
+            controller: ConfirmDialogController
           };
 
-          return $simpleDialog;
+          modalOptions = angular.extend(modalOptions, options);
 
-        }]
+          modalOptions.resolve = angular.extend(modalOptions.resolve || {
+            dialogTitle: function () {
+              return options.dialogTitle;
+            },
+            dialogContentTemplate: function () {
+              return options.dialogContentTemplate;
+            },
+            onOk: function () {
+              return options.onOk;
+            },
+            onCancel: function () {
+              return options.onCancel;
+            },
+            validator: function () {
+              return options.validator;
+            }
+          });
+
+
+          var simpleDialogInstance = $modal.open(modalOptions);
+
+
+          return simpleDialogInstance;
+
+        };
+
+        return $simpleDialog;
+
+      }]
     };
 
     return $simpleDialogProvider;
-
-  } );
+  }
+);

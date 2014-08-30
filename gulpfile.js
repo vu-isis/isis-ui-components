@@ -5,7 +5,7 @@ var
   livereloadport = 35729,
   serverport = 5000,
 
-  debug = true,
+  debug = false,
 
   libraryName = 'isis-ui-components',
   libraryTemplatesModule = 'isis.ui.components.templates',
@@ -106,7 +106,7 @@ gulp.task( 'browserify-docs', function () {
   gulp.src( sourcePaths.docsApp, { read: false } )
     .pipe( browserify( {
       insertGlobals: true,
-      debug: true
+      debug: debug
     } ) )
     .on( 'error', console.log )
     .pipe( concat( libraryName + '-docs.js' ) )
@@ -192,7 +192,7 @@ gulp.task( 'browserify-library', function () {
   gulp.src( sourcePaths.libraryModuleScript, { read: false } )
     .pipe( browserify( {
       insertGlobals: true,
-      debug: true
+      debug: debug
     } ) )
     .on( 'error', console.log )
     .pipe( concat( libraryName + '.js' ) )
@@ -211,7 +211,7 @@ gulp.task( 'compile-library-templates', function () {
     .pipe( templateCache( libraryName + '-templates.js', {
       module: libraryTemplatesModule,
       standalone: true,
-      root: '/'
+      root: '/' + libraryName + '/'
     } ) )
     .pipe( gulp.dest( buildPaths.root ) );
 } );
@@ -300,7 +300,7 @@ gulp.task( 'register-watchers', function ( cb ) {
 
   gulp.watch( sourcePaths.libraryModuleScript, [ 'compile-library', 'refresh-server' ] );
   gulp.watch( sourcePaths.libraryScripts, [ 'compile-library', 'refresh-server' ] );
-  gulp.watch( sourcePaths.libraryTemplates, [ 'compile-library-scripts', 'refresh-server' ] );
+  gulp.watch( sourcePaths.libraryTemplates, [ 'compile-library-templates', 'refresh-server' ] );
   gulp.watch( sourcePaths.libraryStyles, [ 'compile-library-styles', 'refresh-server' ] );
   gulp.watch( sourcePaths.libraryImages, [ 'compile-library-images', 'refresh-server' ] );
 

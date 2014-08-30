@@ -1,18 +1,22 @@
 /*globals angular, require*/
-
-'use script';
+'use strict';
 
 var components = [
-  'simpleDialog'
+  'simpleDialog',
+  'hierarchicalMenu',
+  'contextmenu'
 //  'dropDownNavigator',
-//  'hierarchicalMenu'
+
 ];
+
+require('../library/simpleDialog/docs/demo.js');
+require('../library/hierarchicalMenu/docs/demo.js');
+require('../library/contextmenu/docs/demo.js');
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
 require( 'angular-markdown-directive' );
 
-require('../library/simpleDialog/docs/demo.js');
 
 var demoApp = angular.module(
   'isis.ui.demoApp',
