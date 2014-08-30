@@ -159,8 +159,6 @@ angular.module(
 
           menuScope = aScope.$new();
 
-          console.log(aScope);
-
           shellAngularElement.append(angular.element($templateCache.get(contentTemplateUrl)));
           menuDOMElement = $compile(shellAngularElement)(menuScope);
           body.append(menuDOMElement);

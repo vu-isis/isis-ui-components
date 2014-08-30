@@ -3,7 +3,7 @@
         <div>
             <button class="btn btn-default btn-sm pull-right" ng-click="contextmenuData.closeClick()">Close this <i class="glyphicon glyphicon-remove-sign"></i></button>
         </div>
-        <hr/>
+        <div class="clearfix"></div>
         <div>
             <p>That you now the result of this equation?</p>
             <label>2 + 2 = </label><input ng-model="parameter.value" min="0" max="99" required ng-change="isValid()"/>
@@ -23,11 +23,11 @@
             isis-contextmenu
             contextmenu-data="menuData"
             contextmenu-config="menuConfig1">
-        Contextmenu on mouseover, positioned to left-right</button>
+        Contextmenu on click, positioned to left-right</button>
     <button class="btn btn-default"
             isis-contextmenu
             contextmenu-data="customData"
             contextmenu-config="menuConfig2">
-            Custom content, appears on click, positioned to left-right</button>
+            Custom content, appears on mouseover, positioned to left-right</button>
     </div>
 </div>

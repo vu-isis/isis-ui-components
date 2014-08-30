@@ -1553,8 +1553,6 @@ angular.module(
 
           menuScope = aScope.$new();
 
-          console.log(aScope);
-
           shellAngularElement.append(angular.element($templateCache.get(contentTemplateUrl)));
           menuDOMElement = $compile(shellAngularElement)(menuScope);
           body.append(menuDOMElement);
@@ -1708,6 +1706,26 @@ angular.module(
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/contextmenu/contextmenu.js","/contextmenu")
 },{"buffer":1,"rH1JPG":4}],6:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+/*globals angular*/
+'use strict';
+
+angular.module(
+    'isis.ui.dropdownNavigator',
+    [ 'isis.ui.hierarchicalMenu' ]
+  ).directive(
+  'dropdownNavigator',
+  function () {
+
+    return {
+      scope: { navigator: '=' },
+      restrict: 'E',
+      replace: true,
+      templateUrl: '/isis-ui-components/templates/dropdownNavigator.html'
+    };
+  });
+}).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/dropdownNavigator/dropdownNavigator.js","/dropdownNavigator")
+},{"buffer":1,"rH1JPG":4}],7:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals window, angular*/
 'use strict';
 
@@ -1770,23 +1788,25 @@ angular.module(
     }]);
 
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/hierarchicalMenu/hierarchicalMenu.js","/hierarchicalMenu")
-},{"buffer":1,"rH1JPG":4}],7:[function(require,module,exports){
+},{"buffer":1,"rH1JPG":4}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals angular*/
 
 require('./simpleDialog/simpleDialog.js');
 require('./hierarchicalMenu/hierarchicalMenu.js');
 require('./contextmenu/contextmenu.js');
+require('./dropdownNavigator/dropdownNavigator.js');
 
 angular.module('isis.ui.components',[
   'isis.ui.components.templates',
   
   'isis.ui.simpleDialog',
   'isis.ui.hierarchicalMenu',
-  'isis.ui.contextmenu'
+  'isis.ui.contextmenu',
+  'isis.ui.dropdownNavigator'
 ]);
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/isis-ui-components.js","/")
-},{"./contextmenu/contextmenu.js":5,"./hierarchicalMenu/hierarchicalMenu.js":6,"./simpleDialog/simpleDialog.js":8,"buffer":1,"rH1JPG":4}],8:[function(require,module,exports){
+},{"./contextmenu/contextmenu.js":5,"./dropdownNavigator/dropdownNavigator.js":6,"./hierarchicalMenu/hierarchicalMenu.js":7,"./simpleDialog/simpleDialog.js":9,"buffer":1,"rH1JPG":4}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals angular*/
 'use strict';
@@ -1834,7 +1854,7 @@ angular.module(
         $simpleDialog.open = function (options) {
 
           var modalOptions = {
-            templateUrl: '/isis-ui-components//templates/simpleDialog.html',
+            templateUrl: '/isis-ui-components/templates/simpleDialog.html',
             controller: ConfirmDialogController
           };
 
@@ -1876,4 +1896,4 @@ angular.module(
 );
 
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/simpleDialog/simpleDialog.js","/simpleDialog")
-},{"buffer":1,"rH1JPG":4}]},{},[7])
+},{"buffer":1,"rH1JPG":4}]},{},[8])

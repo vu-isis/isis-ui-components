@@ -4,14 +4,15 @@
 var components = [
   'simpleDialog',
   'hierarchicalMenu',
-  'contextmenu'
-//  'dropDownNavigator',
+  'contextmenu',
+  'dropdownNavigator'
 
 ];
 
 require('../library/simpleDialog/docs/demo.js');
 require('../library/hierarchicalMenu/docs/demo.js');
 require('../library/contextmenu/docs/demo.js');
+require('../library/dropdownNavigator/docs/demo.js');
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );

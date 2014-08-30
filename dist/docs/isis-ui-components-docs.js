@@ -1456,14 +1456,15 @@ process.chdir = function (dir) {
 var components = [
   'simpleDialog',
   'hierarchicalMenu',
-  'contextmenu'
-//  'dropDownNavigator',
+  'contextmenu',
+  'dropdownNavigator'
 
 ];
 
 require('../library/simpleDialog/docs/demo.js');
 require('../library/hierarchicalMenu/docs/demo.js');
 require('../library/contextmenu/docs/demo.js');
+require('../library/dropdownNavigator/docs/demo.js');
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
@@ -1497,7 +1498,7 @@ demoApp.controller(
   } );
 
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/docs_app.js","/")
-},{"../library/contextmenu/docs/demo.js":8,"../library/hierarchicalMenu/docs/demo.js":9,"../library/simpleDialog/docs/demo.js":10,"angular-markdown-directive":1,"angular-sanitize":2,"buffer":3,"rH1JPG":6,"showdown":11}],8:[function(require,module,exports){
+},{"../library/contextmenu/docs/demo.js":8,"../library/dropdownNavigator/docs/demo.js":9,"../library/hierarchicalMenu/docs/demo.js":10,"../library/simpleDialog/docs/demo.js":11,"angular-markdown-directive":1,"angular-sanitize":2,"buffer":3,"rH1JPG":6,"showdown":12}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals console, angular*/
 
@@ -1588,12 +1589,12 @@ demoApp.controller('ContextmenuDemoController', function ($scope, contextmenuSer
   ];
 
   $scope.menuConfig1 = {
-    triggerEvent: 'mouseover',
+    triggerEvent: 'click',
     position: 'right bottom'
   };
 
   $scope.menuConfig2 = {
-    triggerEvent: 'click',
+    triggerEvent: 'mouseover',
     position: 'left bottom',
     contentTemplateUrl: 'contextmenu-custom-content.html',
     doNotAutoClose: true
@@ -1614,6 +1615,178 @@ demoApp.controller('ContextmenuDemoController', function ($scope, contextmenuSer
 
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/contextmenu/docs/demo.js","/../library/contextmenu/docs")
 },{"buffer":3,"rH1JPG":6}],9:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+/*globals console, angular*/
+'use strict';
+
+var demoApp = angular.module('isis.ui.dropdownNavigator.demo', ['isis.ui.dropdownNavigator']);
+
+demoApp.controller('DropdownDemoController', function ($scope) {
+  var firstMenu,
+    secondMenu;
+
+  firstMenu = {
+    id: 'root',
+    label: 'GME',
+//            isSelected: true,
+    itemClass: 'gme-root',
+    menu: []
+  };
+
+  secondMenu = {
+    id: 'secondItem',
+    label: 'Projects',
+    menu: []
+  };
+
+  firstMenu.menu = [
+    {
+      id: 'top',
+      items: [
+        {
+          id: 'newProject',
+          label: 'New project ...',
+          iconClass: 'glyphicon glyphicon-plus',
+          action: function () {
+            console.log('New project clicked');
+          },
+          actionData: {}
+        },
+        {
+          id: 'importProject',
+          label: 'Import project ...',
+          iconClass: 'glyphicon glyphicon-import',
+          action: function () {
+            console.log('Import project clicked');
+          },
+          actionData: {}
+        }
+      ]
+    },
+    {
+      id: 'projects',
+      label: 'Recent projects',
+      totalItems: 20,
+      items: [],
+      showAllItems: function () {
+        console.log('Recent projects clicked');
+      }
+    },
+    {
+      id: 'preferences',
+      label: 'preferences',
+      items: [
+        {
+          id: 'showPreferences',
+          label: 'Show preferences',
+          action: function () {
+            console.log('Show preferences');
+          },
+          menu: [
+            {
+              items: [
+                {
+                  id: 'preferences 1',
+                  label: 'Preferences 1'
+                },
+                {
+                  id: 'preferences 2',
+                  label: 'Preferences 2'
+                },
+                {
+                  id: 'preferences 3',
+                  label: 'Preferences 3',
+                  menu: [
+                    {
+                      items: [
+                        {
+                          id: 'sub_preferences 1',
+                          label: 'Sub preferences 1'
+                        },
+                        {
+                          id: 'sub_preferences 2',
+                          label: 'Sub preferences 2'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+
+  secondMenu = {
+    id: 'secondItem',
+    label: 'Projects',
+    menu: []
+  };
+
+  secondMenu.menu = [
+    {
+      id: 'secondMenuMenu',
+      items: [
+
+        {
+          id: 'showPreferences',
+          label: 'Show preferences',
+          action: function () {
+            console.log('Show preferences');
+          },
+          menu: [
+            {
+              items: [
+                {
+                  id: 'preferences 1',
+                  label: 'Preferences 1'
+                },
+                {
+                  id: 'preferences 2',
+                  label: 'Preferences 2'
+                },
+                {
+                  id: 'preferences 3',
+                  label: 'Preferences 3',
+                  menu: [
+                    {
+                      items: [
+                        {
+                          id: 'sub_preferences 1',
+                          label: 'Sub preferences 1'
+                        },
+                        {
+                          id: 'sub_preferences 2',
+                          label: 'Sub preferences 2'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  $scope.navigator = {
+    items: [
+      firstMenu,
+      secondMenu
+    ],
+    separator: true
+  };
+
+
+});
+
+}).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/dropdownNavigator/docs/demo.js","/../library/dropdownNavigator/docs")
+},{"buffer":3,"rH1JPG":6}],10:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals console, angular*/
 'use strict';
@@ -1708,7 +1881,7 @@ demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
 
 });
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/hierarchicalMenu/docs/demo.js","/../library/hierarchicalMenu/docs")
-},{"buffer":3,"rH1JPG":6}],10:[function(require,module,exports){
+},{"buffer":3,"rH1JPG":6}],11:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals console, angular*/
 
@@ -1771,7 +1944,7 @@ demoApp.controller( 'ConfirmDialogDemoDataController', function () {
 
 } );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/simpleDialog/docs/demo.js","/../library/simpleDialog/docs")
-},{"buffer":3,"rH1JPG":6}],11:[function(require,module,exports){
+},{"buffer":3,"rH1JPG":6}],12:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 //

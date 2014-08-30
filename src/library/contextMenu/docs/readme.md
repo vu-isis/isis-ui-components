@@ -1,4 +1,4 @@
-`contextmenu` is a directive for displaying contextual-menu-like call-outs. Attachit as an attribute on triggering object.
+`isisContextmenu` is a directive for displaying contextual-menu-like call-outs. Attachit as an attribute on triggering object.
 
 Use the following attributes along:
 
@@ -9,4 +9,8 @@ Use the following attributes along:
  * `contextmenuData` - data passed to shell directive in template. By default, specify a menu structure for `hierarchical-menu`.
  * `contextmenu-disabled` - if set, will be evaluated before showing menu
 
- It also registers the `contextmenuService` for opening and closing menus manually.
+It also registers the `contextmenuService` for opening and closing menus manually. Exposed methods:
+
+ * `open` with arguments:
+    - triggerElement, contentTemplateUrl, aScope, position, doNotAutocloseOnClick
+ * `close` - no arguments

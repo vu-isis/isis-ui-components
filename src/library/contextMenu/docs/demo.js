@@ -87,12 +87,12 @@ demoApp.controller('ContextmenuDemoController', function ($scope, contextmenuSer
   ];
 
   $scope.menuConfig1 = {
-    triggerEvent: 'mouseover',
+    triggerEvent: 'click',
     position: 'right bottom'
   };
 
   $scope.menuConfig2 = {
-    triggerEvent: 'click',
+    triggerEvent: 'mouseover',
     position: 'left bottom',
     contentTemplateUrl: 'contextmenu-custom-content.html',
     doNotAutoClose: true
