@@ -1,1 +1,1 @@
-This is a collection of Angular ui-components used originally developed for the WebGME application.
+This is a collection of Angular ui-components originally developed for WebGME.
