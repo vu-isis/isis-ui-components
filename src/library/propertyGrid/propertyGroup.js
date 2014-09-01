@@ -1,14 +1,14 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
   'text!./templates/propertyGroup.html',
   'css!./styles/propertyGroup.css',
 
   './propertyGridRow'
 
-], function (ng, template) {
+], function ( ng, template ) {
 
   'use strict';
 
@@ -17,22 +17,23 @@ define([
       'isis.ui.propertyGridRow'
     ]
 
-  ).directive(
-    'propertyGroup',
-    function () {
+  )
+    .directive(
+      'propertyGroup',
+      function () {
 
-      return {
-        scope: {
-          label: '=',
-          items: '=',
-          config: '='
-        },
-        restrict: 'E',
-        replace: true,
-        template: template
+        return {
+          scope: {
+            label: '=',
+            items: '=',
+            config: '='
+          },
+          restrict: 'E',
+          replace: true,
+          template: template
 
-      };
-    });
+        };
+      } );
 
 
-});
+} );

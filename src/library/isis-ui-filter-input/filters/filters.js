@@ -1,36 +1,36 @@
 /*globals define, console, alert, window, angular*/
 
-define([
+define( [
   'angular'
 ], function () {
   'use strict';
 
   angular.module(
 
-    'isis.filters', [])
+    'isis.filters', [] )
 
-  .filter('orderObjectBy', function () {
-    return function (items, field, reverse) {
+  .filter( 'orderObjectBy', function () {
+    return function ( items, field, reverse ) {
 
       var filtered = [];
 
-      angular.forEach(items, function (item) {
-        filtered.push(item);
-      });
-      filtered.sort(function (a, b) {
-        return (a[field] > b[field] ? 1 : -1);
-      });
+      angular.forEach( items, function ( item ) {
+        filtered.push( item );
+      } );
+      filtered.sort( function ( a, b ) {
+        return ( a[ field ] > b[ field ] ? 1 : -1 );
+      } );
 
-      if (reverse) {
+      if ( reverse ) {
         filtered.reverse();
       }
 
-      console.log(field, filtered);
+      console.log( field, filtered );
 
       return filtered;
 
     };
 
-  });
+  } );
 
-});
+} );

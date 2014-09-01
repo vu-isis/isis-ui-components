@@ -1396,18 +1396,18 @@ process.chdir = function (dir) {
 'use strict';
 
 angular.module(
-    'isis.ui.contextmenu',
-    [ 'isis.ui.hierarchicalMenu' ]
-  )
+  'isis.ui.contextmenu', [ 'isis.ui.hierarchicalMenu' ]
+)
   .factory(
-    'contextmenuService', ['$document', '$compile', '$window', '$templateCache',
-      function ($document, $compile, $window, $templateCache) {
+    'contextmenuService', [ '$document', '$compile', '$window', '$templateCache',
+      function ( $document, $compile, $window, $templateCache ) {
 
         var
-          service = {},
+        service = {},
           setPosition,
-          body = $document.find('body').eq(0),
-          doc = $document[0].documentElement,
+          body = $document.find( 'body' )
+            .eq( 0 ),
+          doc = $document[ 0 ].documentElement,
           widthWatcher, heightWatcher,
           menuScope,
           opened = false,
@@ -1424,45 +1424,46 @@ angular.module(
             $window
           );
 
-        handleKeyUpEvent = function (event) {
-          if (opened && event.keyCode === 27) {
+        handleKeyUpEvent = function ( event ) {
+          if ( opened && event.keyCode === 27 ) {
             service.close();
           }
         };
 
-        handleMouseDownEvent = function (event) {
+        handleMouseDownEvent = function ( event ) {
 
 
-          if (opened &&
-            service.menuElement && !$.contains(service.menuElement[0], event.target)) {
+          if ( opened &&
+            service.menuElement && !$.contains( service.menuElement[ 0 ], event.target ) ) {
             service.close();
           }
         };
 
-        handleClickEvent = function (event) {
+        handleClickEvent = function ( event ) {
 
-          if (opened &&
-            ( autoCloseOnClick || ( service.menuElement && !$.contains(service.menuElement[0], event.target) )) &&
-            (event.button !== 2 || event.target !== service.element)) {
+          if ( opened &&
+            ( autoCloseOnClick || ( service.menuElement && !$.contains( service.menuElement[ 0 ],
+              event.target ) ) ) &&
+            ( event.button !== 2 || event.target !== service.element ) ) {
 
             service.close();
           }
         };
 
         handleScrollEvent = function () {
-          if (opened) {
+          if ( opened ) {
             service.close();
           }
         };
 
         handleResizeEvent = function () {
-          if (opened) {
+          if ( opened ) {
             service.close();
           }
         };
 
         handleBlurEvent = function () {
-          if (opened) {
+          if ( opened ) {
             service.close();
           }
         };
@@ -1497,13 +1498,13 @@ angular.module(
 
         };
 
-        setPosition = function (position, menuElement) {
+        setPosition = function ( position, menuElement ) {
 
           var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
             docTop = ( window.pageYOffset || doc.scrollTop ) - ( doc.clientTop || 0 ),
 
-            elementHeight = menuElement[0].scrollHeight,
-            elementWidth = menuElement[0].scrollWidth,
+            elementHeight = menuElement[ 0 ].scrollHeight,
+            elementWidth = menuElement[ 0 ].scrollWidth,
 
             docHeight = doc.clientHeight + docTop,
             docWidth = doc.clientWidth + docLeft,
@@ -1522,11 +1523,11 @@ angular.module(
               position.pageX - docLeft, 0
             );
 
-          if (strechOverPageHeight > 0) {
+          if ( strechOverPageHeight > 0 ) {
             top = top - strechOverPageHeight;
           }
 
-          if (strechOverPageWidth > 0) {
+          if ( strechOverPageWidth > 0 ) {
             left = left - strechOverPageWidth;
           }
 
@@ -1541,10 +1542,12 @@ angular.module(
 
         };
 
-        service.open = function (triggerElement, contentTemplateUrl, aScope, position, doNotAutocloseOnClick) {
+        service.open = function ( triggerElement, contentTemplateUrl, aScope, position,
+          doNotAutocloseOnClick ) {
 
           var
-            shellAngularElement = angular.element($templateCache.get('/isis-ui-components/templates/contextmenu.html')),
+          shellAngularElement = angular.element( $templateCache.get(
+            '/isis-ui-components/templates/contextmenu.html' ) ),
             menuDOMElement;
 
           autoCloseOnClick = doNotAutocloseOnClick === false;
@@ -1553,31 +1556,31 @@ angular.module(
 
           menuScope = aScope.$new();
 
-          shellAngularElement.append(angular.element($templateCache.get(contentTemplateUrl)));
-          menuDOMElement = $compile(shellAngularElement)(menuScope);
-          body.append(menuDOMElement);
+          shellAngularElement.append( angular.element( $templateCache.get( contentTemplateUrl ) ) );
+          menuDOMElement = $compile( shellAngularElement )( menuScope );
+          body.append( menuDOMElement );
           service.menuElement = menuDOMElement;
           service.element = triggerElement;
 
-          setPosition(position, menuDOMElement);
+          setPosition( position, menuDOMElement );
 
           widthWatcher = menuScope.$watch(
             function () {
-              return menuDOMElement[0].scrollWidth;
+              return menuDOMElement[ 0 ].scrollWidth;
             },
 
             function () {
-              setPosition(position, menuDOMElement);
+              setPosition( position, menuDOMElement );
             }
           );
 
           heightWatcher = menuScope.$watch(
             function () {
-              return menuDOMElement[0].scrollHeight;
+              return menuDOMElement[ 0 ].scrollHeight;
             },
 
             function () {
-              setPosition(position, menuDOMElement);
+              setPosition( position, menuDOMElement );
             }
           );
 
@@ -1589,7 +1592,7 @@ angular.module(
 
         service.close = function () {
 
-          if (angular.isObject(menuScope) && angular.isFunction(menuScope.$destroy)) {
+          if ( angular.isObject( menuScope ) && angular.isFunction( menuScope.$destroy ) ) {
             service.menuElement.remove();
             menuScope.$destroy();
             menuScope = undefined;
@@ -1601,108 +1604,114 @@ angular.module(
 
         return service;
 
-      }])
+      }
+    ] )
   .directive(
     'isisContextmenu',
 
-    ['$document', 'contextmenuService', '$window', '$rootScope', function ($document, contextmenuService) {
+    [ '$document', 'contextmenuService', '$window', '$rootScope',
+      function ( $document, contextmenuService ) {
 
-      return {
-        restrict: 'A',
-        scope: {
-          contextmenuConfig: '=',
-          contextmenuData: '=',
-          callback: '&contextmenu',
-          disabled: '&contextmenuDisabled'
-        },
+        return {
+          restrict: 'A',
+          scope: {
+            contextmenuConfig: '=',
+            contextmenuData: '=',
+            callback: '&contextmenu',
+            disabled: '&contextmenuDisabled'
+          },
 
-        link: function ($scope, element) {
+          link: function ( $scope, element ) {
 
-          var open,
-            handleContextmenuEvent,
-            options = {
-              triggerEvent: 'contextmenu',
-              contentTemplateUrl: '/isis-ui-components/templates/contextmenu.DefaultContents.html'
-            };
+            var open,
+              handleContextmenuEvent,
+              options = {
+                triggerEvent: 'contextmenu',
+                contentTemplateUrl: '/isis-ui-components/templates/contextmenu.DefaultContents.html'
+              };
 
-          if (!angular.isFunction($scope.disabled)) {
-            $scope.disabled = function() { return false; };
-          }
-
-          if (angular.isObject($scope.contextmenuConfig)) {
-            angular.extend(options, $scope.contextmenuConfig);
-          }
-
-          open = function (event) {
-
-            var position, bounds;
-
-            position = {
-              pageX: event.pageX,
-              pageY: event.pageY
-            };
-
-            if ($scope.contextmenuConfig && $scope.contextmenuConfig.position) {
-
-              bounds = element[0].getBoundingClientRect();
-
-              if ($scope.contextmenuConfig.position === 'left bottom') {
-
-                position.pageX = bounds.left + window.pageXOffset;
-                position.pageY = bounds.bottom + window.pageYOffset;
-
-              } else if ($scope.contextmenuConfig.position === 'right bottom') {
-
-                position.pageX = bounds.right + window.pageXOffset;
-                position.pageY = bounds.bottom + window.pageYOffset;
-
-              }
+            if ( !angular.isFunction( $scope.disabled ) ) {
+              $scope.disabled = function () {
+                return false;
+              };
             }
 
-            if (!$scope.disabled()) {
-              contextmenuService.open(
-                element, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
-              );
-
+            if ( angular.isObject( $scope.contextmenuConfig ) ) {
+              angular.extend( options, $scope.contextmenuConfig );
             }
-          };
 
-          handleContextmenuEvent = function (event) {
-            if (!$scope.disabled()) {
+            open = function ( event ) {
 
-              contextmenuService.element = event.target;
+              var position, bounds;
 
-              event.preventDefault();
-              event.stopPropagation();
+              position = {
+                pageX: event.pageX,
+                pageY: event.pageY
+              };
 
-              $scope.$apply(
-                function () {
+              if ( $scope.contextmenuConfig && $scope.contextmenuConfig.position ) {
 
-                  $scope.callback({ $event: event });
+                bounds = element[ 0 ].getBoundingClientRect();
 
-                  open(event);
+                if ( $scope.contextmenuConfig.position === 'left bottom' ) {
+
+                  position.pageX = bounds.left + window.pageXOffset;
+                  position.pageY = bounds.bottom + window.pageYOffset;
+
+                } else if ( $scope.contextmenuConfig.position === 'right bottom' ) {
+
+                  position.pageX = bounds.right + window.pageXOffset;
+                  position.pageY = bounds.bottom + window.pageYOffset;
 
                 }
-              );
-            }
-          };
+              }
 
-          element.bind(
-            options.triggerEvent, handleContextmenuEvent
-          );
+              if ( !$scope.disabled() ) {
+                contextmenuService.open(
+                  element, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
+                );
 
-          $scope.$on(
-            '$destroy', function () {
-              element.unbind(
-                'contextmenu', handleContextmenuEvent
-              );
-            }
-          );
-        }
+              }
+            };
 
-      };
-    }]);
+            handleContextmenuEvent = function ( event ) {
+              if ( !$scope.disabled() ) {
 
+                contextmenuService.element = event.target;
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                $scope.$apply(
+                  function () {
+
+                    $scope.callback( {
+                      $event: event
+                    } );
+
+                    open( event );
+
+                  }
+                );
+              }
+            };
+
+            element.bind(
+              options.triggerEvent, handleContextmenuEvent
+            );
+
+            $scope.$on(
+              '$destroy', function () {
+                element.unbind(
+                  'contextmenu', handleContextmenuEvent
+                );
+              }
+            );
+          }
+
+        };
+      }
+    ] );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/contextmenu/contextmenu.js","/contextmenu")
 },{"buffer":1,"rH1JPG":4}],6:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -1710,19 +1719,21 @@ angular.module(
 'use strict';
 
 angular.module(
-    'isis.ui.dropdownNavigator',
-    [ 'isis.ui.hierarchicalMenu' ]
-  ).directive(
-  'dropdownNavigator',
-  function () {
+  'isis.ui.dropdownNavigator', [ 'isis.ui.hierarchicalMenu' ]
+)
+  .directive(
+    'dropdownNavigator',
+    function () {
 
-    return {
-      scope: { navigator: '=' },
-      restrict: 'E',
-      replace: true,
-      templateUrl: '/isis-ui-components/templates/dropdownNavigator.html'
-    };
-  });
+      return {
+        scope: {
+          navigator: '='
+        },
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/dropdownNavigator.html'
+      };
+    } );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/dropdownNavigator/dropdownNavigator.js","/dropdownNavigator")
 },{"buffer":1,"rH1JPG":4}],7:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -1734,77 +1745,79 @@ angular.module(
     'ui.bootstrap',
     'isis.ui.components'
   ]
-).directive(
-  'hierarchicalMenu', ['$document',
-    function ($document) {
+)
+  .directive(
+    'hierarchicalMenu', [ '$document',
+      function ( $document ) {
 
-      return {
-        scope: {
-          menu: '=',
-          config: '='
-        },
-        restrict: 'E',
+        return {
+          scope: {
+            menu: '=',
+            config: '='
+          },
+          restrict: 'E',
 
-        replace: true,
-        templateUrl: '/isis-ui-components/templates/hierarchicalMenu.html',
+          replace: true,
+          templateUrl: '/isis-ui-components/templates/hierarchicalMenu.html',
 
-        link: function ($scope, element) {
+          link: function ( $scope, element ) {
 
-          var whichSideToDropSubs,
-            doc = $document[0].documentElement;
+            var whichSideToDropSubs,
+              doc = $document[ 0 ].documentElement;
 
-          whichSideToDropSubs = function () {
+            whichSideToDropSubs = function () {
 
-            var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
-              width = element[0].scrollWidth,
-              rightBorderX = element[0].getBoundingClientRect().right,
-              wouldBeRightBorderOfSub,
-              docWidth = doc.clientWidth + docLeft;
+              var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
+                width = element[ 0 ].scrollWidth,
+                rightBorderX = element[ 0 ].getBoundingClientRect()
+                  .right,
+                wouldBeRightBorderOfSub,
+                docWidth = doc.clientWidth + docLeft;
 
-            wouldBeRightBorderOfSub = width + rightBorderX;
+              wouldBeRightBorderOfSub = width + rightBorderX;
 
-            if (docWidth < wouldBeRightBorderOfSub) {
-              element.addClass('drop-left');
-            } else {
-              element.removeClass('drop-left');
-            }
+              if ( docWidth < wouldBeRightBorderOfSub ) {
+                element.addClass( 'drop-left' );
+              } else {
+                element.removeClass( 'drop-left' );
+              }
 
-          };
+            };
 
-          whichSideToDropSubs();
+            whichSideToDropSubs();
 
-          $scope.$watch(
-            function () {
-              return element[0].scrollWidth;
-            },
+            $scope.$watch(
+              function () {
+                return element[ 0 ].scrollWidth;
+              },
 
-            function () {
-              whichSideToDropSubs();
-            }
-          );
+              function () {
+                whichSideToDropSubs();
+              }
+            );
 
-        }
-      };
-    }]);
-
+          }
+        };
+      }
+    ] );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/hierarchicalMenu/hierarchicalMenu.js","/hierarchicalMenu")
 },{"buffer":1,"rH1JPG":4}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals angular*/
 
-require('./simpleDialog/simpleDialog.js');
-require('./hierarchicalMenu/hierarchicalMenu.js');
-require('./contextmenu/contextmenu.js');
-require('./dropdownNavigator/dropdownNavigator.js');
+require( './simpleDialog/simpleDialog.js' );
+require( './hierarchicalMenu/hierarchicalMenu.js' );
+require( './contextmenu/contextmenu.js' );
+require( './dropdownNavigator/dropdownNavigator.js' );
 
-angular.module('isis.ui.components',[
+angular.module( 'isis.ui.components', [
   'isis.ui.components.templates',
-  
+
   'isis.ui.simpleDialog',
   'isis.ui.hierarchicalMenu',
   'isis.ui.contextmenu',
   'isis.ui.dropdownNavigator'
-]);
+] );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/isis-ui-components.js","/")
 },{"./contextmenu/contextmenu.js":5,"./dropdownNavigator/dropdownNavigator.js":6,"./hierarchicalMenu/hierarchicalMenu.js":7,"./simpleDialog/simpleDialog.js":9,"buffer":1,"rH1JPG":4}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -1812,88 +1825,89 @@ angular.module('isis.ui.components',[
 'use strict';
 
 angular.module(
-  'isis.ui.simpleDialog',
-  [
+  'isis.ui.simpleDialog', [
     'ui.bootstrap',
     'isis.ui.components'
   ]
-).provider('$simpleDialog', function () {
+)
+  .provider( '$simpleDialog', function () {
 
     var $simpleDialogProvider = {
       options: {},
-      $get: ['$modal',
+      $get: [ '$modal',
 
-      function ($modal) {
+        function ( $modal ) {
 
-        var $simpleDialog = {},
-          ConfirmDialogController;
+          var $simpleDialog = {},
+            ConfirmDialogController;
 
-        ConfirmDialogController = function ($scope, $modalInstance, dialogTitle, dialogContentTemplate, onOk, onCancel, validator) {
+          ConfirmDialogController = function ( $scope, $modalInstance, dialogTitle,
+            dialogContentTemplate, onOk, onCancel, validator ) {
 
-          $scope.dialogTitle = dialogTitle;
-          $scope.dialogContentTemplate = dialogContentTemplate;
+            $scope.dialogTitle = dialogTitle;
+            $scope.dialogContentTemplate = dialogContentTemplate;
 
-          $scope.ok = function () {
+            $scope.ok = function () {
 
-            if (angular.isFunction(validator) ? validator($scope) : true) {
-              $modalInstance.close();
-              if (angular.isFunction(onOk)) {
-                onOk();
+              if ( angular.isFunction( validator ) ? validator( $scope ) : true ) {
+                $modalInstance.close();
+                if ( angular.isFunction( onOk ) ) {
+                  onOk();
+                }
               }
-            }
+            };
+
+
+            $scope.cancel = function () {
+              $modalInstance.dismiss( 'cancel' );
+              if ( angular.isFunction( onCancel ) ) {
+                onCancel();
+              }
+            };
           };
 
-          $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-            if (angular.isFunction(onCancel)) {
-              onCancel();
-            }
+          $simpleDialog.open = function ( options ) {
+
+            var modalOptions = {
+              templateUrl: '/isis-ui-components/templates/simpleDialog.html',
+              controller: ConfirmDialogController
+            };
+
+            modalOptions = angular.extend( modalOptions, options );
+
+            modalOptions.resolve = angular.extend( modalOptions.resolve || {
+              dialogTitle: function () {
+                return options.dialogTitle;
+              },
+              dialogContentTemplate: function () {
+                return options.dialogContentTemplate;
+              },
+              onOk: function () {
+                return options.onOk;
+              },
+              onCancel: function () {
+                return options.onCancel;
+              },
+              validator: function () {
+                return options.validator;
+              }
+            } );
+
+
+            var simpleDialogInstance = $modal.open( modalOptions );
+
+
+            return simpleDialogInstance;
+
           };
-        };
 
-        $simpleDialog.open = function (options) {
+          return $simpleDialog;
 
-          var modalOptions = {
-            templateUrl: '/isis-ui-components/templates/simpleDialog.html',
-            controller: ConfirmDialogController
-          };
-
-          modalOptions = angular.extend(modalOptions, options);
-
-          modalOptions.resolve = angular.extend(modalOptions.resolve || {
-            dialogTitle: function () {
-              return options.dialogTitle;
-            },
-            dialogContentTemplate: function () {
-              return options.dialogContentTemplate;
-            },
-            onOk: function () {
-              return options.onOk;
-            },
-            onCancel: function () {
-              return options.onCancel;
-            },
-            validator: function () {
-              return options.validator;
-            }
-          });
-
-
-          var simpleDialogInstance = $modal.open(modalOptions);
-
-
-          return simpleDialogInstance;
-
-        };
-
-        return $simpleDialog;
-
-      }]
+        }
+      ]
     };
 
     return $simpleDialogProvider;
-  }
-);
-
+  } );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/simpleDialog/simpleDialog.js","/simpleDialog")
 },{"buffer":1,"rH1JPG":4}]},{},[8])

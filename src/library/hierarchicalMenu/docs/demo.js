@@ -1,22 +1,22 @@
 /*globals console, angular*/
 'use strict';
 
-var demoApp = angular.module('isis.ui.hierarchicalMenu.demo', ['ui.bootstrap',
+var demoApp = angular.module( 'isis.ui.hierarchicalMenu.demo', [ 'ui.bootstrap',
   'isis.ui.hierarchicalMenu'
-]);
+] );
 
-demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
+demoApp.controller( 'HierarchicalMenuDemoController', function ( $scope ) {
 
   var menu;
 
-  menu = [{
+  menu = [ {
     id: 'top',
-    items: [{
+    items: [ {
       id: 'newProject',
       label: 'New project ...',
       iconClass: 'glyphicon glyphicon-plus',
       action: function () {
-        console.log('New project clicked');
+        console.log( 'New project clicked' );
       },
       actionData: {}
     }, {
@@ -24,29 +24,29 @@ demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
       label: 'Import project ...',
       iconClass: 'glyphicon glyphicon-import',
       action: function () {
-        console.log('Import project clicked');
+        console.log( 'Import project clicked' );
       },
       actionData: {}
-    }]
+    } ]
   }, {
     id: 'projects',
     label: 'Recent projects',
     totalItems: 20,
     items: [],
     showAllItems: function () {
-      console.log('Recent projects clicked');
+      console.log( 'Recent projects clicked' );
     }
   }, {
     id: 'preferences',
     label: 'preferences',
-    items: [{
+    items: [ {
       id: 'showPreferences',
       label: 'Show preferences',
       action: function () {
-        console.log('Show preferences');
+        console.log( 'Show preferences' );
       },
-      menu: [{
-        items: [{
+      menu: [ {
+        items: [ {
           id: 'preferences 1',
           label: 'Preferences 1'
         }, {
@@ -55,20 +55,20 @@ demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
         }, {
           id: 'preferences 3',
           label: 'Preferences 3',
-          menu: [{
-            items: [{
+          menu: [ {
+            items: [ {
               id: 'sub_preferences 1',
               label: 'Sub preferences 1'
             }, {
               id: 'sub_preferences 2',
               label: 'Sub preferences 2'
-            }]
-          }]
-        }]
-      }]
-    }]
-  }];
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  } ];
 
   $scope.menu = menu;
 
-});
+} );

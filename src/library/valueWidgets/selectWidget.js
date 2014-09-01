@@ -1,34 +1,35 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
   'text!./templates/selectWidget.html',
   'css!./styles/selectWidget.css'
 
-], function (ng, template) {
+], function ( ng, template ) {
 
   'use strict';
 
   angular.module(
     'isis.ui.selectWidget', []
 
-  ).directive(
-    'selectWidget',
-    function () {
+  )
+    .directive(
+      'selectWidget',
+      function () {
 
-      return {
-        restrict: 'E',
-        replace: true,
-        template: template,
-        scope: {
-          config: '=',
-          value: '=',
-          unresponsive: '='
-        }
+        return {
+          restrict: 'E',
+          replace: true,
+          template: template,
+          scope: {
+            config: '=',
+            value: '=',
+            unresponsive: '='
+          }
 
-      };
-    });
+        };
+      } );
 
 
-});
+} );

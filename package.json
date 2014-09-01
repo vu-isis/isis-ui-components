@@ -20,8 +20,11 @@
   },
   "dependencies": {
     "angular-markdown-directive": "^0.3.0",
+    "angular-moment": "^0.8.1",
     "angular-sanitize": "0.0.1",
-    "browserify-shim": "^3.7.0"
+    "browserify-shim": "^3.7.0",
+    "moment": "^2.8.2",
+    "ng-sortable": "0.0.3"
   },
   "browserify": {
     "transform": [

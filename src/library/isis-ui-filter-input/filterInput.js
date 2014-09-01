@@ -1,6 +1,6 @@
 /*globals define, angular, alert, console*/
 
-define([
+define( [
   'angular',
   'text!./templates/filterInput.html',
   'css!./styles/filterInput.css',
@@ -9,7 +9,7 @@ define([
 
   'filters/filters'
 
-], function (ng, template) {
+], function ( ng, template ) {
 
   "use strict";
 
@@ -18,23 +18,24 @@ define([
       'ngTagsInput',
       'isis.filters'
     ]
-  ).directive(
-    'filterInput',
-    function () {
+  )
+    .directive(
+      'filterInput',
+      function () {
 
-      return {
-        scope: {
-          config: '=',
-          data: '='
-        },
-        restrict: 'E',
-        replace: true,
-        template: template,
-        controller: function ($scope, $filter) {
+        return {
+          scope: {
+            config: '=',
+            data: '='
+          },
+          restrict: 'E',
+          replace: true,
+          template: template,
+          controller: function ( $scope, $filter ) {
 
-        }
+          }
 
-      };
-    });
+        };
+      } );
 
-});
+} );

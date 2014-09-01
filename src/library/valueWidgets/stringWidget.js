@@ -1,34 +1,35 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
   'text!./templates/stringWidget.html',
   'css!./styles/stringWidget.css'
 
-], function (ng, template) {
+], function ( ng, template ) {
 
   'use strict';
 
   angular.module(
     'isis.ui.stringWidget', []
 
-  ).directive(
-    'stringWidget',
-    function () {
+  )
+    .directive(
+      'stringWidget',
+      function () {
 
-      return {
-        restrict: 'E',
-        replace: true,
-        template: template,
-        scope: {
-          config: '=',
-          value: '=',
-          unresponsive: '='
-        }
+        return {
+          restrict: 'E',
+          replace: true,
+          template: template,
+          scope: {
+            config: '=',
+            value: '=',
+            unresponsive: '='
+          }
 
-      };
-    });
+        };
+      } );
 
 
-});
+} );

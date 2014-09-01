@@ -1,19 +1,14 @@
-/*globals define, angular, alert, console*/
+/*globals angular*/
+'use strict';
 
-define([
-  'text!./templates/itemMenu.html',
+require( './itemListItem.js' );
 
-  'angular'
-], function (template) {
-
-  "use strict";
-
-  angular.module(
-    'isis.ui.itemList.item.menu', [
-      'isis.ui.itemList.item',
-      'ui.sortable'
-    ]
-  ).directive(
+angular.module(
+  'isis.ui.itemList.item.menu', [
+    'isis.ui.itemList.item'
+  ]
+)
+  .directive(
 
     'itemMenu',
 
@@ -22,10 +17,8 @@ define([
       return {
         restrict: 'E',
         replace: true,
-        template: template,
         require: '^itemList'
       };
 
 
-    });
-});
+    } );

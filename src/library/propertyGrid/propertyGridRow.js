@@ -1,7 +1,7 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
   'text!./templates/propertyGridRow.html',
   'css!./styles/propertyGridRow.css',
@@ -9,7 +9,7 @@ define([
   './propertyLabel',
   './propertyValue'
 
-], function (ng, template) {
+], function ( ng, template ) {
 
   'use strict';
 
@@ -19,27 +19,28 @@ define([
       'isis.ui.propertyValue'
     ]
 
-  ).directive(
-    'propertyGridRow',
-    function () {
+  )
+    .directive(
+      'propertyGridRow',
+      function () {
 
-      return {
-        scope: {
-          label: '=',
-          values: '=',
-          config: '='
-        },
-        restrict: 'E',
-        replace: true,
-        template: template,
-        require: '?^propertyGrid',
-        link: function ($scope, element, attrs, gridCtl) {
-          if (gridCtl) {
-            $scope.unresponsive = gridCtl.isUnresponsive();
+        return {
+          scope: {
+            label: '=',
+            values: '=',
+            config: '='
+          },
+          restrict: 'E',
+          replace: true,
+          template: template,
+          require: '?^propertyGrid',
+          link: function ( $scope, element, attrs, gridCtl ) {
+            if ( gridCtl ) {
+              $scope.unresponsive = gridCtl.isUnresponsive();
+            }
           }
-        }
-      };
-    });
+        };
+      } );
 
 
-});
+} );

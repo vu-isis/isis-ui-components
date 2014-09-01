@@ -2,17 +2,18 @@
 'use strict';
 
 angular.module(
-  'isis.ui.dropdownNavigator', ['isis.ui.hierarchicalMenu']
-).directive(
-  'dropdownNavigator',
-  function () {
+  'isis.ui.dropdownNavigator', [ 'isis.ui.hierarchicalMenu' ]
+)
+  .directive(
+    'dropdownNavigator',
+    function () {
 
-    return {
-      scope: {
-        navigator: '='
-      },
-      restrict: 'E',
-      replace: true,
-      templateUrl: '/isis-ui-components/templates/dropdownNavigator.html'
-    };
-  });
+      return {
+        scope: {
+          navigator: '='
+        },
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/dropdownNavigator.html'
+      };
+    } );

@@ -1,21 +1,13 @@
-/*globals define, angular, alert*/
+/*globals angular*/
 
 
-define([
-  'angular',
-  'text!./templates/searchBox.html',
-  'css!./styles/searchBox.css'
+'use strict';
 
-], function (
-  ng,
-  template) {
+angular.module(
+  'isis.ui.searchBox', []
 
-  "use strict";
-
-  angular.module(
-    'isis.ui.searchBox', []
-
-  ).directive(
+)
+  .directive(
     'searchBox',
     function () {
 
@@ -26,10 +18,7 @@ define([
         },
         restrict: 'E',
         replace: true,
-        template: template
+        templateUrl: '/isis-ui-components/templates/searchBox.html'
 
       };
-    });
-
-
-});
+    } );

@@ -1,22 +1,16 @@
-/*globals define, angular, alert, console*/
+/*globals angular*/
+'use strict';
 
-define([
-  'text!./templates/itemListItem.html',
+require( './itemStats.js' );
+require( './itemMenu.js' );
 
-  'angular',
-  './itemStats',
-  './itemMenu'
-
-], function (template) {
-
-  "use strict";
-
-  angular.module(
-    'isis.ui.itemList.item', [
-      'isis.ui.itemList.item.stats',
-      'isis.ui.itemList.item.menu'
-    ]
-  ).directive(
+angular.module(
+  'isis.ui.itemList.item', [
+    'isis.ui.itemList.item.stats',
+    'isis.ui.itemList.item.menu'
+  ]
+)
+  .directive(
     'itemListItem',
     function () {
 
@@ -27,9 +21,7 @@ define([
         },
         restrict: 'E',
         replace: true,
-        template: template
+        templateUrl: '/isis-ui-components/templates/itemListItem.html'
       };
-    });
-
-
-});
+    }
+);

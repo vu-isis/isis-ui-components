@@ -1,14 +1,14 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
   'text!./templates/propertyValue.html',
   'css!./styles/propertyValue.css',
 
   './valueWidgets'
 
-], function (ng, defaultTemplate) {
+], function ( ng, defaultTemplate ) {
 
   'use strict';
 
@@ -17,18 +17,19 @@ define([
       'isis.ui.valueWidgets'
     ]
 
-  ).directive(
-    'propertyValue', ['$log', '$compile', '$valueWidgets',
-      function ($log, $compile) {
+  )
+    .directive(
+      'propertyValue', [ '$log', '$compile', '$valueWidgets',
+        function ( $log, $compile ) {
 
-        return {
-          restrict: 'E',
-          replace: true,
-          template: defaultTemplate,
-          scope: false
-        };
-      }
-    ]);
+          return {
+            restrict: 'E',
+            replace: true,
+            template: defaultTemplate,
+            scope: false
+          };
+        }
+      ] );
 
 
-});
+} );

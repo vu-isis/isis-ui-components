@@ -8,19 +8,20 @@ angular.module(
     'isis.ui.directives'
   ]
 
-).directive(
-  'treeNavigator', function () {
-    return {
-      scope: {
-        treeData: '=',
-        config: '=',
-        contextMenuData: '=',
-        state: '='
-      },
-      restrict: 'E',
-      replace: true,
-      templateUrl: '/isis-ui-components/templates/treeNavigator.html'
+)
+  .directive(
+    'treeNavigator', function () {
+      return {
+        scope: {
+          treeData: '=',
+          config: '=',
+          contextMenuData: '=',
+          state: '='
+        },
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/treeNavigator.html'
 
-    };
-  }
+      };
+    }
 );

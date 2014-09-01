@@ -1,34 +1,35 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
   'text!./templates/compoundWidget.html',
   'css!./styles/compoundWidget.css'
 
-], function (ng, template) {
+], function ( ng, template ) {
 
   'use strict';
 
   angular.module(
     'isis.ui.compoundWidget', []
 
-  ).directive(
-    'compoundWidget',
-    function () {
+  )
+    .directive(
+      'compoundWidget',
+      function () {
 
-      return {
-        restrict: 'E',
-        replace: true,
-        template: template,
-        scope: {
-          config: '=',
-          value: '=',
-          unresponsive: '='
-        }
+        return {
+          restrict: 'E',
+          replace: true,
+          template: template,
+          scope: {
+            config: '=',
+            value: '=',
+            unresponsive: '='
+          }
 
-      };
-    });
+        };
+      } );
 
 
-});
+} );

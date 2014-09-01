@@ -1,17 +1,10 @@
-/*globals define, angular, alert, console*/
+/*globals angular*/
+'use strict';
 
-define([
-  'angular',
-  'text!./templates/itemListNewItem.html',
-  'css!./styles/itemListNewItem.css'
-
-], function (ng, template) {
-
-  "use strict";
-
-  angular.module(
-    'isis.ui.itemList.newItem', []
-  ).directive(
+angular.module(
+  'isis.ui.itemList.newItem', []
+)
+  .directive(
     'itemListNewItem',
     function () {
 
@@ -21,13 +14,13 @@ define([
         },
         restrict: 'E',
         replace: true,
-        template: template,
+        templateUrl: '/isis-ui-components/templates/itemListNewItem.html',
         require: '^itemList',
         compile: function () {
 
           return {
 
-            pre: function ($scope, $el, attr, itemListCtl) {
+            pre: function ( $scope, $el, attr, itemListCtl ) {
               $scope.formConfig.controller = $scope.formConfig.controller || function () {
                 return itemListCtl;
               };
@@ -36,7 +29,4 @@ define([
           };
         }
       };
-    });
-
-
-});
+    } );

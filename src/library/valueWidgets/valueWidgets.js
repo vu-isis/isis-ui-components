@@ -1,7 +1,7 @@
 /*globals define, angular, alert*/
 
 
-define([
+define( [
   'angular',
 
   './stringWidget',
@@ -9,48 +9,49 @@ define([
   './checkboxWidget',
   './selectWidget'
 
-], function (ng) {
+], function ( ng ) {
 
   'use strict';
 
   var availableWidgets = {
-    'string': ['stringWidget', 'string-widget'],
-    'compound': ['compoundWidget', 'compound-widget'],
-    'checkbox': ['checkboxWidget', 'checkbox-widget'],
-    'select': ['selectWidget', 'select-widget']
+    'string': [ 'stringWidget', 'string-widget' ],
+    'compound': [ 'compoundWidget', 'compound-widget' ],
+    'checkbox': [ 'checkboxWidget', 'checkbox-widget' ],
+    'select': [ 'selectWidget', 'select-widget' ]
   },
     widgetModules = [];
 
-  angular.forEach(availableWidgets, function (value, key) {
-    this.push('isis.ui.' + value[0]);
-  }, widgetModules);
+  angular.forEach( availableWidgets, function ( value, key ) {
+    this.push( 'isis.ui.' + value[ 0 ] );
+  }, widgetModules );
 
   angular.module(
     'isis.ui.valueWidgets',
 
     widgetModules
 
-  ).factory('$valueWidgets', function () {
-    var getWidgetElementForType;
+  )
+    .factory( '$valueWidgets', function () {
+      var getWidgetElementForType;
 
-    getWidgetElementForType = function (type) {
+      getWidgetElementForType = function ( type ) {
 
-      var result = availableWidgets[type] && availableWidgets[type][1];
+        var result = availableWidgets[ type ] && availableWidgets[ type ][ 1 ];
 
-      if (!result) {
-        result = 'string-widget';
-      }
+        if ( !result ) {
+          result = 'string-widget';
+        }
 
-      return result;
+        return result;
 
-    };
+      };
 
-    return {
-      getWidgetElementForType: getWidgetElementForType
-    };
-  })
-    .directive('valueWidget', ['$log', '$compile', '$valueWidgets',
-      function ($log, $compile, $valueWidgets) {
+      return {
+        getWidgetElementForType: getWidgetElementForType
+      };
+    } )
+    .directive( 'valueWidget', [ '$log', '$compile', '$valueWidgets',
+      function ( $log, $compile, $valueWidgets ) {
 
         return {
           restrict: 'E',
@@ -61,18 +62,18 @@ define([
             unresponsive: '='
           },
 
-          compile: function ($elm, $attrs) {
+          compile: function ( $elm, $attrs ) {
             return {
-              pre: function ($scope, $elm, $attrs, controllers) {
+              pre: function ( $scope, $elm, $attrs, controllers ) {
 
-                if (!$scope.config) {
+                if ( !$scope.config ) {
                   $scope.config = {
                     mode: 'edit'
                   };
                 }
 
               },
-              post: function ($scope, $elm, $attrs) {
+              post: function ( $scope, $elm, $attrs ) {
 
                 var
                 templateStr,
@@ -80,14 +81,14 @@ define([
                   widgetType,
                   widgetElement;
 
-                if (angular.isObject($scope.value)) {
+                if ( angular.isObject( $scope.value ) ) {
 
-                  if (angular.isObject($scope.value.widget)) {
+                  if ( angular.isObject( $scope.value.widget ) ) {
                     widgetType = $scope.value.widget.type;
                   } else {
 
 
-                    if (typeof $scope.value.value === 'boolean') {
+                    if ( typeof $scope.value.value === 'boolean' ) {
                       widgetType = 'checkbox';
                     }
 
@@ -96,17 +97,17 @@ define([
                 }
 
 
-                widgetElement = $valueWidgets.getWidgetElementForType(widgetType);
+                widgetElement = $valueWidgets.getWidgetElementForType( widgetType );
 
                 templateStr = '<' + widgetElement +
                   ' value="value" config="config" unresponsive="unresponsive">' +
                   '</' + widgetElement + '>';
 
-                $log.log(templateStr);
+                $log.log( templateStr );
 
-                template = angular.element(templateStr);
+                template = angular.element( templateStr );
 
-                $elm.append($compile(template)($scope));
+                $elm.append( $compile( template )( $scope ) );
 
               }
             };
@@ -114,7 +115,7 @@ define([
         };
 
       }
-    ]);
+    ] );
 
 
-});
+} );
