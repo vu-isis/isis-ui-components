@@ -62,10 +62,8 @@ var
   jshint = require( 'gulp-jshint' ),
   browserify = require( 'gulp-browserify' ),
   concat = require( 'gulp-concat' ),
-  process = require( 'process' ),
   rename = require( 'gulp-rename' ),
   sass = require( 'gulp-sass' ),
-  path = require( 'path' ),
   runSequence = require( 'run-sequence' ),
   clean = require( 'gulp-clean' ),
   templateCache = require( 'gulp-angular-templatecache' ),
@@ -74,9 +72,13 @@ var
   server = express(),
   livereload = require( 'connect-livereload' ),
   refresh = require( 'gulp-livereload' ),
-  lrserver = require( 'tiny-lr' )();
+  lrserver = require( 'tiny-lr' )(),
+  prettify = require('gulp-prettify');
 
 // Utility tasks
+
+require( 'process' );
+require( 'path' );
 
 gulp.task( 'clean-build', function () {
   return gulp.src( buildPaths.root ).pipe( clean() );
@@ -132,23 +134,23 @@ gulp.task( 'compile-docs',
   [ 'lint-docs', 'browserify-docs', 'compile-docs-templates', 'compile-docs-styles' ],
   function () {
 
-  console.log( 'Compiling docs...' );
+    console.log( 'Compiling docs...' );
 
-  gulp.src( sourcePaths.docsSourceIndex )
-    .pipe( rename( libraryName + '-docs.html' ) )
-    .pipe( gulp.dest( buildPaths.docsRoot ) );
+    gulp.src( sourcePaths.docsSourceIndex )
+      .pipe( rename( libraryName + '-docs.html' ) )
+      .pipe( gulp.dest( buildPaths.docsRoot ) );
 
-  gulp.src( sourcePaths.docsStyles )
-    .pipe( sass( {
-      errLogToConsole: true,
-      sourceComments: 'map'
-    } ) )
-    .pipe( rename( function ( path ) {
-      path.dirname = '';
-    } ) )
-    .pipe( concat( libraryName + '-docs.css' ) )
-    .pipe( gulp.dest( buildPaths.docsRoot ) );
-} );
+    gulp.src( sourcePaths.docsStyles )
+      .pipe( sass( {
+        errLogToConsole: true,
+        sourceComments: 'map'
+      } ) )
+      .pipe( rename( function ( path ) {
+        path.dirname = '';
+      } ) )
+      .pipe( concat( libraryName + '-docs.css' ) )
+      .pipe( gulp.dest( buildPaths.docsRoot ) );
+  } );
 
 
 gulp.task( 'compile-docs-styles', function () {
@@ -250,14 +252,22 @@ gulp.task( 'compile-library',
   [ 'lint-library', 'browserify-library', 'compile-library-templates', 'compile-library-styles', 'compile-library-images'],
   function () {
     console.log( 'Compiling scripts...' );
-} );
+  } );
 
 
 gulp.task( 'compile-all', function ( cb ) {
   runSequence( 'clean-build', [
-    'compile-docs', 'compile-library'], cb );
+    'compile-docs', 'compile-library'
+  ], cb );
 } );
 
+
+// Prettifying
+gulp.task('prettify', function() {
+  gulp.src('./src/**/*.js')
+    .pipe(prettify())
+    .pipe(gulp.dest('./src')); // edit in place
+});
 
 // Server scripts
 
@@ -308,8 +318,8 @@ gulp.task( 'register-watchers', function ( cb ) {
 } );
 
 // Dev task
-gulp.task( 'dev', [ 'compile' ], function ( cb ) {
+gulp.task( 'dev', [ 'compile-all' ], function ( cb ) {
 
-  runSequence( 'compile', 'start-server', 'register-watchers', cb );
+  runSequence( 'start-server', 'register-watchers', cb );
 
 } );

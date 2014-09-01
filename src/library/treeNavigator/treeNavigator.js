@@ -1,48 +1,27 @@
-/*globals define, angular, alert*/
+/*globals angular*/
 
-/**
- * @author lattmann / https://github.com/lattmann
- * @author nabana / https://github.com/nabana
- */
+'use strict';
 
-define([
-    'angular',
-    'text!./templates/treeNavigator.html',
-    'css!./styles/treeNavigator.css',
+angular.module(
+  'isis.ui.treeNavigator',
+  [
+    'isis.ui.contextMenu',
+    'isis.ui.directives'
+  ]
 
-    '././contextmenu',
-    './../directives'
+).directive(
+  'treeNavigator',function () {
+    return {
+        scope: {
+          treeData: '=',
+          config: '=',
+          contextMenuData: '=',
+          state: '='
+        },
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/treeNavigator.html'
 
-], function(
-    ng,
-    template ){
-
-    "use strict";
-
-    angular.module(
-        'isis.ui.treeNavigator',
-        [
-            'isis.ui.contextMenu',
-            'isis.ui.directives'
-        ]
-
-    ).directive(
-        'treeNavigator',
-         function () {
-
-             return {
-                 scope: {
-                     treeData: '=',
-                     config: '=',
-                     contextMenuData: '=',
-                     state: '='
-                 },
-                 restrict: 'E',
-                 replace: true,
-                 template: template
-
-             };
-    });
-
-
-});
+      };
+  }
+);

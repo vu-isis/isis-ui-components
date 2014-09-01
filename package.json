@@ -8,6 +8,7 @@
     "gulp-browserify": "^0.5.0",
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.3.4",
+    "gulp-js-prettify": "^0.1.0",
     "gulp-jshint": "^1.8.4",
     "gulp-livereload": "^2.1.1",
     "gulp-rename": "^1.2.0",
