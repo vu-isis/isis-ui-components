@@ -1,41 +1,28 @@
-/*globals define, angular, alert, console*/
+/*globals angular*/
 
-define( [
-  'angular',
-  'text!./templates/filterInput.html',
-  'css!./styles/filterInput.css',
+'use strict';
 
-  'ng-tags-input',
+angular.module(
+  'isis.ui.filterInput', [
+    'ngTagsInput',
+    'isis.filters'
+  ]
+)
+  .directive(
+    'filterInput',
+    function () {
 
-  'filters/filters'
+      return {
+        scope: {
+          config: '=',
+          data: '='
+        },
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/filterInput.html',
+        controller: function () {
 
-], function ( ng, template ) {
+        }
 
-  "use strict";
-
-  angular.module(
-    'isis.ui.filterInput', [
-      'ngTagsInput',
-      'isis.filters'
-    ]
-  )
-    .directive(
-      'filterInput',
-      function () {
-
-        return {
-          scope: {
-            config: '=',
-            data: '='
-          },
-          restrict: 'E',
-          replace: true,
-          template: template,
-          controller: function ( $scope, $filter ) {
-
-          }
-
-        };
-      } );
-
-} );
+      };
+    } );

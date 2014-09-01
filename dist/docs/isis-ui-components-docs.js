@@ -1461,10 +1461,10 @@ var components = [
 
 ];
 
-require('../library/simpleDialog/docs/demo.js');
-require('../library/hierarchicalMenu/docs/demo.js');
-require('../library/contextmenu/docs/demo.js');
-require('../library/dropdownNavigator/docs/demo.js');
+require( '../library/simpleDialog/docs/demo.js' );
+require( '../library/hierarchicalMenu/docs/demo.js' );
+require( '../library/contextmenu/docs/demo.js' );
+require( '../library/dropdownNavigator/docs/demo.js' );
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
@@ -1472,16 +1472,17 @@ require( 'angular-markdown-directive' );
 
 
 var demoApp = angular.module(
-  'isis.ui.demoApp',
-  [
+  'isis.ui.demoApp', [
     'isis.ui.demoApp.templates',
     'btford.markdown'
-  ].concat(components.map( function( e ) { return 'isis.ui.' + e + '.demo';} ))
+  ].concat( components.map( function ( e ) {
+    return 'isis.ui.' + e + '.demo';
+  } ) )
 );
 
-demoApp.run(function() {
-  console.log('DemoApp run...');
-});
+demoApp.run( function () {
+  console.log( 'DemoApp run...' );
+} );
 
 demoApp.controller(
   'UIComponentsDemoController',
@@ -1496,7 +1497,6 @@ demoApp.controller(
     } );
 
   } );
-
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/docs_app.js","/")
 },{"../library/contextmenu/docs/demo.js":8,"../library/dropdownNavigator/docs/demo.js":9,"../library/hierarchicalMenu/docs/demo.js":10,"../library/simpleDialog/docs/demo.js":11,"angular-markdown-directive":1,"angular-sanitize":2,"buffer":3,"rH1JPG":6,"showdown":12}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -1504,89 +1504,69 @@ demoApp.controller(
 
 'use strict';
 
-var demoApp = angular.module('isis.ui.contextmenu.demo', ['isis.ui.contextmenu']);
+var demoApp = angular.module( 'isis.ui.contextmenu.demo', [ 'isis.ui.contextmenu' ] );
 
-demoApp.controller('ContextmenuDemoController', function ($scope, contextmenuService) {
+demoApp.controller( 'ContextmenuDemoController', function ( $scope, contextmenuService ) {
 
-  var menuData = [
-    {
-      id: 'top',
-      items: [
-        {
-          id: 'newProject',
-          label: 'New project ...',
-          iconClass: 'glyphicon glyphicon-plus',
-          action: function () {
-            console.log('New project clicked');
-          },
-          actionData: {}
-        },
-        {
-          id: 'importProject',
-          label: 'Import project ...',
-          iconClass: 'glyphicon glyphicon-import',
-          action: function () {
-            console.log('Import project clicked');
-          },
-          actionData: {}
-        }
-      ]
-    },
-    {
-      id: 'projects',
-      label: 'Recent projects',
-      totalItems: 20,
-      items: [],
-      showAllItems: function () {
-        console.log('Recent projects clicked');
-      }
-    },
-    {
-      id: 'preferences',
-      label: 'preferences',
-      items: [
-        {
-          id: 'showPreferences',
-          label: 'Show preferences',
-          action: function () {
-            console.log('Show preferences');
-          },
-          menu: [
-            {
-              items: [
-                {
-                  id: 'preferences 1',
-                  label: 'Preferences 1'
-                },
-                {
-                  id: 'preferences 2',
-                  label: 'Preferences 2'
-                },
-                {
-                  id: 'preferences 3',
-                  label: 'Preferences 3',
-                  menu: [
-                    {
-                      items: [
-                        {
-                          id: 'sub_preferences 1',
-                          label: 'Sub preferences 1'
-                        },
-                        {
-                          id: 'sub_preferences 2',
-                          label: 'Sub preferences 2'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+  var menuData = [ {
+    id: 'top',
+    items: [ {
+      id: 'newProject',
+      label: 'New project ...',
+      iconClass: 'glyphicon glyphicon-plus',
+      action: function () {
+        console.log( 'New project clicked' );
+      },
+      actionData: {}
+    }, {
+      id: 'importProject',
+      label: 'Import project ...',
+      iconClass: 'glyphicon glyphicon-import',
+      action: function () {
+        console.log( 'Import project clicked' );
+      },
+      actionData: {}
+    } ]
+  }, {
+    id: 'projects',
+    label: 'Recent projects',
+    totalItems: 20,
+    items: [],
+    showAllItems: function () {
+      console.log( 'Recent projects clicked' );
     }
-  ];
+  }, {
+    id: 'preferences',
+    label: 'preferences',
+    items: [ {
+      id: 'showPreferences',
+      label: 'Show preferences',
+      action: function () {
+        console.log( 'Show preferences' );
+      },
+      menu: [ {
+        items: [ {
+          id: 'preferences 1',
+          label: 'Preferences 1'
+        }, {
+          id: 'preferences 2',
+          label: 'Preferences 2'
+        }, {
+          id: 'preferences 3',
+          label: 'Preferences 3',
+          menu: [ {
+            items: [ {
+              id: 'sub_preferences 1',
+              label: 'Sub preferences 1'
+            }, {
+              id: 'sub_preferences 2',
+              label: 'Sub preferences 2'
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  } ];
 
   $scope.menuConfig1 = {
     triggerEvent: 'click',
@@ -1605,30 +1585,28 @@ demoApp.controller('ContextmenuDemoController', function ($scope, contextmenuSer
   $scope.customData = {
 
     closeClick: function () {
-      console.log('closing this manuyally');
+      console.log( 'closing this manuyally' );
       contextmenuService.close();
     }
   };
 
-});
-
-
+} );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/contextmenu/docs/demo.js","/../library/contextmenu/docs")
 },{"buffer":3,"rH1JPG":6}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals console, angular*/
 'use strict';
 
-var demoApp = angular.module('isis.ui.dropdownNavigator.demo', ['isis.ui.dropdownNavigator']);
+var demoApp = angular.module( 'isis.ui.dropdownNavigator.demo', [ 'isis.ui.dropdownNavigator' ] );
 
-demoApp.controller('DropdownDemoController', function ($scope) {
+demoApp.controller( 'DropdownDemoController', function ( $scope ) {
   var firstMenu,
     secondMenu;
 
   firstMenu = {
     id: 'root',
     label: 'GME',
-//            isSelected: true,
+    //            isSelected: true,
     itemClass: 'gme-root',
     menu: []
   };
@@ -1639,85 +1617,65 @@ demoApp.controller('DropdownDemoController', function ($scope) {
     menu: []
   };
 
-  firstMenu.menu = [
-    {
-      id: 'top',
-      items: [
-        {
-          id: 'newProject',
-          label: 'New project ...',
-          iconClass: 'glyphicon glyphicon-plus',
-          action: function () {
-            console.log('New project clicked');
-          },
-          actionData: {}
-        },
-        {
-          id: 'importProject',
-          label: 'Import project ...',
-          iconClass: 'glyphicon glyphicon-import',
-          action: function () {
-            console.log('Import project clicked');
-          },
-          actionData: {}
-        }
-      ]
-    },
-    {
-      id: 'projects',
-      label: 'Recent projects',
-      totalItems: 20,
-      items: [],
-      showAllItems: function () {
-        console.log('Recent projects clicked');
-      }
-    },
-    {
-      id: 'preferences',
-      label: 'preferences',
-      items: [
-        {
-          id: 'showPreferences',
-          label: 'Show preferences',
-          action: function () {
-            console.log('Show preferences');
-          },
-          menu: [
-            {
-              items: [
-                {
-                  id: 'preferences 1',
-                  label: 'Preferences 1'
-                },
-                {
-                  id: 'preferences 2',
-                  label: 'Preferences 2'
-                },
-                {
-                  id: 'preferences 3',
-                  label: 'Preferences 3',
-                  menu: [
-                    {
-                      items: [
-                        {
-                          id: 'sub_preferences 1',
-                          label: 'Sub preferences 1'
-                        },
-                        {
-                          id: 'sub_preferences 2',
-                          label: 'Sub preferences 2'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+  firstMenu.menu = [ {
+    id: 'top',
+    items: [ {
+      id: 'newProject',
+      label: 'New project ...',
+      iconClass: 'glyphicon glyphicon-plus',
+      action: function () {
+        console.log( 'New project clicked' );
+      },
+      actionData: {}
+    }, {
+      id: 'importProject',
+      label: 'Import project ...',
+      iconClass: 'glyphicon glyphicon-import',
+      action: function () {
+        console.log( 'Import project clicked' );
+      },
+      actionData: {}
+    } ]
+  }, {
+    id: 'projects',
+    label: 'Recent projects',
+    totalItems: 20,
+    items: [],
+    showAllItems: function () {
+      console.log( 'Recent projects clicked' );
     }
-  ];
+  }, {
+    id: 'preferences',
+    label: 'preferences',
+    items: [ {
+      id: 'showPreferences',
+      label: 'Show preferences',
+      action: function () {
+        console.log( 'Show preferences' );
+      },
+      menu: [ {
+        items: [ {
+          id: 'preferences 1',
+          label: 'Preferences 1'
+        }, {
+          id: 'preferences 2',
+          label: 'Preferences 2'
+        }, {
+          id: 'preferences 3',
+          label: 'Preferences 3',
+          menu: [ {
+            items: [ {
+              id: 'sub_preferences 1',
+              label: 'Sub preferences 1'
+            }, {
+              id: 'sub_preferences 2',
+              label: 'Sub preferences 2'
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  } ];
 
 
   secondMenu = {
@@ -1726,53 +1684,40 @@ demoApp.controller('DropdownDemoController', function ($scope) {
     menu: []
   };
 
-  secondMenu.menu = [
-    {
-      id: 'secondMenuMenu',
-      items: [
+  secondMenu.menu = [ {
+    id: 'secondMenuMenu',
+    items: [
 
-        {
-          id: 'showPreferences',
-          label: 'Show preferences',
-          action: function () {
-            console.log('Show preferences');
-          },
-          menu: [
-            {
-              items: [
-                {
-                  id: 'preferences 1',
-                  label: 'Preferences 1'
-                },
-                {
-                  id: 'preferences 2',
-                  label: 'Preferences 2'
-                },
-                {
-                  id: 'preferences 3',
-                  label: 'Preferences 3',
-                  menu: [
-                    {
-                      items: [
-                        {
-                          id: 'sub_preferences 1',
-                          label: 'Sub preferences 1'
-                        },
-                        {
-                          id: 'sub_preferences 2',
-                          label: 'Sub preferences 2'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ];
+      {
+        id: 'showPreferences',
+        label: 'Show preferences',
+        action: function () {
+          console.log( 'Show preferences' );
+        },
+        menu: [ {
+          items: [ {
+            id: 'preferences 1',
+            label: 'Preferences 1'
+          }, {
+            id: 'preferences 2',
+            label: 'Preferences 2'
+          }, {
+            id: 'preferences 3',
+            label: 'Preferences 3',
+            menu: [ {
+              items: [ {
+                id: 'sub_preferences 1',
+                label: 'Sub preferences 1'
+              }, {
+                id: 'sub_preferences 2',
+                label: 'Sub preferences 2'
+              } ]
+            } ]
+          } ]
+        } ]
+      }
+    ]
+  } ];
 
   $scope.navigator = {
     items: [
@@ -1783,103 +1728,84 @@ demoApp.controller('DropdownDemoController', function ($scope) {
   };
 
 
-});
-
+} );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/dropdownNavigator/docs/demo.js","/../library/dropdownNavigator/docs")
 },{"buffer":3,"rH1JPG":6}],10:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals console, angular*/
 'use strict';
 
-var demoApp = angular.module('isis.ui.hierarchicalMenu.demo', ['ui.bootstrap', 'isis.ui.hierarchicalMenu']);
+var demoApp = angular.module( 'isis.ui.hierarchicalMenu.demo', [ 'ui.bootstrap',
+  'isis.ui.hierarchicalMenu'
+] );
 
-demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
+demoApp.controller( 'HierarchicalMenuDemoController', function ( $scope ) {
 
   var menu;
 
-  menu = [
-    {
-      id: 'top',
-      items: [
-        {
-          id: 'newProject',
-          label: 'New project ...',
-          iconClass: 'glyphicon glyphicon-plus',
-          action: function () {
-            console.log('New project clicked');
-          },
-          actionData: {}
-        },
-        {
-          id: 'importProject',
-          label: 'Import project ...',
-          iconClass: 'glyphicon glyphicon-import',
-          action: function () {
-            console.log('Import project clicked');
-          },
-          actionData: {}
-        }
-      ]
-    },
-    {
-      id: 'projects',
-      label: 'Recent projects',
-      totalItems: 20,
-      items: [],
-      showAllItems: function () {
-        console.log('Recent projects clicked');
-      }
-    },
-    {
-      id: 'preferences',
-      label: 'preferences',
-      items: [
-        {
-          id: 'showPreferences',
-          label: 'Show preferences',
-          action: function () {
-            console.log('Show preferences');
-          },
-          menu: [
-            {
-              items: [
-                {
-                  id: 'preferences 1',
-                  label: 'Preferences 1'
-                },
-                {
-                  id: 'preferences 2',
-                  label: 'Preferences 2'
-                },
-                {
-                  id: 'preferences 3',
-                  label: 'Preferences 3',
-                  menu: [
-                    {
-                      items: [
-                        {
-                          id: 'sub_preferences 1',
-                          label: 'Sub preferences 1'
-                        },
-                        {
-                          id: 'sub_preferences 2',
-                          label: 'Sub preferences 2'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+  menu = [ {
+    id: 'top',
+    items: [ {
+      id: 'newProject',
+      label: 'New project ...',
+      iconClass: 'glyphicon glyphicon-plus',
+      action: function () {
+        console.log( 'New project clicked' );
+      },
+      actionData: {}
+    }, {
+      id: 'importProject',
+      label: 'Import project ...',
+      iconClass: 'glyphicon glyphicon-import',
+      action: function () {
+        console.log( 'Import project clicked' );
+      },
+      actionData: {}
+    } ]
+  }, {
+    id: 'projects',
+    label: 'Recent projects',
+    totalItems: 20,
+    items: [],
+    showAllItems: function () {
+      console.log( 'Recent projects clicked' );
     }
-  ];
+  }, {
+    id: 'preferences',
+    label: 'preferences',
+    items: [ {
+      id: 'showPreferences',
+      label: 'Show preferences',
+      action: function () {
+        console.log( 'Show preferences' );
+      },
+      menu: [ {
+        items: [ {
+          id: 'preferences 1',
+          label: 'Preferences 1'
+        }, {
+          id: 'preferences 2',
+          label: 'Preferences 2'
+        }, {
+          id: 'preferences 3',
+          label: 'Preferences 3',
+          menu: [ {
+            items: [ {
+              id: 'sub_preferences 1',
+              label: 'Sub preferences 1'
+            }, {
+              id: 'sub_preferences 2',
+              label: 'Sub preferences 2'
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  } ];
 
   $scope.menu = menu;
 
-});
+} );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/hierarchicalMenu/docs/demo.js","/../library/hierarchicalMenu/docs")
 },{"buffer":3,"rH1JPG":6}],11:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -1888,7 +1814,7 @@ demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
 'use strict';
 
 var isValid,
-  demoApp = angular.module( 'isis.ui.simpleDialog.demo', ['isis.ui.simpleDialog'] ),
+  demoApp = angular.module( 'isis.ui.simpleDialog.demo', [ 'isis.ui.simpleDialog' ] ),
 
   parameter = {
     value: 10,
@@ -1899,7 +1825,7 @@ demoApp.controller( 'ConfirmDialogDemoController', function ( $scope, $simpleDia
 
   isValid = function () {
 
-    var result = (Number( parameter.value ) === 4);
+    var result = ( Number( parameter.value ) === 4 );
 
     console.log( 'Validator was called' );
     console.log( 'Sum is: ' + parameter.value, result );
