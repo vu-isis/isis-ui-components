@@ -1,21 +1,19 @@
 /*globals define, angular, alert*/
 
 
-define( [
+define([
   'angular',
   'text!./templates/compoundWidget.html',
   'css!./styles/compoundWidget.css'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   'use strict';
 
   angular.module(
-      'isis.ui.compoundWidget',
-      [
-      ]
+    'isis.ui.compoundWidget', []
 
-    ).directive(
+  ).directive(
     'compoundWidget',
     function () {
 
@@ -30,7 +28,7 @@ define( [
         }
 
       };
-    } );
+    });
 
 
-} );
+});

@@ -2,23 +2,23 @@
 'use strict';
 
 angular.module(
-  'isis.ui.simpleDialog',
-  [
+  'isis.ui.simpleDialog', [
     'ui.bootstrap',
     'isis.ui.components'
   ]
 ).provider('$simpleDialog', function () {
 
-    var $simpleDialogProvider = {
-      options: {},
-      $get: ['$modal',
+  var $simpleDialogProvider = {
+    options: {},
+    $get: ['$modal',
 
       function ($modal) {
 
         var $simpleDialog = {},
           ConfirmDialogController;
 
-        ConfirmDialogController = function ($scope, $modalInstance, dialogTitle, dialogContentTemplate, onOk, onCancel, validator) {
+        ConfirmDialogController = function ($scope, $modalInstance, dialogTitle,
+          dialogContentTemplate, onOk, onCancel, validator) {
 
           $scope.dialogTitle = dialogTitle;
           $scope.dialogContentTemplate = dialogContentTemplate;
@@ -78,9 +78,9 @@ angular.module(
 
         return $simpleDialog;
 
-      }]
-    };
+      }
+    ]
+  };
 
-    return $simpleDialogProvider;
-  }
-);
+  return $simpleDialogProvider;
+});

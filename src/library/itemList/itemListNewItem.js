@@ -1,18 +1,17 @@
 /*globals define, angular, alert, console*/
 
-define( [
+define([
   'angular',
   'text!./templates/itemListNewItem.html',
   'css!./styles/itemListNewItem.css'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   "use strict";
 
   angular.module(
-      'isis.ui.itemList.newItem',
-      [ ]
-    ).directive(
+    'isis.ui.itemList.newItem', []
+  ).directive(
     'itemListNewItem',
     function () {
 
@@ -24,18 +23,20 @@ define( [
         replace: true,
         template: template,
         require: '^itemList',
-        compile: function ( ) {
+        compile: function () {
 
           return {
 
-            pre: function ( $scope, $el, attr, itemListCtl ) {
-              $scope.formConfig.controller = $scope.formConfig.controller || function() { return itemListCtl; };
+            pre: function ($scope, $el, attr, itemListCtl) {
+              $scope.formConfig.controller = $scope.formConfig.controller || function () {
+                return itemListCtl;
+              };
             }
 
           };
         }
       };
-    } );
+    });
 
 
-} );
+});

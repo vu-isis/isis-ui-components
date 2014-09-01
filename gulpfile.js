@@ -73,7 +73,7 @@ var
   livereload = require( 'connect-livereload' ),
   refresh = require( 'gulp-livereload' ),
   lrserver = require( 'tiny-lr' )(),
-  prettify = require('gulp-prettify');
+  prettify = require( 'gulp-js-prettify' );
 
 // Utility tasks
 
@@ -130,7 +130,7 @@ gulp.task( 'compile-docs-templates', function () {
 } );
 
 
-gulp.task( 'compile-docs',
+gulp.task( 'prettify', 'compile-docs',
   [ 'lint-docs', 'browserify-docs', 'compile-docs-templates', 'compile-docs-styles' ],
   function () {
 
@@ -249,7 +249,7 @@ gulp.task( 'compile-library-images', function () {
 
 
 gulp.task( 'compile-library',
-  [ 'lint-library', 'browserify-library', 'compile-library-templates', 'compile-library-styles', 'compile-library-images'],
+  [ 'prettify', 'lint-library', 'browserify-library', 'compile-library-templates', 'compile-library-styles', 'compile-library-images'],
   function () {
     console.log( 'Compiling scripts...' );
   } );
@@ -263,11 +263,27 @@ gulp.task( 'compile-all', function ( cb ) {
 
 
 // Prettifying
-gulp.task('prettify', function() {
-  gulp.src('./src/**/*.js')
-    .pipe(prettify())
-    .pipe(gulp.dest('./src')); // edit in place
-});
+gulp.task( 'prettify', function () {
+  gulp.src( './src/**/*.js' )
+    .pipe( prettify({
+    'indent_size': 2,
+    'indent_char': ' ',
+    'indent_level': 0,
+    'indent_with_tabs': false,
+    'preserve_newlines': true,
+    'max_preserve_newlines': 10,
+    'jslint_happy': true,
+    'brace_style': 'collapse',
+    'keep_array_indentation': false,
+    'keep_function_indentation': false,
+    'space_before_conditional': true,
+    'break_chained_methods': false,
+    'eval_code': false,
+    'unescape_strings': false,
+    'wrap_line_length': 100
+  }))
+    .pipe( gulp.dest( './src' ) ); // edit in place
+} );
 
 // Server scripts
 

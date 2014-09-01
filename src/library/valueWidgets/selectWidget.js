@@ -1,21 +1,19 @@
 /*globals define, angular, alert*/
 
 
-define( [
+define([
   'angular',
   'text!./templates/selectWidget.html',
   'css!./styles/selectWidget.css'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   'use strict';
 
   angular.module(
-      'isis.ui.selectWidget',
-      [
-      ]
+    'isis.ui.selectWidget', []
 
-    ).directive(
+  ).directive(
     'selectWidget',
     function () {
 
@@ -30,7 +28,7 @@ define( [
         }
 
       };
-    } );
+    });
 
 
-} );
+});

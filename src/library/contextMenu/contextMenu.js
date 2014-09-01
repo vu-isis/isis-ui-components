@@ -2,15 +2,14 @@
 'use strict';
 
 angular.module(
-    'isis.ui.contextmenu',
-    [ 'isis.ui.hierarchicalMenu' ]
-  )
+  'isis.ui.contextmenu', ['isis.ui.hierarchicalMenu']
+)
   .factory(
     'contextmenuService', ['$document', '$compile', '$window', '$templateCache',
       function ($document, $compile, $window, $templateCache) {
 
         var
-          service = {},
+        service = {},
           setPosition,
           body = $document.find('body').eq(0),
           doc = $document[0].documentElement,
@@ -48,7 +47,7 @@ angular.module(
         handleClickEvent = function (event) {
 
           if (opened &&
-            ( autoCloseOnClick || ( service.menuElement && !$.contains(service.menuElement[0], event.target) )) &&
+            (autoCloseOnClick || (service.menuElement && !$.contains(service.menuElement[0], event.target))) &&
             (event.button !== 2 || event.target !== service.element)) {
 
             service.close();
@@ -105,8 +104,8 @@ angular.module(
 
         setPosition = function (position, menuElement) {
 
-          var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
-            docTop = ( window.pageYOffset || doc.scrollTop ) - ( doc.clientTop || 0 ),
+          var docLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0),
+            docTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0),
 
             elementHeight = menuElement[0].scrollHeight,
             elementWidth = menuElement[0].scrollWidth,
@@ -147,10 +146,12 @@ angular.module(
 
         };
 
-        service.open = function (triggerElement, contentTemplateUrl, aScope, position, doNotAutocloseOnClick) {
+        service.open = function (triggerElement, contentTemplateUrl, aScope, position,
+          doNotAutocloseOnClick) {
 
           var
-            shellAngularElement = angular.element($templateCache.get('/isis-ui-components/templates/contextmenu.html')),
+          shellAngularElement = angular.element($templateCache.get(
+            '/isis-ui-components/templates/contextmenu.html')),
             menuDOMElement;
 
           autoCloseOnClick = doNotAutocloseOnClick === false;
@@ -207,104 +208,111 @@ angular.module(
 
         return service;
 
-      }])
+      }
+    ])
   .directive(
     'isisContextmenu',
 
-    ['$document', 'contextmenuService', '$window', '$rootScope', function ($document, contextmenuService) {
+    ['$document', 'contextmenuService', '$window', '$rootScope',
+      function ($document, contextmenuService) {
 
-      return {
-        restrict: 'A',
-        scope: {
-          contextmenuConfig: '=',
-          contextmenuData: '=',
-          callback: '&contextmenu',
-          disabled: '&contextmenuDisabled'
-        },
+        return {
+          restrict: 'A',
+          scope: {
+            contextmenuConfig: '=',
+            contextmenuData: '=',
+            callback: '&contextmenu',
+            disabled: '&contextmenuDisabled'
+          },
 
-        link: function ($scope, element) {
+          link: function ($scope, element) {
 
-          var open,
-            handleContextmenuEvent,
-            options = {
-              triggerEvent: 'contextmenu',
-              contentTemplateUrl: '/isis-ui-components/templates/contextmenu.DefaultContents.html'
-            };
+            var open,
+              handleContextmenuEvent,
+              options = {
+                triggerEvent: 'contextmenu',
+                contentTemplateUrl: '/isis-ui-components/templates/contextmenu.DefaultContents.html'
+              };
 
-          if (!angular.isFunction($scope.disabled)) {
-            $scope.disabled = function() { return false; };
-          }
-
-          if (angular.isObject($scope.contextmenuConfig)) {
-            angular.extend(options, $scope.contextmenuConfig);
-          }
-
-          open = function (event) {
-
-            var position, bounds;
-
-            position = {
-              pageX: event.pageX,
-              pageY: event.pageY
-            };
-
-            if ($scope.contextmenuConfig && $scope.contextmenuConfig.position) {
-
-              bounds = element[0].getBoundingClientRect();
-
-              if ($scope.contextmenuConfig.position === 'left bottom') {
-
-                position.pageX = bounds.left + window.pageXOffset;
-                position.pageY = bounds.bottom + window.pageYOffset;
-
-              } else if ($scope.contextmenuConfig.position === 'right bottom') {
-
-                position.pageX = bounds.right + window.pageXOffset;
-                position.pageY = bounds.bottom + window.pageYOffset;
-
-              }
+            if (!angular.isFunction($scope.disabled)) {
+              $scope.disabled = function () {
+                return false;
+              };
             }
 
-            if (!$scope.disabled()) {
-              contextmenuService.open(
-                element, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
-              );
-
+            if (angular.isObject($scope.contextmenuConfig)) {
+              angular.extend(options, $scope.contextmenuConfig);
             }
-          };
 
-          handleContextmenuEvent = function (event) {
-            if (!$scope.disabled()) {
+            open = function (event) {
 
-              contextmenuService.element = event.target;
+              var position, bounds;
 
-              event.preventDefault();
-              event.stopPropagation();
+              position = {
+                pageX: event.pageX,
+                pageY: event.pageY
+              };
 
-              $scope.$apply(
-                function () {
+              if ($scope.contextmenuConfig && $scope.contextmenuConfig.position) {
 
-                  $scope.callback({ $event: event });
+                bounds = element[0].getBoundingClientRect();
 
-                  open(event);
+                if ($scope.contextmenuConfig.position === 'left bottom') {
+
+                  position.pageX = bounds.left + window.pageXOffset;
+                  position.pageY = bounds.bottom + window.pageYOffset;
+
+                } else if ($scope.contextmenuConfig.position === 'right bottom') {
+
+                  position.pageX = bounds.right + window.pageXOffset;
+                  position.pageY = bounds.bottom + window.pageYOffset;
 
                 }
-              );
-            }
-          };
+              }
 
-          element.bind(
-            options.triggerEvent, handleContextmenuEvent
-          );
+              if (!$scope.disabled()) {
+                contextmenuService.open(
+                  element, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
+                );
 
-          $scope.$on(
-            '$destroy', function () {
-              element.unbind(
-                'contextmenu', handleContextmenuEvent
-              );
-            }
-          );
-        }
+              }
+            };
 
-      };
-    }]);
+            handleContextmenuEvent = function (event) {
+              if (!$scope.disabled()) {
+
+                contextmenuService.element = event.target;
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                $scope.$apply(
+                  function () {
+
+                    $scope.callback({
+                      $event: event
+                    });
+
+                    open(event);
+
+                  }
+                );
+              }
+            };
+
+            element.bind(
+              options.triggerEvent, handleContextmenuEvent
+            );
+
+            $scope.$on(
+              '$destroy', function () {
+                element.unbind(
+                  'contextmenu', handleContextmenuEvent
+                );
+              }
+            );
+          }
+
+        };
+      }
+    ]);

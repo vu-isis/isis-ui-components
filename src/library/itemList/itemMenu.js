@@ -1,20 +1,19 @@
 /*globals define, angular, alert, console*/
 
-define( [
+define([
   'text!./templates/itemMenu.html',
 
   'angular'
-], function ( template ) {
+], function (template) {
 
   "use strict";
 
   angular.module(
-      'isis.ui.itemList.item.menu',
-      [
-        'isis.ui.itemList.item',
-        'ui.sortable'
-      ]
-    ).directive(
+    'isis.ui.itemList.item.menu', [
+      'isis.ui.itemList.item',
+      'ui.sortable'
+    ]
+  ).directive(
 
     'itemMenu',
 

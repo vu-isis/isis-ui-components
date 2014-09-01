@@ -2,35 +2,33 @@
 
 
 define([
-    'angular',
-    'text!./templates/searchBox.html',
-    'css!./styles/searchBox.css'
+  'angular',
+  'text!./templates/searchBox.html',
+  'css!./styles/searchBox.css'
 
-], function(
-    ng,
-    template ){
+], function (
+  ng,
+  template) {
 
-    "use strict";
+  "use strict";
 
-    angular.module(
-        'isis.ui.searchBox',
-        [
-        ]
+  angular.module(
+    'isis.ui.searchBox', []
 
-    ).directive(
-        'searchBox',
-         function () {
+  ).directive(
+    'searchBox',
+    function () {
 
-             return {
-                 scope: {
-                     handlers: '=',
-                     config: '='
-                 },
-                 restrict: 'E',
-                 replace: true,
-                 template: template
+      return {
+        scope: {
+          handlers: '=',
+          config: '='
+        },
+        restrict: 'E',
+        replace: true,
+        template: template
 
-             };
+      };
     });
 
 

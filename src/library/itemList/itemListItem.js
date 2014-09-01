@@ -1,23 +1,22 @@
 /*globals define, angular, alert, console*/
 
-define( [
+define([
   'text!./templates/itemListItem.html',
 
   'angular',
   './itemStats',
   './itemMenu'
 
-], function ( template ) {
+], function (template) {
 
   "use strict";
 
   angular.module(
-      'isis.ui.itemList.item',
-      [
-        'isis.ui.itemList.item.stats',
-        'isis.ui.itemList.item.menu'
-      ]
-    ).directive(
+    'isis.ui.itemList.item', [
+      'isis.ui.itemList.item.stats',
+      'isis.ui.itemList.item.menu'
+    ]
+  ).directive(
     'itemListItem',
     function () {
 
@@ -30,7 +29,7 @@ define( [
         replace: true,
         template: template
       };
-    } );
+    });
 
 
-} );
+});

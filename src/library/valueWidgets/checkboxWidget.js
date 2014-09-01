@@ -1,21 +1,19 @@
 /*globals define, angular, alert*/
 
 
-define( [
+define([
   'angular',
   'text!./templates/checkboxWidget.html',
   'css!./styles/checkboxWidget.css'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   'use strict';
 
   angular.module(
-      'isis.ui.checkboxWidget',
-      [
-      ]
+    'isis.ui.checkboxWidget', []
 
-    ).directive(
+  ).directive(
     'checkboxWidget',
     function () {
 
@@ -30,7 +28,7 @@ define( [
         }
 
       };
-    } );
+    });
 
 
-} );
+});

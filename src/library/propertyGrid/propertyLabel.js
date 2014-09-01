@@ -1,21 +1,19 @@
 /*globals define, angular, alert*/
 
 
-define( [
+define([
   'angular',
   'text!./templates/propertyLabel.html',
   'css!./styles/propertyLabel.css'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   'use strict';
 
   angular.module(
-      'isis.ui.propertyLabel',
-      [
-      ]
+    'isis.ui.propertyLabel', []
 
-    ).directive(
+  ).directive(
     'propertyLabel',
     function () {
 
@@ -27,7 +25,7 @@ define( [
         transclude: true
 
       };
-    } );
+    });
 
 
-} );
+});

@@ -1,21 +1,19 @@
 /*globals define, angular, alert*/
 
 
-define( [
+define([
   'angular',
   'text!./templates/stringWidget.html',
   'css!./styles/stringWidget.css'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   'use strict';
 
   angular.module(
-      'isis.ui.stringWidget',
-      [
-      ]
+    'isis.ui.stringWidget', []
 
-    ).directive(
+  ).directive(
     'stringWidget',
     function () {
 
@@ -30,7 +28,7 @@ define( [
         }
 
       };
-    } );
+    });
 
 
-} );
+});

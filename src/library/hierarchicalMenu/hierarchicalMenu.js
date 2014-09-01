@@ -27,7 +27,7 @@ angular.module(
 
           whichSideToDropSubs = function () {
 
-            var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
+            var docLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0),
               width = element[0].scrollWidth,
               rightBorderX = element[0].getBoundingClientRect().right,
               wouldBeRightBorderOfSub,
@@ -57,4 +57,5 @@ angular.module(
 
         }
       };
-    }]);
+    }
+  ]);

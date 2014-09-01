@@ -1,24 +1,23 @@
 /*globals define, angular, alert*/
 
 
-define( [
+define([
   'angular',
   'text!./templates/propertyGridBody.html',
   'css!./styles/propertyGridBody.css',
 
   './propertyGroup'
 
-], function ( ng, template ) {
+], function (ng, template) {
 
   'use strict';
 
   angular.module(
-      'isis.ui.propertyGridBody',
-      [
-        'isis.ui.propertyGroup'
-      ]
+    'isis.ui.propertyGridBody', [
+      'isis.ui.propertyGroup'
+    ]
 
-    ).directive(
+  ).directive(
     'propertyGridBody',
     function () {
 
@@ -32,7 +31,7 @@ define( [
         template: template
 
       };
-    } );
+    });
 
 
-} );
+});

@@ -14,13 +14,12 @@ define([
   'use strict';
 
   angular.module(
-      'isis.ui.propertyGridRow',
-      [
-        'isis.ui.propertyLabel',
-        'isis.ui.propertyValue'
-      ]
+    'isis.ui.propertyGridRow', [
+      'isis.ui.propertyLabel',
+      'isis.ui.propertyValue'
+    ]
 
-    ).directive(
+  ).directive(
     'propertyGridRow',
     function () {
 

@@ -1,6 +1,6 @@
 /*globals define, angular, alert, console*/
 
-define( [
+define([
   'text!./templates/listItemGroup.html',
 
   'angular',
@@ -9,17 +9,16 @@ define( [
   './itemListItem',
   'ng-sortable'
 
-], function ( template ) {
+], function (template) {
 
   "use strict";
 
   angular.module(
-      'isis.ui.itemList.itemGroup',
-      [
-        'isis.ui.itemList.item',
-        'ui.sortable'
-      ]
-    ).directive(
+    'isis.ui.itemList.itemGroup', [
+      'isis.ui.itemList.item',
+      'ui.sortable'
+    ]
+  ).directive(
     'listItemGroup',
     function ($compile) {
 
@@ -28,7 +27,7 @@ define( [
         restrict: 'E',
         replace: true,
         template: template,
-        link: function(scope, element, attributes, controller) {
+        link: function (scope, element, attributes, controller) {
           if (scope.listData && scope.listData.config && scope.listData.config.sortable === true) {
             element.attr('ui-sortable', 'sortableOptions');
             element.attr('ng-model', 'listData.items');
@@ -36,7 +35,7 @@ define( [
           }
         }
       };
-    } );
+    });
 
 
-} );
+});

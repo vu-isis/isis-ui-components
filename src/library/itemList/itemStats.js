@@ -1,20 +1,19 @@
 /*globals define, angular, alert, console*/
 
-define( [
+define([
   'text!./templates/itemStats.html',
 
   'angular',
   'moment',
   'angular-moment-js'
 
-], function ( template ) {
+], function (template) {
 
   "use strict";
 
   angular.module(
-      'isis.ui.itemList.item.stats',
-      [ 'angular-moment' ]
-    ).directive(
+    'isis.ui.itemList.item.stats', ['angular-moment']
+  ).directive(
     'itemStats',
     function () {
 
@@ -25,7 +24,7 @@ define( [
         template: template,
         require: '^itemList'
       };
-    } );
+    });
 
 
-} );
+});
