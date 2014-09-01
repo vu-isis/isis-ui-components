@@ -8,6 +8,10 @@ angular.module(
   ]
 
 )
+  .controller('TreeNavigatorController', function($scope) {
+
+  })
+
   .directive(
     'treeNavigator', function () {
       return {
@@ -19,7 +23,8 @@ angular.module(
         },
         restrict: 'E',
         replace: true,
-        templateUrl: '/isis-ui-components/templates/treeNavigator.html'
+        templateUrl: '/isis-ui-components/templates/treeNavigator.html',
+        controller: 'TreeNavigatorController'
 
       };
     }

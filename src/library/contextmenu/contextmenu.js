@@ -309,7 +309,7 @@ angular.module(
             $scope.$on(
               '$destroy', function () {
                 element.unbind(
-                  'contextmenu', handleContextmenuEvent
+                 options.triggerEvent, handleContextmenuEvent
                 );
               }
             );
