@@ -1809,6 +1809,7 @@ require( './simpleDialog/simpleDialog.js' );
 require( './hierarchicalMenu/hierarchicalMenu.js' );
 require( './contextmenu/contextmenu.js' );
 require( './dropdownNavigator/dropdownNavigator.js' );
+require( './treeNavigator/treeNavigator.js' );
 
 angular.module( 'isis.ui.components', [
   'isis.ui.components.templates',
@@ -1816,10 +1817,12 @@ angular.module( 'isis.ui.components', [
   'isis.ui.simpleDialog',
   'isis.ui.hierarchicalMenu',
   'isis.ui.contextmenu',
-  'isis.ui.dropdownNavigator'
+  'isis.ui.dropdownNavigator',
+  'isis.ui.treeNavigator'
+
 ] );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/isis-ui-components.js","/")
-},{"./contextmenu/contextmenu.js":5,"./dropdownNavigator/dropdownNavigator.js":6,"./hierarchicalMenu/hierarchicalMenu.js":7,"./simpleDialog/simpleDialog.js":9,"buffer":1,"rH1JPG":4}],9:[function(require,module,exports){
+},{"./contextmenu/contextmenu.js":5,"./dropdownNavigator/dropdownNavigator.js":6,"./hierarchicalMenu/hierarchicalMenu.js":7,"./simpleDialog/simpleDialog.js":9,"./treeNavigator/treeNavigator.js":10,"buffer":1,"rH1JPG":4}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*globals angular*/
 'use strict';
@@ -1910,4 +1913,33 @@ angular.module(
     return $simpleDialogProvider;
   } );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/simpleDialog/simpleDialog.js","/simpleDialog")
+},{"buffer":1,"rH1JPG":4}],10:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+/*globals angular*/
+
+'use strict';
+
+angular.module(
+  'isis.ui.treeNavigator', [
+    'isis.ui.contextmenu'
+  ]
+
+)
+  .directive(
+    'treeNavigator', function () {
+      return {
+        scope: {
+          treeData: '=',
+          config: '=',
+          contextMenuData: '=',
+          state: '='
+        },
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/treeNavigator.html'
+
+      };
+    }
+);
+}).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/treeNavigator/treeNavigator.js","/treeNavigator")
 },{"buffer":1,"rH1JPG":4}]},{},[8])

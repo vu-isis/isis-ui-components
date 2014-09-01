@@ -4,8 +4,7 @@
 
 angular.module(
   'isis.ui.treeNavigator', [
-    'isis.ui.contextMenu',
-    'isis.ui.directives'
+    'isis.ui.contextmenu'
   ]
 
 )

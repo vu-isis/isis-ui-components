@@ -4,6 +4,7 @@ require( './simpleDialog/simpleDialog.js' );
 require( './hierarchicalMenu/hierarchicalMenu.js' );
 require( './contextmenu/contextmenu.js' );
 require( './dropdownNavigator/dropdownNavigator.js' );
+require( './treeNavigator/treeNavigator.js' );
 
 angular.module( 'isis.ui.components', [
   'isis.ui.components.templates',
@@ -11,5 +12,7 @@ angular.module( 'isis.ui.components', [
   'isis.ui.simpleDialog',
   'isis.ui.hierarchicalMenu',
   'isis.ui.contextmenu',
-  'isis.ui.dropdownNavigator'
+  'isis.ui.dropdownNavigator',
+  'isis.ui.treeNavigator'
+
 ] );
