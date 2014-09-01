@@ -8,6 +8,7 @@ Use the following attributes along:
     - `position` - mouse coordinates by default but with this option you can override menu position to `'left bottom'` or `'right bottom'` of triggering element
  * `contextmenuData` - data passed to shell directive in template. By default, specify a menu structure for `hierarchical-menu`.
  * `contextmenu-disabled` - if set, will be evaluated before showing menu
+ * `contextmenu` - callback function called before menu is instantiated
 
 It also registers the `contextmenuService` for opening and closing menus manually. Exposed methods:
 
