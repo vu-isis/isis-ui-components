@@ -8,24 +8,24 @@ angular.module(
   ]
 
 )
-  .controller('TreeNavigatorController', function($scope) {
+  .controller( 'TreeNavigatorController', function ( $scope, $log ) {
+    $log.log( 'In TreeNavigatorController' );
+  } )
 
-  })
+.directive(
+  'treeNavigator', function () {
+    return {
+      scope: {
+        treeData: '=',
+        config: '=',
+        contextMenuData: '=',
+        state: '='
+      },
+      restrict: 'E',
+      replace: true,
+      templateUrl: '/isis-ui-components/templates/treeNavigator.html',
+      controller: 'TreeNavigatorController'
 
-  .directive(
-    'treeNavigator', function () {
-      return {
-        scope: {
-          treeData: '=',
-          config: '=',
-          contextMenuData: '=',
-          state: '='
-        },
-        restrict: 'E',
-        replace: true,
-        templateUrl: '/isis-ui-components/templates/treeNavigator.html',
-        controller: 'TreeNavigatorController'
-
-      };
-    }
+    };
+  }
 );

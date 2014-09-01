@@ -1703,7 +1703,7 @@ angular.module(
             $scope.$on(
               '$destroy', function () {
                 element.unbind(
-                 options.triggerEvent, handleContextmenuEvent
+                  options.triggerEvent, handleContextmenuEvent
                 );
               }
             );
@@ -1925,26 +1925,26 @@ angular.module(
   ]
 
 )
-  .controller('TreeNavigatorController', function($scope) {
+  .controller( 'TreeNavigatorController', function ( $scope, $log ) {
+    $log.log( 'In TreeNavigatorController' );
+  } )
 
-  })
+.directive(
+  'treeNavigator', function () {
+    return {
+      scope: {
+        treeData: '=',
+        config: '=',
+        contextMenuData: '=',
+        state: '='
+      },
+      restrict: 'E',
+      replace: true,
+      templateUrl: '/isis-ui-components/templates/treeNavigator.html',
+      controller: 'TreeNavigatorController'
 
-  .directive(
-    'treeNavigator', function () {
-      return {
-        scope: {
-          treeData: '=',
-          config: '=',
-          contextMenuData: '=',
-          state: '='
-        },
-        restrict: 'E',
-        replace: true,
-        templateUrl: '/isis-ui-components/templates/treeNavigator.html',
-        controller: 'TreeNavigatorController'
-
-      };
-    }
+    };
+  }
 );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/treeNavigator/treeNavigator.js","/treeNavigator")
 },{"buffer":1,"rH1JPG":4}]},{},[8])
