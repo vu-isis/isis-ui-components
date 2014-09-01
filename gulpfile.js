@@ -130,7 +130,7 @@ gulp.task( 'compile-docs-templates', function () {
 } );
 
 
-gulp.task( 'prettify', 'compile-docs',
+gulp.task( 'compile-docs',
   [ 'lint-docs', 'browserify-docs', 'compile-docs-templates', 'compile-docs-styles' ],
   function () {
 
@@ -249,7 +249,7 @@ gulp.task( 'compile-library-images', function () {
 
 
 gulp.task( 'compile-library',
-  [ 'prettify', 'lint-library', 'browserify-library', 'compile-library-templates', 'compile-library-styles', 'compile-library-images'],
+  [ 'lint-library', 'browserify-library', 'compile-library-templates', 'compile-library-styles', 'compile-library-images'],
   function () {
     console.log( 'Compiling scripts...' );
   } );
@@ -268,6 +268,7 @@ gulp.task( 'prettify', function () {
     .pipe( prettify({
     'indent_size': 2,
     'indent_char': ' ',
+    'space_in_paren': true,
     'indent_level': 0,
     'indent_with_tabs': false,
     'preserve_newlines': true,
@@ -277,7 +278,7 @@ gulp.task( 'prettify', function () {
     'keep_array_indentation': false,
     'keep_function_indentation': false,
     'space_before_conditional': true,
-    'break_chained_methods': false,
+    'break_chained_methods': true,
     'eval_code': false,
     'unescape_strings': false,
     'wrap_line_length': 100
