@@ -21,6 +21,7 @@ angular.module(
         contextMenuData: '=',
         state: '='
       },
+
       restrict: 'E',
       replace: true,
       templateUrl: '/isis-ui-components/templates/treeNavigator.html',

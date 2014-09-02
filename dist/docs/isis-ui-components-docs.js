@@ -1569,7 +1569,6 @@ demoApp.controller( 'ContextmenuDemoController', function ( $scope, contextmenuS
     } ]
   } ];
 
-
   $scope.menuConfig1 = {
     triggerEvent: 'click',
     position: 'right bottom'
@@ -2184,30 +2183,30 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
 
   };
 
-  sortChildren = function (values) {
-      var orderBy = ['label', 'id'];
+  sortChildren = function ( values ) {
+    var orderBy = ['label', 'id'];
 
-      values.sort(function (a, b) {
-        var i,
-          key,
-          result;
+    values.sort( function ( a, b ) {
+      var i,
+        key,
+        result;
 
-        for (i = 0; i < orderBy.length; i += 1) {
-          key = orderBy[i];
-          if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {
-            result = a[key].toLowerCase().localeCompare(b[key].toLowerCase());
-            if (result !== 0) {
-              return result;
-            }
+      for ( i = 0; i < orderBy.length; i += 1 ) {
+        key = orderBy[i];
+        if ( a.hasOwnProperty( key ) && b.hasOwnProperty( key ) ) {
+          result = a[key].toLowerCase().localeCompare( b[key].toLowerCase() );
+          if ( result !== 0 ) {
+            return result;
           }
         }
+      }
 
-        // a must be equal to b
-        return 0;
-      });
+      // a must be equal to b
+      return 0;
+    } );
 
-      return values;
-    };
+    return values;
+  };
 
   config = {
     scopeMenu: [
@@ -2293,9 +2292,20 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
   $scope.config = config;
   $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 0 ];
   $scope.treeData = {};
+  $scope.state = {
+    // id of activeNode
+    activeNode: null,
 
-  addNode(null, 'ROOT');
-  dummyTreeDataGenerator($scope.treeData, 'Node item ', 5, 3);
+    // ids of selected nodes
+    selectedNodes: [],
+
+    // id of active scope
+    activeScope: 'project'
+  };
+
+
+  addNode( null, 'ROOT' );
+  dummyTreeDataGenerator( $scope.treeData, 'Node item ', 5, 3 );
 
 } );
 }).call(this,require("rH1JPG"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../library/treeNavigator/docs/demo.js","/../library/treeNavigator/docs")

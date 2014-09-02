@@ -17,8 +17,7 @@ var
     docsSourceIndex: 'src/docs/ui_components_docs.html',
     docsApp: 'src/docs/docs_app.js',
     docsScripts: [
-      'src/docs/docs_app.js',
-      'src/*/docs/*.js'
+      'src/**/docs/*.js'
     ],
     docsTemplates: [
       'src/**/demo.html',
@@ -134,6 +133,22 @@ gulp.task( 'compile-docs-templates', function () {
 } );
 
 
+gulp.task( 'compile-docs-styles', function () {
+
+  console.log( 'Compiling styles...' );
+
+  gulp.src( sourcePaths.docsStyles )
+    .pipe( sass( {
+      errLogToConsole: true,
+      sourceComments: 'map'
+    } ) )
+    .pipe( rename( function ( path ) {
+      path.dirname = '';
+    } ) )
+    .pipe( concat( libraryName + '-docs.css' ) )
+    .pipe( gulp.dest( buildPaths.docsRoot ) );
+} );
+
 gulp.task( 'compile-docs',
   [ 'lint-docs', 'browserify-docs', 'compile-docs-templates', 'compile-docs-styles' ],
   function () {
@@ -144,35 +159,7 @@ gulp.task( 'compile-docs',
       .pipe( rename( libraryName + '-docs.html' ) )
       .pipe( gulp.dest( buildPaths.docsRoot ) );
 
-    gulp.src( sourcePaths.docsStyles )
-      .pipe( sass( {
-        errLogToConsole: true,
-        sourceComments: 'map'
-      } ) )
-      .pipe( rename( function ( path ) {
-        path.dirname = '';
-      } ) )
-      .pipe( concat( libraryName + '-docs.css' ) )
-      .pipe( gulp.dest( buildPaths.docsRoot ) );
   } );
-
-
-gulp.task( 'compile-docs-styles', function () {
-
-  console.log( 'Compiling styles...' );
-
-  gulp.src( sourcePaths.docsStyles )
-    // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
-    .pipe( sass( {
-      errLogToConsole: true,
-      sourceComments: 'map'
-    } ) )
-    .pipe( rename( function ( path ) {
-      path.dirname = '';
-    } ) )
-    .pipe( concat( libraryName + '.css' ) )
-    .pipe( gulp.dest( buildPaths.root ) );
-} );
 
 
 // Library tasks
@@ -269,24 +256,24 @@ gulp.task( 'compile-all', function ( cb ) {
 // Prettifying
 gulp.task( 'prettify', function () {
   gulp.src( './src/**/*.js' )
-    .pipe( prettify({
-    'indent_size': 2,
-    'indent_char': ' ',
-    'space_in_paren': true,
-    'indent_level': 0,
-    'indent_with_tabs': false,
-    'preserve_newlines': true,
-    'max_preserve_newlines': 10,
-    'jslint_happy': true,
-    'brace_style': 'collapse',
-    'keep_array_indentation': false,
-    'keep_function_indentation': false,
-    'space_before_conditional': true,
-    'break_chained_methods': true,
-    'eval_code': false,
-    'unescape_strings': false,
-    'wrap_line_length': 100
-  }))
+    .pipe( prettify( {
+      'indent_size': 2,
+      'indent_char': ' ',
+      'space_in_paren': true,
+      'indent_level': 0,
+      'indent_with_tabs': false,
+      'preserve_newlines': true,
+      'max_preserve_newlines': 10,
+      'jslint_happy': true,
+      'brace_style': 'collapse',
+      'keep_array_indentation': false,
+      'keep_function_indentation': false,
+      'space_before_conditional': true,
+      'break_chained_methods': true,
+      'eval_code': false,
+      'unescape_strings': false,
+      'wrap_line_length': 100
+    } ) )
     .pipe( gulp.dest( './src' ) ); // edit in place
 } );
 

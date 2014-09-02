@@ -66,7 +66,6 @@ demoApp.controller( 'ContextmenuDemoController', function ( $scope, contextmenuS
     } ]
   } ];
 
-
   $scope.menuConfig1 = {
     triggerEvent: 'click',
     position: 'right bottom'

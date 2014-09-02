@@ -148,6 +148,7 @@ angular.module(
 
         };
 
+
         service.open = function ( triggerElement, contentTemplateUrl, aScope, position,
           doNotAutocloseOnClick ) {
 

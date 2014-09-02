@@ -1542,6 +1542,7 @@ angular.module(
 
         };
 
+
         service.open = function ( triggerElement, contentTemplateUrl, aScope, position,
           doNotAutocloseOnClick ) {
 
@@ -1938,6 +1939,7 @@ angular.module(
         contextMenuData: '=',
         state: '='
       },
+
       restrict: 'E',
       replace: true,
       templateUrl: '/isis-ui-components/templates/treeNavigator.html',
