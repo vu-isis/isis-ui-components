@@ -2,10 +2,12 @@
 
 var
 
+  argv = require('yargs').argv,
   livereloadport = 35729,
   serverport = 5000,
 
-  debug = false,
+  debug = !argv.production,
+  debugShim = false, //this is for toggling browserify shim debug
 
   libraryName = 'isis-ui-components',
   libraryTemplatesModule = 'isis.ui.components.templates',
@@ -104,7 +106,7 @@ gulp.task( 'browserify-docs', function () {
 
   console.log( 'Browserifying docs...' );
 
-  if ( debug ) {
+  if ( debugShim ) {
     process.env.BROWSERIFYSHIM_DIAGNOSTICS = 1;
   }
 
@@ -178,7 +180,7 @@ gulp.task( 'browserify-library', function () {
 
   console.log( 'Browserifying library...' );
 
-  if ( debug ) {
+  if ( debugShim ) {
     process.env.BROWSERIFYSHIM_DIAGNOSTICS = 1;
   }
 
