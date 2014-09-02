@@ -2,7 +2,7 @@
     <header data-ng-if="config.scopeMenu || config.preferencesMenu">
         <div class="dropdown scope-selector pull-left"
              data-ng-if="config.scopeMenu">
-            <a href="#" class="item-label"
+            <a  class="item-label"
                isis-contextmenu
                contextmenu-data="config.scopeMenu"
                contextmenu-config="config.scopeMenuConfig"
@@ -10,7 +10,7 @@
         </div>
         <div class="dropdown preferences-menu pull-right"
              data-ng-if="config.preferencesMenu">
-            <a href="#" class="item-label"
+            <a  class="item-label"
                isis-contextmenu
                contextmenu-data="config.preferencesMenu"
                contextmenu-config="config.preferencesMenuConfig"
@@ -19,7 +19,7 @@
     </header>
 
     <script type="text/ng-template" id="tree-navigator-node-label-template">
-        <a href="#"
+        <a 
            class="node-expander"
            data-ng-if="treeData.childrenCount && !treeData.unCollapsible"
            data-ng-click="treeData.expanderClick($event, node)">
