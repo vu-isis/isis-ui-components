@@ -115,8 +115,8 @@ angular.module(
             windowLeftEdge = window[0].pageXOffset,
             windowTopEdge = window[0].pageYOffset,
 
-            windowRightEdge = windowWidth + window[0].pageXOffset,
-            windowBottomEdge = windowHeight + window[0].pageYOffset,
+            windowRightEdge = windowWidth + windowLeftEdge,
+            windowBottomEdge = windowHeight + windowTopEdge,
 
             top = Math.max(
               position.pageY, windowTopEdge

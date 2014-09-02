@@ -1,63 +1,81 @@
-/*globals window, angular*/
+/*globals angular*/
 'use strict';
 
 angular.module(
-  'isis.ui.hierarchicalMenu', [
+  'isis.ui.hierarchicalMenu',
+  [
     'ui.bootstrap',
     'isis.ui.components'
   ]
 )
   .directive(
-    'hierarchicalMenu', [ '$document',
-      function ( $document ) {
+    'hierarchicalMenu', ['$window', '$document', function ( $window, $document ) {
 
-        return {
-          scope: {
-            menu: '=',
-            config: '='
-          },
-          restrict: 'E',
+      var window = angular.element(
+        $window
+      );
 
-          replace: true,
-          templateUrl: '/isis-ui-components/templates/hierarchicalMenu.html',
+      return {
+        scope: {
+          menu: '=',
+          config: '='
+        },
+        restrict: 'E',
 
-          link: function ( $scope, element ) {
+        replace: true,
+        templateUrl: '/isis-ui-components/templates/hierarchicalMenu.html',
 
-            var whichSideToDropSubs,
-              doc = $document[ 0 ].documentElement;
+        link: function ( $scope, element ) {
 
-            whichSideToDropSubs = function () {
+          var whichSideToDropSubs;
 
-              var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
-                width = element[ 0 ].scrollWidth,
-                rightBorderX = element[ 0 ].getBoundingClientRect()
-                  .right,
-                wouldBeRightBorderOfSub,
-                docWidth = doc.clientWidth + docLeft;
+          whichSideToDropSubs = function () {
 
+            var elementBounds = element[ 0 ].getBoundingClientRect(),
+              windowLeftEdge = window[0].pageXOffset,
+              width = elementBounds.right - elementBounds.left,
+              rightBorderX = elementBounds.right,
+              windowWidth = window[0].innerWidth,
+              windowRightEdge = windowWidth + windowLeftEdge,
               wouldBeRightBorderOfSub = width + rightBorderX;
 
-              if ( docWidth < wouldBeRightBorderOfSub ) {
-                element.addClass( 'drop-left' );
-              } else {
-                element.removeClass( 'drop-left' );
-              }
 
-            };
+            if ( windowRightEdge < wouldBeRightBorderOfSub ) {
+              element.addClass( 'drop-left' );
+            } else {
+              element.removeClass( 'drop-left' );
+            }
 
-            whichSideToDropSubs();
+          };
 
-            $scope.$watch(
-              function () {
-                return element[ 0 ].scrollWidth;
-              },
+          $scope.$watch(
+            function () {
+              return element[ 0 ].scrollWidth;
+            },
 
-              function () {
-                whichSideToDropSubs();
-              }
+            function () {
+              whichSideToDropSubs();
+            }
+          );
+
+          $document.bind(
+            'scroll', whichSideToDropSubs
+          );
+
+          window.bind(
+            'resize', whichSideToDropSubs
+          );
+
+          $scope.$on( '$destroy', function () {
+            $document.unbind(
+              'scroll', whichSideToDropSubs
             );
 
-          }
-        };
-      }
+            window.unbind(
+              'resize', whichSideToDropSubs
+            );
+          } );
+        }
+      };
+    }
     ] );
