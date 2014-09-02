@@ -13,7 +13,6 @@ angular.module(
           setPosition,
           body = $document.find( 'body' )
             .eq( 0 ),
-          doc = $document[ 0 ].documentElement,
           widthWatcher, heightWatcher,
           menuScope,
           opened = false,
@@ -106,35 +105,43 @@ angular.module(
 
         setPosition = function ( position, menuElement ) {
 
-          var docLeft = ( window.pageXOffset || doc.scrollLeft ) - ( doc.clientLeft || 0 ),
-            docTop = ( window.pageYOffset || doc.scrollTop ) - ( doc.clientTop || 0 ),
+          var menuBounds = menuElement[ 0 ].getBoundingClientRect(),
+            menuWidth = menuBounds.right - menuBounds.left,
+            menuHeight = menuBounds.bottom -menuBounds.top,
 
-            elementHeight = menuElement[ 0 ].scrollHeight,
-            elementWidth = menuElement[ 0 ].scrollWidth,
+            windowHeight = window[0].innerHeight,
+            windowWidth = window[0].innerWidth,
 
-            docHeight = doc.clientHeight + docTop,
-            docWidth = doc.clientWidth + docLeft,
+            windowLeftEdge = window[0].pageXOffset,
+            windowTopEdge = window[0].pageYOffset,
 
-            totalHeight = elementHeight + position.pageY,
-            totalWidth = elementWidth + position.pageX,
-
-            strechOverPageWidth = totalWidth - docWidth,
-            strechOverPageHeight = totalHeight - docHeight,
+            windowRightEdge = windowWidth + window[0].pageXOffset,
+            windowBottomEdge = windowHeight + window[0].pageYOffset,
 
             top = Math.max(
-              position.pageY - docTop, 0
+              position.pageY, windowTopEdge
             ),
 
             left = Math.max(
-              position.pageX - docLeft, 0
-            );
+              position.pageX, windowLeftEdge
+            ),
 
-          if ( strechOverPageHeight > 0 ) {
-            top = top - strechOverPageHeight;
+            totalHeightNeeded = menuHeight + top,
+            totalWidthNeeded = menuWidth + left,
+
+            overLeftEdge = totalWidthNeeded - windowRightEdge,
+            overBottomEdge = totalHeightNeeded - windowBottomEdge;
+
+
+          //console.log(top, menuHeight, windowTopEdge, windowHeight);
+
+
+          if ( overBottomEdge > 0 ) {
+            top = top - overBottomEdge;
           }
 
-          if ( strechOverPageWidth > 0 ) {
-            left = left - strechOverPageWidth;
+          if ( overLeftEdge > 0 ) {
+            left = left - overLeftEdge;
           }
 
           menuElement.css(
@@ -143,6 +150,7 @@ angular.module(
           menuElement.css(
             'left', left + 'px'
           );
+
 
           // Setting property of menu to drop on left side if no room on right for sub menus
 

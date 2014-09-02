@@ -10,7 +10,6 @@ angular.module(
 )
   .controller( 'TreeNavigatorController', function ( $scope, $log ) {
     $log.log( 'In TreeNavigatorController' );
-    console.log('e2 dev');
   } )
 
 .directive(

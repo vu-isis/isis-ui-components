@@ -96,8 +96,8 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
       nodeDblclick,
       expanderClick;
 
-    $log.log( 'Adding a new node ' + id + ( parentTreeNode ? ' to ' + parentTreeNode.id :
-      ' as ROOT' ) );
+//    $log.log( 'Adding a new node ' + id + ( parentTreeNode ? ' to ' + parentTreeNode.id :
+//      ' as ROOT' ) );
 
     nodeDblclick = function ( $event, theNode ) {
 
