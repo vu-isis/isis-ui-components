@@ -17,7 +17,8 @@ angular.module(
 'treeNavigatorNodeList', function (RecursionHelper) {
   return {
     scope: {
-      nodes: '='
+      nodes: '=',
+      config: '='
     },
     require: '^treeNavigator',
     restrict: 'E',

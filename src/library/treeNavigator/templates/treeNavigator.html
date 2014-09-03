@@ -6,11 +6,14 @@
 
         <tree-navigator-node-label
              data-ng-if="config.showRootLabel"
-             node="treeData">
+             ng-init="node=treeData">
 
         </tree-navigator-node-label>
 
-        <tree-navigator-node-list nodes="treeData.children"></tree-navigator-node-list>
+        <tree-navigator-node-list
+                ng-init="nodes=treeData.children"
+                nodes="treeData.children"
+                config="config"></tree-navigator-node-list>
 
     </div>
 </nav>

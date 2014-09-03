@@ -13,9 +13,6 @@ angular.module(
 .directive(
   'treeNavigatorNodeLabel', function () {
     return {
-      scope: {
-        node: '='
-      },
       require: '^treeNavigator',
       restrict: 'E',
       replace: true,

@@ -1,7 +1,7 @@
 <li title="{{ node.label }}"
     data-ng-class="{ 'expanded': node.expanded, 'active-node': state.activeNode === node.id, 'selected-node': state.selectedNodes && ( state.selectedNodes.indexOf(node.id) > -1 )}">
 
-    <tree-navigator-node-label node="node"></tree-navigator-node-label>
+    <tree-navigator-node-label></tree-navigator-node-label>
 
-    <tree-navigator-node-list nodes="node.children"></tree-navigator-node-list>
+    <tree-navigator-node-list nodes="node.children" config="config"></tree-navigator-node-list>
 </li>
