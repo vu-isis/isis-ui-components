@@ -35,12 +35,12 @@ angular.module(
               windowLeftEdge = window[0].pageXOffset,
               width = elementBounds.right - elementBounds.left,
               rightBorderX = elementBounds.right,
+              leftBorderX = elementBounds.left,
               windowWidth = window[0].innerWidth,
               windowRightEdge = windowWidth + windowLeftEdge,
               wouldBeRightBorderOfSub = width + rightBorderX;
 
-
-            if ( windowRightEdge < wouldBeRightBorderOfSub ) {
+            if ( windowRightEdge < wouldBeRightBorderOfSub && leftBorderX > width) {
               element.addClass( 'drop-left' );
             } else {
               element.removeClass( 'drop-left' );

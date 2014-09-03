@@ -23,6 +23,7 @@ angular.module(
           handleResizeEvent,
           handleBlurEvent,
           bindEvents,
+
           autoCloseOnClick = true,
 
           window = angular.element(
@@ -37,9 +38,10 @@ angular.module(
 
         handleMouseDownEvent = function ( event ) {
 
-
           if ( opened &&
-            service.menuElement && !$.contains( service.menuElement[ 0 ], event.target ) ) {
+            service.menuElement &&
+            !$.contains( service.menuElement[ 0 ], event.target ) &&
+            event.target !== service.triggerElement ) {
             service.close();
           }
         };
@@ -49,7 +51,7 @@ angular.module(
           if ( opened &&
             ( autoCloseOnClick || ( service.menuElement && !$.contains( service.menuElement[ 0 ],
               event.target ) ) ) &&
-            ( event.button !== 2 || event.target !== service.element ) ) {
+            ( event.target !== service.triggerElement ) ) {
 
             service.close();
           }
@@ -156,66 +158,76 @@ angular.module(
 
         };
 
-
         service.open = function ( triggerElement, contentTemplateUrl, aScope, position,
           doNotAutocloseOnClick ) {
 
-          var
-          shellAngularElement = angular.element( $templateCache.get(
+          var shellAngularElement = angular.element( $templateCache.get(
             '/isis-ui-components/templates/contextmenu.html' ) ),
-            menuDOMElement;
+            menuDOMElement,
+            sameTriggerElement = (service.triggerElement === triggerElement);
 
           autoCloseOnClick = doNotAutocloseOnClick === false;
 
-          service.close();
+          if (opened) {
+            service.close();
+          }
 
-          menuScope = aScope.$new();
+          if ( !sameTriggerElement  ) {
+            
+            // do not re-open if the same triggerelement was clicked
+          
+            menuScope = aScope.$new();
+  
+            shellAngularElement.append( angular.element( $templateCache.get( contentTemplateUrl ) ) );
+            menuDOMElement = $compile( shellAngularElement )( menuScope );
+            body.append( menuDOMElement );
 
-          shellAngularElement.append( angular.element( $templateCache.get( contentTemplateUrl ) ) );
-          menuDOMElement = $compile( shellAngularElement )( menuScope );
-          body.append( menuDOMElement );
-          service.menuElement = menuDOMElement;
-          service.element = triggerElement;
+            service.menuElement = menuDOMElement;
+            service.triggerElement = triggerElement;
 
-          setPosition( position, menuDOMElement );
-
-          widthWatcher = menuScope.$watch(
-            function () {
-              return menuDOMElement[ 0 ].scrollWidth;
-            },
-
-            function () {
-              setPosition( position, menuDOMElement );
-            }
-          );
-
-          heightWatcher = menuScope.$watch(
-            function () {
-              return menuDOMElement[ 0 ].scrollHeight;
-            },
-
-            function () {
-              setPosition( position, menuDOMElement );
-            }
-          );
-
-          bindEvents();
-          opened = true;
-
+            setPosition( position, menuDOMElement );
+  
+            widthWatcher = menuScope.$watch(
+              function () {
+                return menuDOMElement[ 0 ].scrollWidth;
+              },
+  
+              function () {
+                setPosition( position, menuDOMElement );
+              }
+            );
+  
+            heightWatcher = menuScope.$watch(
+              function () {
+                return menuDOMElement[ 0 ].scrollHeight;
+              },
+  
+              function () {
+                setPosition( position, menuDOMElement );
+              }
+            );
+  
+            bindEvents();
+            opened = true;
+          }
 
         };
 
         service.close = function () {
 
           if ( angular.isObject( menuScope ) && angular.isFunction( menuScope.$destroy ) ) {
+
             service.menuElement.remove();
             menuScope.$destroy();
             menuScope = undefined;
+
             service.menuElement = null;
+            service.triggerElement = null;
+
           }
         };
 
-        service.element = null;
+        service.triggerElement = null;
 
         return service;
 
@@ -283,7 +295,7 @@ angular.module(
 
               if ( !$scope.disabled() ) {
                 contextmenuService.open(
-                  element, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
+                  event.target, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
                 );
 
               }
@@ -292,22 +304,27 @@ angular.module(
             handleContextmenuEvent = function ( event ) {
               if ( !$scope.disabled() ) {
 
-                contextmenuService.element = event.target;
+                if ( event.target !== contextmenuService.triggerElement ) {
 
-                event.preventDefault();
-                event.stopPropagation();
+                  event.preventDefault();
+                  event.stopPropagation();
 
-                $scope.$apply(
-                  function () {
+                  $scope.$apply(
+                    function () {
+                      $scope.callback( {
+                        $event: event
+                      } );
+                      open( event );
+                    }
+                  );
 
-                    $scope.callback( {
-                      $event: event
-                    } );
+                } else {
 
-                    open( event );
+                  event.preventDefault();
+                  event.stopPropagation();
 
-                  }
-                );
+                  contextmenuService.close();
+                }
               }
             };
 
