@@ -3,29 +3,30 @@
 'use strict';
 
 require( './treeNavigator.node.js' );
+require( '../helpers/angular-recursion.js' );
 
 angular.module(
-    'isis.ui.treeNavigator.nodeList',
-    [ 'isis.ui.treeNavigator.node', 'isis.ui.treeNavigator.header' ]
-  )
+'isis.ui.treeNavigator.nodeList',
+[
+  'isis.ui.treeNavigator.node',
+  'RecursionHelper'
+]
+)
 
-  .controller( 'TreeNavigatorController', function ( $scope, $log ) {
-    $log.log( 'In TreeNavigatorController' );
+.directive(
+'treeNavigatorNodeList', function (RecursionHelper) {
+  return {
+    scope: {
+      nodes: '='
+    },
+    require: '^treeNavigator',
+    restrict: 'E',
+    replace: true,
+    templateUrl: '/isis-ui-components/templates/treeNavigator.nodeList.html',
+    compile: function ( element ) {
+      return RecursionHelper.compile( element );
+    }
 
-
-  } )
-
-  .directive(
-  'treeNavigatorNodeList', function () {
-    return {
-      scope: {
-        nodes: '='
-      },
-      require: '^treeNavigator',
-      restrict: 'E',
-      replace: true,
-      templateUrl: '/isis-ui-components/templates/treeNavigator.nodeList.html'
-
-    };
-  }
+  };
+}
 );

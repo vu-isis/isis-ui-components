@@ -11,7 +11,7 @@ angular.module(
 
 )
 .directive(
-  'treeNavigatorNodeHeader', function () {
+  'treeNavigatorHeader', function () {
     return {
       scope: false,
       require: '^treeNavigator',

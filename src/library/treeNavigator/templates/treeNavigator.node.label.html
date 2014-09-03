@@ -2,9 +2,7 @@
       data-ng-class="{ 'loading': node.isLoading }"
       data-ng-click="node.nodeClick($event, node)"
       contextmenu="node.onContextMenu(node)"
-      contextmenu-data="contextMenuData"
-
-        >
+      contextmenu-data="contextMenuData">
     <a class="node-expander"
         data-ng-if="node.childrenCount && !node.unCollapsible"
         data-ng-click="node.expanderClick($event, node)">
