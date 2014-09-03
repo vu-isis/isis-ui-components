@@ -1,0 +1,31 @@
+<div class="node-label"
+      data-ng-class="{ 'loading': node.isLoading }"
+      data-ng-click="node.nodeClick($event, node)"
+      contextmenu="node.onContextMenu(node)"
+      contextmenu-data="contextMenuData"
+
+        >
+    <a class="node-expander"
+        data-ng-if="node.childrenCount && !node.unCollapsible"
+        data-ng-click="node.expanderClick($event, node)">
+        <i data-ng-if="!node.expanded" data-ng-class="node.collapsedIconClass || config.collapsedIconClass"></i>
+        <i data-ng-if="node.expanded" data-ng-class="node.expandedIconClass || config.expandedIconClass"></i>
+    </a>
+
+    <i data-ng-if="( node.childrenCount && config.folderIconClass || node.iconClass || config.nodeIconClass ) && !item.iconPullRight"
+       data-ng-class="node.childrenCount && config.folderIconClass || node.iconClass || config.nodeIconClass"></i>
+
+    <span class="label-text"
+          data-ng-dblclick="node.nodeDblclick($event, node)"
+          data-ng-if="node.label">{{ node.label }}</span>
+    <span class="noname"
+          data-ng-dblclick="node.nodeDblClick($event, node)"
+          data-ng-if="!node.label">No name</span>
+
+    <span data-ng-if="node.extraInfo"
+          class="node-extra-info">{{ node.extraInfo }}</span>
+
+    <i data-ng-if="( node.childrenCount && config.folderIconClass || node.iconClass || config.nodeIconClass ) && item.iconPullRight"
+       data-ng-class="node.childrenCount && config.folderIconClass || node.iconClass || config.nodeIconClass"></i>
+
+</div>

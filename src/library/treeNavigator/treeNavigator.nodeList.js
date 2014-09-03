@@ -3,10 +3,9 @@
 'use strict';
 
 require( './treeNavigator.node.js' );
-require( './treeNavigator.header.js' );
 
 angular.module(
-    'isis.ui.treeNavigator',
+    'isis.ui.treeNavigator.nodeList',
     [ 'isis.ui.treeNavigator.node', 'isis.ui.treeNavigator.header' ]
   )
 
@@ -17,19 +16,15 @@ angular.module(
   } )
 
   .directive(
-  'treeNavigator', function () {
+  'treeNavigatorNodeList', function () {
     return {
       scope: {
-        treeData: '=',
-        config: '=',
-        contextMenuData: '=',
-        state: '='
+        nodes: '='
       },
-
+      require: '^treeNavigator',
       restrict: 'E',
       replace: true,
-      templateUrl: '/isis-ui-components/templates/treeNavigator.html',
-      controller: 'TreeNavigatorController'
+      templateUrl: '/isis-ui-components/templates/treeNavigator.nodeList.html'
 
     };
   }
