@@ -71,9 +71,9 @@
     position: absolute;
     top: 9px;
     right: 5px; }
-  .hierarchical-menu .menu-contents .dropdown-submenu:hover > a:after {
-    border-left-color: #ffffff; }
-  .hierarchical-menu .menu-contents .disabled.dropdown-submenu:hover > a:after {
+  .hierarchical-menu .menu-contents .dropdown-submenu > a:hover:after {
+    border-left-color: #f90; }
+  .hierarchical-menu .menu-contents .disabled.dropdown-submenu > a:hover:after {
     border-left-color: #999; }
 .hierarchical-menu.drop-left .menu-contents .dropdown-submenu > .dropdown-menu {
   min-width: 100%;
@@ -100,3 +100,7 @@
   position: absolute;
   top: 9px;
   left: 5px; }
+.hierarchical-menu.drop-left .menu-contents .dropdown-submenu > a:hover:before {
+  border-right-color: #f90; }
+.hierarchical-menu.drop-left .menu-contents .disabled.dropdown-submenu > a:hover:before {
+  border-right-color: #999; }

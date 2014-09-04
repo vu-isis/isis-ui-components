@@ -103,13 +103,14 @@
         top: 9px;
         right: 5px;
       }
+
+      > a:hover:after {
+        border-left-color: #f90;
+      }
+
     }
 
-    .dropdown-submenu:hover > a:after {
-      border-left-color: #ffffff;
-    }
-
-    .disabled.dropdown-submenu:hover > a:after {
+    .disabled.dropdown-submenu > a:hover:after {
       border-left-color: #999;
     }
 
@@ -156,6 +157,16 @@
           left: 5px;
 
         }
+
+        > a:hover:before {
+          border-right-color: #f90;
+        }
+
+      }
+
+
+      .disabled.dropdown-submenu > a:hover:before {
+        border-right-color: #999;
       }
 
     }
