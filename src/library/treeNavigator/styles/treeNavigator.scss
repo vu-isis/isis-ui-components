@@ -99,14 +99,6 @@
     margin-left: .2ex;
 
   }
-  .node-expander:hover {
-
-    .icon-arrow-right:after,
-    .icon-arrow-left:after {
-      border-left-color: #f90;
-      border-right-color: #f90;
-    }
-  }
 
   .icon-arrow-left:before {
     display: inline-block;
@@ -142,6 +134,21 @@
       border-top-color: #999;
     }
 
+  }
+
+  .node-expander:hover {
+
+    .icon-arrow-down:after{
+      border-top-color: #f90;
+    }
+
+    .icon-arrow-right:after{
+      border-left-color: #f90;
+    }
+
+    .icon-arrow-left:after {
+      border-right-color: #f90;
+    }
   }
 
   .active-node {
