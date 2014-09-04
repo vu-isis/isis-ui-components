@@ -13,7 +13,7 @@ angular.module(
 .directive(
   'treeNavigatorNode', function () {
     return {
-      require: '^treeNavigator',
+      require: '^treeNavigatorNodeList',
       restrict: 'E',
       replace: true,
       templateUrl: '/isis-ui-components/templates/treeNavigator.node.html'

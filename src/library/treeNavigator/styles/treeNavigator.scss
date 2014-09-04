@@ -3,6 +3,12 @@
 
   font-size: 110%;
 
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
+
   header {
     padding: 0.75ex;
     border-bottom: 1px solid #eee;

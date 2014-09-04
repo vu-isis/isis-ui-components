@@ -3,7 +3,7 @@
 
 var demoApp = angular.module( 'isis.ui.treeNavigator.demo', [ 'ui.bootstrap' ] );
 
-demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
+demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q ) {
 
   var config,
     treeNodes = {},
@@ -12,52 +12,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
     removeNode,
     update,
     dummyTreeDataGenerator,
-    updateSelection,
     sortChildren;
-
-  updateSelection = function ( $event, theNode ) {
-    var index;
-
-    if ( theNode ) {
-
-      if ( $event ) {
-        if ( $event.shiftKey ) {
-          // TODO: properly update selected nodes
-          // start node is active node
-          // end node is theNode
-          // select all opened tree elements between the two nodes
-          $scope.state.selectedNodes = [ theNode.id ];
-          $log.warn( 'Range selection is not implemented properly yet.' );
-
-        } else if ( $event.ctrlKey || $event.metaKey ) {
-          index = $scope.state.selectedNodes.indexOf( theNode.id );
-
-          if ( index > -1 ) {
-            // already selected, remove this node
-            $scope.state.selectedNodes.splice( index, 1 );
-          } else {
-            // select it
-            $scope.state.selectedNodes.push( theNode.id );
-          }
-
-        } else {
-          $scope.state.selectedNodes = [ theNode.id ];
-
-        }
-
-      } else {
-        // event is not given
-        $scope.state.selectedNodes = [ theNode.id ];
-      }
-
-      // active node is the clicked node
-      $scope.state.activeNode = theNode.id;
-
-    } else {
-      $scope.state.selectedNodes = [];
-      $scope.state.activeNode = null;
-    }
-  };
 
   dummyTreeDataGenerator = function ( treeNode, name, maxCount, levels ) {
     var i,
@@ -112,41 +67,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
     };
 
 
-    expanderClick = function ( $event, theNode ) {
-      $log.log( 'ExpanderClickHandler: ' + theNode.id + ' ' + theNode.label + ' expended ' + theNode
-        .expanded );
 
-      if ( theNode.children.length === 0 && !theNode.isLoading && !theNode.loaded ) {
-        theNode.isLoading = true;
-        update();
-
-        // emulate async loading of objects
-        setTimeout(
-          function () {
-            dummyTreeDataGenerator( theNode, 'Async ' + id, 5, 0 );
-
-            theNode.isLoading = false;
-            theNode.loaded = true;
-            theNode.expanded = true;
-
-            update();
-          },
-          2000
-        );
-
-      } else {
-        // Expand-collapse
-        theNode.expanded = !theNode.expanded;
-      }
-
-      updateSelection( null, theNode );
-    };
-
-    nodeClick = function ( $event, theNode ) {
-      $log.log( 'NodeClickHandler: ' + theNode.id + ' ' + theNode.label + ' was clicked' );
-
-      updateSelection( $event, theNode );
-    };
 
     // node structure
     newTreeNode = {
@@ -154,13 +75,8 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
       extraInfo: 'Extra info',
       children: children,
       childrenCount: 0,
-      expanded: false,
-      isLoading: false,
-      loaded: false,
       nodeData: {},
-      nodeClick: nodeClick,
       nodeDblclick: nodeDblclick,
-      expanderClick: expanderClick,
       iconClass: 'fa fa-file-o',
       contextMenu: [], // defined below
       onContextMenu: $scope.onContextMenu
@@ -330,6 +246,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
   };
 
   config = {
+
     scopeMenu: [
       {
         items: [
@@ -406,19 +323,54 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log ) {
 
     collapsedIconClass: 'icon-arrow-right',
     expandedIconClass: 'icon-arrow-down',
-    showRootLabel: true
+    showRootLabel: true,
+
+    // Tree Event callbacks
+
+    nodeClick: function(e, node) {
+      console.log('Node was clicked:', node);
+    },
+
+    nodeDblclick: function(e, node) {
+      console.log('Node was double-clicked:', node);
+    },
+
+    nodeContextmenu: function(e, node) {
+      console.log('Contextmenu was opened for node:', node);
+    },
+
+    nodeExpanderClick: function(e, node, isExpand) {
+      console.log('Expander was clicked for node:', node, isExpand);
+    },
+
+    loadChildren: function(e, node) {
+      var deferred = $q.defer();
+
+      setTimeout(
+      function () {
+        dummyTreeDataGenerator( node, 'Async ' + node.id, 5, 0 );
+        deferred.resolve();
+      },
+      2000
+      );
+
+      return deferred.promise;
+    }
+
 
   };
 
   $scope.config = config;
   $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 0 ];
   $scope.treeData = {};
-  $scope.state = {
+  $scope.config.state = {
     // id of activeNode
-    activeNode: null,
+    activeNode: 'Node item 0.0',
 
     // ids of selected nodes
-    selectedNodes: [],
+    selectedNodes: ['Node item 0.0'],
+
+    expandedNodes: [ 'Node item 0', 'Node item 0.1'],
 
     // id of active scope
     activeScope: 'project'
