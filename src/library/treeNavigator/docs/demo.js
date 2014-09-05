@@ -243,7 +243,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
             id: 'project',
             label: 'Project Hierarchy',
             action: function () {
-              $scope.state.activeScope = 'project';
+              $scope.config.state.activeScope = 'project';
               $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 0 ];
             }
           },
@@ -251,7 +251,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
             id: 'composition',
             label: 'Composition',
             action: function () {
-              $scope.state.activeScope = 'composition';
+              $scope.config.state.activeScope = 'composition';
               $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 1 ];
             }
           }
