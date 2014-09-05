@@ -33,7 +33,8 @@
     ]
   },
   "browser": {
-    "showdown": "./vendor/showdown_for_browserify.js"
+    "showdown": "./vendor/showdown_for_browserify.js",
+    "angular-dragdrop": "./vendor/draganddrop.js"
   },
   "browserify-shim": {
     "showdown": "Showdown"

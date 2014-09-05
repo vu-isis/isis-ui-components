@@ -4,12 +4,14 @@
 
 require( './treeNavigator.node.js' );
 require( '../helpers/angular-recursion.js' );
+require('angular-dragdrop');
 
 angular.module(
 'isis.ui.treeNavigator.nodeList',
 [
   'isis.ui.treeNavigator.node',
-  'RecursionHelper'
+  'RecursionHelper',
+  'ngDragDrop'
 ]
 )
 
@@ -222,6 +224,14 @@ angular.module(
       }
     }
   };
+
+  $scope.nodeDrop = function ( $event, node, $data ) {
+    console.log($data, 'Dropped on ', node);
+  };
+
+//  $rootScope.$on('ANGULAR_DRAG_START', function(){
+//    console.log('dragstart');
+//  });
 
 } )
 

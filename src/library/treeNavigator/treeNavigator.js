@@ -11,13 +11,12 @@ angular.module(
 [
   'isis.ui.treeNavigator.nodeList',
   'isis.ui.treeNavigator.header',
-  'isis.ui.treeNavigator.node.label'
+  'isis.ui.treeNavigator.node.label',
+  'ngDragDrop'
 ])
 
 .controller( 'TreeNavigatorController', function ( $scope, $log ) {
   $log.log( 'In TreeNavigatorController' );
-
-
 } )
 
 .directive(

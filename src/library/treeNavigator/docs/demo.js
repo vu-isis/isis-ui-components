@@ -140,7 +140,11 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       nodeDblclick: nodeDblclick,
       iconClass: 'fa fa-file-o',
       contextMenu: [], // defined below
-      onContextMenu: $scope.onContextMenu
+      onContextMenu: $scope.onContextMenu,
+
+      draggable: true,
+      dragChannel: 'a',
+      dropChannel: (Math.random() > 0.5) ? 'a' : 'b'
     };
 
     newTreeNode.id = id;

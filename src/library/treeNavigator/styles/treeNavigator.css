@@ -103,6 +103,10 @@
     .tree-navigator .active-node > .node-label > .label-text {
       font-weight: bold; }
   .tree-navigator .selected-node > .node-label {
-    background-color: #f1f5f9; }
+    background-color: rgba(200, 220, 240, 0.2); }
   .tree-navigator .selected-node > .node-expander {
     color: #fff; }
+  .tree-navigator .on-drag-enter {
+    background-color: #f5fff7; }
+  .tree-navigator .on-drag-hover {
+    background-color: #ccffcc; }

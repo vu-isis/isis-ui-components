@@ -171,12 +171,20 @@
   .selected-node {
 
     > .node-label {
-      background-color: #f1f5f9;
+      background-color: rgba(200, 220, 240, .2);
     }
 
     > .node-expander {
       color: #fff;
     }
+  }
+
+  .on-drag-enter {
+    background-color: #f5fff7;
+  }
+
+  .on-drag-hover {
+    background-color: #ccffcc;
   }
 
 }
