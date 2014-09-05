@@ -161,8 +161,8 @@ angular.module(
 
   $scope.nodeContextmenu = function ( $event, node ) {
 
-    if ( angular.isFunction( $scope.config.nodeContextmenu ) ) {
-      $scope.config.nodeContextmenu( $event, node );
+    if ( angular.isFunction( $scope.config.nodeContextmenuRenderer ) ) {
+      $scope.nodeContextMenuData = $scope.config.nodeContextmenuRenderer( $event, node );
     }
 
   };

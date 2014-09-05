@@ -1,8 +1,9 @@
 <div class="node-label"
       data-ng-class="{ 'loading': isNodeLoading(node) }"
       data-ng-click="nodeClick($event, node)"
+      isis-contextmenu
       contextmenu="nodeContextmenu($event, node)"
-      contextmenu-data="config.contextMenuData">
+      contextmenu-data="nodeContextMenuData">
     <a class="node-expander"
         data-ng-if="canNodeExpand(node) && canNodeCollapse(node)"
         data-ng-click="nodeExpanderClick($event, node)">

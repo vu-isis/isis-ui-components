@@ -10,9 +10,76 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
     addNode,
     removeNode,
-    update,
+    getNodeContextmenu,
     dummyTreeDataGenerator,
     sortChildren;
+
+  getNodeContextmenu = function(node) {
+
+    var defaultNodeContextmenu = [
+        {
+          items: [
+            {
+              id: 'create',
+              label: 'Create new',
+              disabled: true,
+              iconClass: 'fa fa-plus',
+              menu: []
+            },
+            {
+              id: 'dummy',
+              label: 'Just for test ' + node.id,
+
+              actionData: node,
+
+              action: function ( data ) {
+                $log.log( 'testing ', data );
+              }
+
+            },
+            {
+              id: 'rename',
+              label: 'Rename'
+            },
+            {
+              id: 'delete',
+              label: 'Delete',
+              iconClass: 'fa fa-minus',
+              actionData: {
+                id: node.id
+              },
+              action: function ( data ) {
+                removeNode( data.id );
+              }
+            },
+            {
+              id: 'preferences 3',
+              label: 'Preferences 3',
+              menu: [
+                {
+                  items: [
+                    {
+                      id: 'sub_preferences 1',
+                      label: 'Sub preferences 1'
+                    },
+                    {
+                      id: 'sub_preferences 2',
+                      label: 'Sub preferences 2',
+                      action: function ( data ) {
+                        $log.log( 'testing2 ', data );
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ];
+
+    return defaultNodeContextmenu;
+
+  };
 
   dummyTreeDataGenerator = function ( treeNode, name, maxCount, levels ) {
     var i,
@@ -34,12 +101,6 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       if ( levels > 0 ) {
         dummyTreeDataGenerator( childNode, id + '.', maxCount, levels - 1 );
       }
-    }
-  };
-
-  update = function () {
-    if ( !$scope.$$phase ) {
-      $scope.$apply();
     }
   };
 
@@ -87,78 +148,6 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
     // add the new node to the map
     treeNodes[ newTreeNode.id ] = newTreeNode;
 
-
-    // define context menu
-    newTreeNode.contextMenu = [
-      {
-        items: [
-          {
-            id: 'create',
-            label: 'Create new',
-            disabled: true,
-            iconClass: 'fa fa-plus',
-            menu: []
-          },
-          {
-            id: 'dummy',
-            label: 'Just for test ' + newTreeNode.id,
-            action: function ( data ) {
-              $log.log( 'testing ', data );
-            }
-
-          },
-          {
-            id: 'rename',
-            label: 'Rename'
-          },
-          {
-            id: 'delete',
-            label: 'Delete',
-            iconClass: 'fa fa-minus',
-            actionData: {
-              id: newTreeNode.id
-            },
-            action: function ( data ) {
-              removeNode( data.id );
-            }
-          },
-          {
-            id: 'preferences 3',
-            label: 'Preferences 3',
-            menu: [
-              {
-                items: [
-                  {
-                    id: 'sub_preferences 1',
-                    label: 'Sub preferences 1'
-                  },
-                  {
-                    id: 'sub_preferences 2',
-                    label: 'Sub preferences 2',
-                    action: function ( data ) {
-                      $log.log( 'testing2 ', data );
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ];
-
-
-    // TODO: add context menu
-    // TODO: add delete - on delete and in context menu
-    // TODO: add create new object (using meta model rules) - disabled and enabled types?
-    // TODO: add copy to clipboard
-    // TODO: add open in Visualizer
-    // TODO: add rename
-    // TODO: add library business (export as library, update library from file, import library here)
-    // TODO: collapse expand
-    // TODO: handle double click
-    // TODO: show meta types - config
-    // TODO: show icon
 
     if ( parentTreeNode ) {
       // if a parent was given add the new node as a child node
@@ -335,8 +324,11 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       console.log('Node was double-clicked:', node);
     },
 
-    nodeContextmenu: function(e, node) {
-      console.log('Contextmenu was opened for node:', node);
+    nodeContextmenuRenderer: function(e, node) {
+      console.log('Contextmenu was triggered for node:', node);
+
+      return getNodeContextmenu(node);
+
     },
 
     nodeExpanderClick: function(e, node, isExpand) {
