@@ -267,6 +267,8 @@ angular.module(
               angular.extend( options, $scope.contextmenuConfig );
             }
 
+            element.addClass('context-menu-trigger');
+
             open = function ( event ) {
 
               var position, bounds;
