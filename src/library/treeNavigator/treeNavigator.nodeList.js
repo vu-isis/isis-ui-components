@@ -229,8 +229,8 @@ angular.module(
     console.log($data, 'Dropped on ', node);
   };
 
-//  $rootScope.$on('ANGULAR_DRAG_START', function(){
-//    console.log('dragstart');
+//  $rootScope.$on('ANGULAR_DRAG_START', function($event){
+//    console.log($event);
 //  });
 
 } )
