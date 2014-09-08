@@ -106,28 +106,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
   addNode = function ( parentTreeNode, id ) {
     var newTreeNode,
-      children = [],
-
-      nodeClick,
-      nodeDblclick,
-      expanderClick;
-
-//    $log.log( 'Adding a new node ' + id + ( parentTreeNode ? ' to ' + parentTreeNode.id :
-//      ' as ROOT' ) );
-
-    nodeDblclick = function ( $event, theNode ) {
-
-      nodeClick( $event, theNode );
-      expanderClick( $event, theNode );
-
-      // one active node
-      $scope.state.activeNode = theNode.id;
-
-      // one selected node
-      $scope.state.selectedNodes = [ theNode.id ];
-    };
-
-
+      children = [];
 
 
     // node structure
@@ -137,10 +116,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       children: children,
       childrenCount: 0,
       nodeData: {},
-      nodeDblclick: nodeDblclick,
       iconClass: 'fa fa-file-o',
-      contextMenu: [], // defined below
-      onContextMenu: $scope.onContextMenu,
 
       draggable: true,
       dragChannel: 'a',
@@ -264,18 +240,6 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
     ],
 
-    scopeMenuConfig: {
-      triggerEvent: 'click',
-      position: 'left bottom'
-    },
-
-    preferencesMenuConfig: {
-      triggerEvent: 'click',
-      position: 'right bottom'
-    },
-
-    selectedScope: null,
-
     preferencesMenu: [
       {
         items: [
@@ -314,8 +278,6 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       }
     ],
 
-    collapsedIconClass: 'icon-arrow-right',
-    expandedIconClass: 'icon-arrow-down',
     showRootLabel: true,
 
     // Tree Event callbacks

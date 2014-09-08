@@ -13,10 +13,27 @@ angular.module(
   'isis.ui.treeNavigator.header',
   'isis.ui.treeNavigator.node.label',
   'ngDragDrop'
-])
+] )
 
 .controller( 'TreeNavigatorController', function ( $scope, $log ) {
   $log.log( 'In TreeNavigatorController' );
+
+  $scope.scopeMenuConfig = {
+    triggerEvent: 'click',
+    position: 'left bottom'
+  };
+
+  $scope.preferencesMenuConfig = {
+    triggerEvent: 'click',
+    position: 'right bottom'
+  };
+
+
+  $scope.config = $scope.config || {};
+
+  $scope.config.collapsedIconClass = $scope.config.collapsedIconClass || 'icon-arrow-right';
+  $scope.config.expandedIconClass = $scope.config.expandedIconClass || 'icon-arrow-down';
+
 } )
 
 .directive(
@@ -24,9 +41,7 @@ angular.module(
   return {
     scope: {
       treeData: '=',
-      config: '=',
-      contextMenuData: '=',
-      state: '='
+      config: '='
     },
 
     restrict: 'E',
