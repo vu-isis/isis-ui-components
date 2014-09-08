@@ -8,13 +8,13 @@
                ng-click="itemClick($event, item)"
                tooltip="{{ item.toolTip }}"
                tooltip-placement="right">{{ item.title }}</a></h4>
-        <item-menu></item-menu>
+        <il-item-menu></il-item-menu>
     </header>
-    <div class="description">{{ item.description }}</div>
-
+    <div ng-if="item.description" class="description">{{ item.description }}</div>
+    <il-item-details ng-if="item.hasDetails"></il-item-details>
     <footer>
         <time class="last-updated-time">Updated <span am-time-ago="item.lastUpdated.time"></span> by <a href="">{{item.lastUpdated.user
             }}</a></time>
-        <item-stats></item-stats>
+        <il-item-stats></il-item-stats>
     </footer>
 </li>

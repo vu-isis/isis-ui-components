@@ -3,12 +3,14 @@
 
 require( './listItemGroup.js' );
 require( './itemListNewItem.js' );
+require( '../contextmenu/contextmenu.js' );
 
 angular.module(
 'isis.ui.itemList', [
   'isis.ui.itemList.newItem',
 //  'isis.ui.filterInput',
-  'isis.ui.itemList.itemGroup'
+  'isis.ui.itemList.itemGroup',
+  'isis.ui.contextmenu'
 ]
 )
 .controller(

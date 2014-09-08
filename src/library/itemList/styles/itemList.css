@@ -30,7 +30,7 @@
     border-bottom: 1px solid #ddd;
     padding: .5ex 1.25ex;
     border-bottom-left-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: white;
     display: none;
     cursor: pointer; }
     .item-list ul.list-group li.item-list-item .item-menu .icon-arrow-down:after {

@@ -8,7 +8,7 @@ angular.module(
   'isis.ui.itemList.item.stats', [ 'angularMoment' ]
 )
   .directive(
-    'itemStats',
+    'ilItemStats',
     function () {
 
       return {

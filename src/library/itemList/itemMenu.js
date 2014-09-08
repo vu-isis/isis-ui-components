@@ -6,7 +6,7 @@ angular.module(
 )
   .directive(
 
-    'itemMenu',
+    'ilItemMenu',
 
     function () {
 

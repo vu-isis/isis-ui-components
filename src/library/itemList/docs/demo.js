@@ -31,8 +31,10 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
           tooltip: 'Orders',
           iconClass: 'fa fa-cubes'
         }
-      ]
-
+      ],
+      hasDetails: Math.random() < 0.5,
+      details: null,
+      detailsCollapsible: true
     };
   };
 
@@ -50,7 +52,6 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
             label: 'Create new',
             disabled: true,
             iconClass: 'fa fa-plus',
-            menu: []
           },
           {
             id: 'dummy',
@@ -99,6 +100,7 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
   config = {
 
     sortable: true,
+    secondaryItemMenu: true,
 
     // Event handlers
 
@@ -114,7 +116,10 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
       console.log( 'Contextmenu was triggered for node:', item );
 
       return getItemContextmenu( item );
+    },
 
+    detailsRenderer: function(item) {
+      item.details = 'My details are here now!';
     },
 
     newItemForm: {
