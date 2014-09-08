@@ -15,8 +15,7 @@ angular.module(
   'ngDragDrop'
 ] )
 
-.controller( 'TreeNavigatorController', function ( $scope, $log ) {
-  $log.log( 'In TreeNavigatorController' );
+.controller( 'TreeNavigatorController', function ( $scope ) {
 
   $scope.scopeMenuConfig = {
     triggerEvent: 'click',

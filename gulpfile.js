@@ -22,8 +22,8 @@ var
       'src/**/docs/*.js'
     ],
     docsTemplates: [
-      'src/**/demo.html',
-      'src/**/readme.md'
+      'src/**/docs/*.html',
+      'src/**/docs/readme.md'
     ],
     docsStyles: [
       'src/docs/styles/*.scss',
@@ -37,7 +37,8 @@ var
       'src/library/dropdownNavigator/*.js',
       'src/library/simpleDialog/*.js',
       'src/library/treeNavigator/*.js',
-      'src/library/hierarchicalMenu/*.js'
+      'src/library/hierarchicalMenu/*.js',
+      'src/library/itemList/*.js'
     ],
     libraryTemplates: [
       'src/**/templates/**/*.html'

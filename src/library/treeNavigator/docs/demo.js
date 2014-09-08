@@ -1,7 +1,7 @@
 /*globals angular*/
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.treeNavigator.demo', [ 'ui.bootstrap' ] );
+var demoApp = angular.module( 'isis.ui.treeNavigator.demo', [ 'isis.ui.treeNavigator' ] );
 
 demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q ) {
 

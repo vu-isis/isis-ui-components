@@ -9,9 +9,6 @@ angular.module(
     function () {
 
       return {
-        scope: {
-          formConfig: '='
-        },
         restrict: 'E',
         replace: true,
         templateUrl: '/isis-ui-components/templates/itemListNewItem.html',
@@ -20,10 +17,17 @@ angular.module(
 
           return {
 
-            pre: function ( $scope, $el, attr, itemListCtl ) {
-              $scope.formConfig.controller = $scope.formConfig.controller || function () {
-                return itemListCtl;
-              };
+            pre: function ( scope, el, attr, itemListCtl ) {
+
+              if (angular.isObject(scope.config) && angular.isObject(scope.config.newItemForm)) {
+
+                scope.config.newItemForm.controller = scope.config.newItemForm.controller || function () {
+                  return itemListCtl;
+                };
+
+                scope.formConfig = scope.config.newItemForm;
+
+              }
             }
 
           };

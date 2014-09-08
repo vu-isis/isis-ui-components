@@ -1,13 +1,11 @@
 /*globals angular*/
 'use strict';
 
-require( 'moment' );
+window.moment = window.moment || require( 'moment' );
 require( 'angular-moment' );
 
-
-
 angular.module(
-  'isis.ui.itemList.item.stats', [ 'angular-moment' ]
+  'isis.ui.itemList.item.stats', [ 'angularMoment' ]
 )
   .directive(
     'itemStats',
@@ -20,4 +18,4 @@ angular.module(
         templateUrl: '/isis-ui-components/templates/itemStats.html',
         require: '^itemList'
       };
-    } );
+    });

@@ -1,7 +1,5 @@
 <ul class="list-group">
     <item-list-item
-        ng-repeat="item in listData.items | filter: listData.config.filter track by $index "
-        item="item"
-        config="listData.config">
+        ng-repeat="item in listData.items | filter: config.filter track by $index ">
     </item-list-item>
 </ul>

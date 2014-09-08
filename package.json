@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "angular-momentjs": "^0.1.8",
     "browserify": "^5.10.1",
     "connect-livereload": "^0.4.0",
     "express": "^4.8.6",
@@ -13,6 +14,8 @@
     "gulp-livereload": "^2.1.1",
     "gulp-rename": "^1.2.0",
     "gulp-sass": "^0.7.3",
+    "moment": "^2.8.3",
+    "ng-sortable": "0.0.3",
     "path": "^0.4.9",
     "process": "^0.7.0",
     "run-sequence": "^0.3.6",
@@ -21,11 +24,9 @@
   },
   "dependencies": {
     "angular-markdown-directive": "^0.3.0",
-    "angular-moment": "^0.8.1",
     "angular-sanitize": "0.0.1",
     "browserify-shim": "^3.7.0",
-    "moment": "^2.8.2",
-    "ng-sortable": "0.0.3"
+    "moment": "^2.8.2"
   },
   "browserify": {
     "transform": [
@@ -34,9 +35,12 @@
   },
   "browser": {
     "showdown": "./vendor/showdown_for_browserify.js",
-    "angular-dragdrop": "./vendor/draganddrop.js"
+    "angular-dragdrop": "./bower_components/angular-dragdrop/src/angular-dragdrop.min.js",
+    "angular-ui-sortable": "./bower_components/angular-ui-sortable/sortable.min.js",
+    "angular-moment": "./bower_components/angular-moment/angular-moment.min.js"
   },
   "browserify-shim": {
-    "showdown": "Showdown"
+    "showdown": "Showdown",
+    "moment": "moment"
   }
 }

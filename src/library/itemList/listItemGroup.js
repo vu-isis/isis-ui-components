@@ -2,7 +2,7 @@
 'use strict';
 
 require( './itemListItem.js' );
-require( 'ng-sortable' );
+require( 'angular-ui-sortable' );
 
 angular.module(
   'isis.ui.itemList.itemGroup', [
@@ -20,8 +20,10 @@ angular.module(
         replace: true,
         templateUrl: '/isis-ui-components/templates/listItemGroup.html',
         link: function ( scope, element ) {
-          if ( scope.listData && scope.listData.config && scope.listData.config.sortable ===
-            true ) {
+
+          console.log(scope.config);
+
+          if ( scope.listData && scope.config && scope.config.sortable === true ) {
             element.attr( 'ui-sortable', 'sortableOptions' );
             element.attr( 'ng-model', 'listData.items' );
             $compile( element )( scope );

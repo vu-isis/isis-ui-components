@@ -7,3 +7,5 @@
   text-decoration: none;
   padding: 10px 15px;
   display: inline-block; }
+.create-new-item form .row {
+  margin-bottom: 1ex; }
