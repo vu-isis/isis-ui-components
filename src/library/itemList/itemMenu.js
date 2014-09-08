@@ -1,12 +1,8 @@
 /*globals angular*/
 'use strict';
 
-require( './itemListItem.js' );
-
 angular.module(
-  'isis.ui.itemList.item.menu', [
-    'isis.ui.itemList.item'
-  ]
+  'isis.ui.itemList.item.menu', []
 )
   .directive(
 
@@ -17,7 +13,8 @@ angular.module(
       return {
         restrict: 'E',
         replace: true,
-        require: '^itemList'
+        require: '^itemList',
+        templateUrl: '/isis-ui-components/templates/itemMenu.html'
       };
 
 

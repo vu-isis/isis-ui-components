@@ -1,15 +1,20 @@
- <li class="item-list-item list-group-item"
-     ng-class="itemClass">
-     <header>
+<li class="item-list-item list-group-item"
+    isis-contextmenu
+    contextmenu="itemContextmenu($event, item)"
+    contextmenu-data="itemContextMenuData"
+    ng-class="itemClass">
+    <header>
         <h4><a class="item-title"
-               ng-click="config.onItemClick(item)"
+               ng-click="itemClick($event, item)"
                tooltip="{{ item.toolTip }}"
                tooltip-placement="right">{{ item.title }}</a></h4>
-         <item-menu ng-if="item.menu"></item-menu>
+        <item-menu></item-menu>
     </header>
     <div class="description">{{ item.description }}</div>
+
     <footer>
-        <time class="last-updated-time">Updated  <span am-time-ago="item.lastUpdated.time"></span> by <a href="">{{item.lastUpdated.user }}</a></time>
+        <time class="last-updated-time">Updated <span am-time-ago="item.lastUpdated.time"></span> by <a href="">{{item.lastUpdated.user
+            }}</a></time>
         <item-stats></item-stats>
     </footer>
 </li>

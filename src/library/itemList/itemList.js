@@ -13,16 +13,40 @@ angular.module(
 )
 .controller(
 'ItemListController', function ( $scope ) {
+
+  // Event handlers
+
   $scope.sortableOptions = {
     update: function ( e, ui ) {
 
-      if ( $scope.listData.config && angular.isFunction( $scope.listData.config.onSort ) ) {
-        $scope.listData.config.onSort( e, ui );
+      if ( angular.isFunction( $scope.config.itemSort ) ) {
+        $scope.config.itemSort( event, ui );
       }
 
     },
     axis: 'y'
   };
+
+  $scope.itemClick =function($event, item) {
+
+    if ( angular.isFunction( $scope.config.itemClick ) ) {
+      $scope.config.itemClick( $event, item );
+    }
+  };
+
+  $scope.itemContextmenu = function ( $event, node ) {
+
+    if ( angular.isFunction( $scope.config.itemContextmenuRenderer ) ) {
+      $scope.itemContextMenuData = $scope.config.itemContextmenuRenderer( $event, node );
+    }
+
+  };
+
+  $scope.itemMenuConfig = {
+    triggerEvent: 'click',
+    position: 'right bottom'
+  };
+
 })
 
 .directive(
