@@ -4,7 +4,7 @@
 
     li.item-list-item {
 
-      background-color: transparent;
+      background-color: #fff;
       transition: background-color .25s;
 
       .description {
@@ -92,4 +92,25 @@
 
   }
 
+  .item-details {
+
+    margin-bottom: 1em;
+
+    .item-details-header {
+      cursor: pointer;
+      font-weight: bold;
+      color: #aaa;
+      border-bottom: 1px solid #ccc;
+      font-size: 90%;
+      padding: .25ex 0 0 0;
+    }
+
+    .item-details-header:hover {
+      color: #428bca;
+    }
+
+    .item-details-contents {
+      margin-top: 1ex;
+    }
+  }
 }

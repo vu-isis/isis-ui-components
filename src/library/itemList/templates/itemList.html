@@ -1,14 +1,13 @@
 <div class="item-list">
-    <div class="row">
+    <div class="row" ng-if="config.newItemForm">
         <item-list-new-item
-                ng-if="config.newItemForm"
                 form-config="listData.config.newItemForm"></item-list-new-item>
     </div>
-    <div class="row">
-        <div class="item-list-filter" ng-if="config.filter">
+    <div class="row" ng-if="config.filter">
+        <div class="item-list-filter">
             <div class="panel-group">
                 <div class="">
-                   <filter-input config="config.filter" data="listData.items"></filter-input>
+                    <filter-input config="config.filter" data="listData.items"></filter-input>
                 </div>
             </div>
         </div>

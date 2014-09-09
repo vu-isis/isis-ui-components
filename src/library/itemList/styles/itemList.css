@@ -1,5 +1,5 @@
 .item-list ul.list-group li.item-list-item {
-  background-color: transparent;
+  background-color: #fff;
   transition: background-color .25s; }
   .item-list ul.list-group li.item-list-item .description {
     margin: 1.5ex 0;
@@ -51,3 +51,16 @@
 .item-list ul.list-group.ui-sortable > li:hover {
   background-color: #f2f9fc;
   cursor: move; }
+.item-list .item-details {
+  margin-bottom: 1em; }
+  .item-list .item-details .item-details-header {
+    cursor: pointer;
+    font-weight: bold;
+    color: #aaa;
+    border-bottom: 1px solid #ccc;
+    font-size: 90%;
+    padding: .25ex 0 0 0; }
+  .item-list .item-details .item-details-header:hover {
+    color: #428bca; }
+  .item-list .item-details .item-details-contents {
+    margin-top: 1ex; }

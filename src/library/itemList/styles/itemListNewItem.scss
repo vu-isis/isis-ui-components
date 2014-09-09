@@ -1,16 +1,27 @@
 .create-new-item {
- .panel-heading {
-   cursor: pointer;
-   padding: 0;
 
-   &:hover {
-     background: #eaeaea;
-   }
- }
+  accordion > .panel-group > .panel {
+    border-radius: 1ex;
+    overflow: hidden;
+    background-clip: border-box;
+  }
+
+  .panel-heading {
+    cursor: pointer;
+    padding: 0;
+    background-color: transparent;
+    .panel-title {
+      font-size: 90%;
+    }
+
+    &:hover {
+      background: #eaeaea;
+    }
+  }
 
   a {
     text-decoration: none;
-    padding: 10px 15px;
+    padding: .75ex 1ex;
     display: inline-block;
   }
 
