@@ -32,9 +32,8 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
           iconClass: 'fa fa-cubes'
         }
       ],
-      hasDetails: Math.random() < 0.5,
       details: null,
-      detailsCollapsible: true
+      detailsTemplate: null
     };
   };
 
@@ -101,6 +100,7 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
 
     sortable: true,
     secondaryItemMenu: true,
+    detailsCollapsible: true,
 
     // Event handlers
 

@@ -175,10 +175,11 @@ angular.module(
           if ( !sameTriggerElement  ) {
             
             // do not re-open if the same triggerelement was clicked
-          
+
             menuScope = aScope.$new();
-  
-            shellAngularElement.append( angular.element( $templateCache.get( contentTemplateUrl ) ) );
+
+            menuScope.contentTemplateUrl = contentTemplateUrl;
+
             menuDOMElement = $compile( shellAngularElement )( menuScope );
             body.append( menuDOMElement );
 
