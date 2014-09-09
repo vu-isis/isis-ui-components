@@ -54,6 +54,7 @@
     color: #666;
     font-size: 80%; }
   .tree-navigator .node-expander {
+    display: inline-block;
     text-decoration: none; }
   .tree-navigator .context-menu {
     position: fixed;
