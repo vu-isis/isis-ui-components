@@ -2,6 +2,7 @@
 'use strict';
 
 var components = [
+  'searchBox',
   'itemList',
   'simpleDialog',
   'hierarchicalMenu',
@@ -16,6 +17,7 @@ require( '../library/contextmenu/docs/demo.js' );
 require( '../library/dropdownNavigator/docs/demo.js' );
 require( '../library/treeNavigator/docs/demo.js' );
 require( '../library/itemList/docs/demo.js' );
+require( '../library/searchBox/docs/demo.js' );
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );

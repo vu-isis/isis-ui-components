@@ -1,1 +1,0 @@
-`filterInput` is a directive built on ngTagsInput for working as a filter-control
