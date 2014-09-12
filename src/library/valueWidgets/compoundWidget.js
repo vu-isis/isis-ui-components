@@ -16,22 +16,25 @@ angular.module(
         return {
           restrict: 'E',
           replace: true,
+          require: 'ngModel',
           scope: {
-            config: '=',
-            value: '=',
-            link: function ( scope, element ) {
+            config: '='
+          },
+          link: function ( scope, element, attributes, ngModel ) {
 
-              var templateUrl;
+            var templateUrl;
 
-              templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
+            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
 
-              isisTemplateService.getTemplate( scope.config.template, templateUrl )
-                .then( function ( template ) {
-                  element.replaceWidth( $compile( template, scope ) );
-                } );
+            isisTemplateService.getTemplate( scope.config.template, templateUrl )
+              .then( function ( template ) {
+                element.replaceWidth( $compile( template, scope ) );
+              } );
 
-            }
+            console.log( ngModel.$viewValue );
+
           }
+
 
         };
       }

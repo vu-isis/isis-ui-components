@@ -17,11 +17,11 @@ angular.module(
         return {
           restrict: 'E',
           replace: true,
+          require: 'ngModel',
           scope: {
             config: '=',
-            value: '='
           },
-          link: function ( scope, element ) {
+          link: function ( scope, element, attributes, ngModel ) {
 
             var templateUrl;
 
@@ -31,6 +31,8 @@ angular.module(
               .then( function ( template ) {
                 element.replaceWidth( $compile( template, scope ) );
               } );
+
+            console.log( ngModel.$viewValue );
 
           }
 

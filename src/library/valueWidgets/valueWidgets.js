@@ -39,13 +39,13 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
       getWidgetElementForType: getWidgetElementForType
     };
   } )
-  .controller( 'ValueWidgetController', function () {} )
   .directive( 'valueWidget', [ '$log', '$compile', '$valueWidgets',
     function ( $log, $compile, $valueWidgets ) {
 
       return {
         restrict: 'E',
         replace: true,
+        require: 'ngModel',
         scope: {
           config: '=',
           value: '='
@@ -64,7 +64,7 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
               }
 
             },
-            post: function ( scope, element ) {
+            post: function ( scope, element, attributes, ngModel ) {
 
               var
               templateStr,
@@ -90,8 +90,7 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
 
               widgetElement = $valueWidgets.getWidgetElementForType( widgetType );
 
-              templateStr = '<' + widgetElement +
-                ' value="value" config="config">' +
+              templateStr = '<' + widgetElement + '>' +
                 '</' + widgetElement + '>';
 
               $log.log( templateStr );
@@ -99,6 +98,8 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
               template = angular.element( templateStr );
 
               element.append( $compile( template )( scope ) );
+
+              console.log(ngModel.$viewValue);
 
             }
           };
