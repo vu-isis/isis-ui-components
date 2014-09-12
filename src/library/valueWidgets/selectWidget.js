@@ -1,35 +1,39 @@
-/*globals define, angular, alert*/
+/*globals angular*/
 
+'use strict';
 
-define( [
-  'angular',
-  'text!./templates/selectWidget.html',
-  'css!./styles/selectWidget.css'
+require( '../services/isisUIServices.js' );
 
-], function ( ng, template ) {
+angular.module(
+  'isis.ui.selectWidget', [ 'isis.ui.services' ]
 
-  'use strict';
+)
+  .directive(
+    'selectWidget', [ 'isisTemplateService', '$compile',
+      function ( isisTemplateService, $compile ) {
 
-  angular.module(
-    'isis.ui.selectWidget', []
-
-  )
-    .directive(
-      'selectWidget',
-      function () {
+        var defaultTemplateUrl = '/isis-ui-components/templates/selectWidget.html';
 
         return {
           restrict: 'E',
           replace: true,
-          template: template,
           scope: {
             config: '=',
-            value: '=',
-            unresponsive: '='
+            value: '='
+          },
+          link: function ( scope, element ) {
+
+            var templateUrl;
+
+            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
+
+            isisTemplateService.getTemplate( scope.config.template, templateUrl )
+              .then( function ( template ) {
+                element.replaceWidth( $compile( template, scope ) );
+              } );
+
           }
 
         };
-      } );
-
-
-} );
+      }
+    ] );
