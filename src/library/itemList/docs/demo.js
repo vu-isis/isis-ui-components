@@ -156,11 +156,15 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
         user: 'N/A'
 
       },
-      stats: [ {
-        value: id,
-        tooltip: 'Orders',
-        iconClass: 'fa fa-cubes'
-      } ],
+
+      stats: [
+        {
+          value: id,
+          toolTip: 'Orders',
+          iconClass: 'fa fa-cubes'
+        }
+      ],
+
       details: 'Some detailed text. Lorem ipsum ama fea rin the poc ketofmyja cket.',
       detailsTemplateUrl: Math.random() < 0.5 ? 'list-item-details.html' : 'list-item-details2.html'
     };

@@ -2,13 +2,34 @@
 'use strict';
 
 var components = [
-  'searchBox',
-  'itemList',
-  'simpleDialog',
-  'hierarchicalMenu',
-  'contextmenu',
-  'dropdownNavigator',
-  'treeNavigator'
+  {
+    name: 'searchBox',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
+    name: 'itemList',
+    sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
+  },
+  {
+    name: 'simpleDialog',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
+    name: 'hierarchicalMenu',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
+    name: 'contextmenu',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
+    name: 'dropdownNavigator',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
+    name: 'treeNavigator',
+    sources: [ 'demo.html', 'demo.js']
+  }
 ];
 
 require( '../library/simpleDialog/docs/demo.js' );
@@ -23,14 +44,24 @@ require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
 require( 'angular-markdown-directive' );
 
+require( 'codemirrorCSS' );
+window.CodeMirror = require( 'code-mirror' );
+
+require( 'code-mirror/mode/htmlmixed' );
+require( 'code-mirror/mode/xml' );
+require( 'code-mirror/mode/javascript' );
+
+require( 'angular-ui-codemirror' );
+
 
 var demoApp = angular.module(
-  'isis.ui.demoApp', [
-    'isis.ui.demoApp.templates',
-    'btford.markdown'
-  ].concat( components.map( function ( e ) {
-    return 'isis.ui.' + e + '.demo';
-  } ) )
+'isis.ui.demoApp', [
+  'isis.ui.demoApp.templates',
+  'btford.markdown',
+  'ui.codemirror'
+].concat( components.map( function ( e ) {
+  return 'isis.ui.' + e.name + '.demo';
+} ) )
 );
 
 demoApp.run( function () {
@@ -38,15 +69,50 @@ demoApp.run( function () {
 } );
 
 demoApp.controller(
-  'UIComponentsDemoController',
-  function ( $scope ) {
+'UIComponentsDemoController',
+function ( $scope, $templateCache ) {
 
-    $scope.components = components.map( function ( component ) {
-      return {
-        name: component,
-        template: '/library/' + component + '/docs/demo.html',
-        docs: '/library/' + component + '/docs/readme.md'
-      };
-    } );
+  var fileExtensionRE,
+    codeMirrorModes;
 
+  fileExtensionRE = /(?:\.([^.]+))?$/;
+
+  codeMirrorModes = {
+    'js': 'javascript',
+    'html': 'htmlmixed'
+  };
+
+  $scope.components = components.map( function ( component ) {
+    var sources,
+    viewerOptions,
+    fileExtension;
+
+    if ( angular.isArray( component.sources ) ) {
+      sources = component.sources.map( function ( sourceFile ) {
+
+        fileExtension = fileExtensionRE.exec( sourceFile );
+
+        viewerOptions = {
+          lineWrapping: true,
+          lineNumbers: true,
+          readOnly: 'nocursor',
+          mode: codeMirrorModes[fileExtension[1]] || 'xml'
+        };
+
+        return {
+          fileName: sourceFile,
+          code: $templateCache.get( '/library/' + component.name + '/docs/' + sourceFile ),
+          viewerOptions: viewerOptions
+        };
+      } );
+    }
+
+    return {
+      name: component.name,
+      template: '/library/' + component.name + '/docs/demo.html',
+      docs: '/library/' + component.name + '/docs/readme.md',
+      sources: sources
+    };
   } );
+
+} );
