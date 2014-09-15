@@ -39,8 +39,7 @@ angular.module(
         handleMouseDownEvent = function ( event ) {
 
           if ( opened &&
-            service.menuElement &&
-            !$.contains( service.menuElement[ 0 ], event.target ) &&
+            service.menuElement && !$.contains( service.menuElement[ 0 ], event.target ) &&
             event.target !== service.triggerElement ) {
             service.close();
           }
@@ -109,13 +108,13 @@ angular.module(
 
           var menuBounds = menuElement[ 0 ].getBoundingClientRect(),
             menuWidth = menuBounds.right - menuBounds.left,
-            menuHeight = menuBounds.bottom -menuBounds.top,
+            menuHeight = menuBounds.bottom - menuBounds.top,
 
-            windowHeight = window[0].innerHeight,
-            windowWidth = window[0].innerWidth,
+            windowHeight = window[ 0 ].innerHeight,
+            windowWidth = window[ 0 ].innerWidth,
 
-            windowLeftEdge = window[0].pageXOffset,
-            windowTopEdge = window[0].pageYOffset,
+            windowLeftEdge = window[ 0 ].pageXOffset,
+            windowTopEdge = window[ 0 ].pageYOffset,
 
             windowRightEdge = windowWidth + windowLeftEdge,
             windowBottomEdge = windowHeight + windowTopEdge,
@@ -164,16 +163,16 @@ angular.module(
           var shellAngularElement = angular.element( $templateCache.get(
             '/isis-ui-components/templates/contextmenu.html' ) ),
             menuDOMElement,
-            sameTriggerElement = (service.triggerElement === triggerElement);
+            sameTriggerElement = ( service.triggerElement === triggerElement );
 
           autoCloseOnClick = doNotAutocloseOnClick === false;
 
-          if (opened) {
+          if ( opened ) {
             service.close();
           }
 
-          if ( !sameTriggerElement  ) {
-            
+          if ( !sameTriggerElement ) {
+
             // do not re-open if the same triggerelement was clicked
 
             menuScope = aScope.$new();
@@ -187,27 +186,27 @@ angular.module(
             service.triggerElement = triggerElement;
 
             setPosition( position, menuDOMElement );
-  
+
             widthWatcher = menuScope.$watch(
               function () {
                 return menuDOMElement[ 0 ].scrollWidth;
               },
-  
+
               function () {
                 setPosition( position, menuDOMElement );
               }
             );
-  
+
             heightWatcher = menuScope.$watch(
               function () {
                 return menuDOMElement[ 0 ].scrollHeight;
               },
-  
+
               function () {
                 setPosition( position, menuDOMElement );
               }
             );
-  
+
             bindEvents();
             opened = true;
           }
@@ -268,7 +267,7 @@ angular.module(
               angular.extend( options, $scope.contextmenuConfig );
             }
 
-            element.addClass('context-menu-trigger');
+            element.addClass( 'context-menu-trigger' );
 
             open = function ( event ) {
 

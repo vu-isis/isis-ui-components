@@ -1,121 +1,110 @@
-/*globals define, angular, alert*/
+/*globals angular*/
 
+'use strict';
 
-define( [
-  'angular',
+require( './checkboxWidget.js' );
+require( './compoundWidget.js' );
+require( './selectWidget.js' );
+require( './stringWidget.js' );
 
-  './stringWidget',
-  './compoundWidget',
-  './checkboxWidget',
-  './selectWidget'
+var availableWidgets = {
+  'string': [ 'stringWidget', 'string-widget' ],
+  'compound': [ 'compoundWidget', 'compound-widget' ],
+  'checkbox': [ 'checkboxWidget', 'checkbox-widget' ],
+  'select': [ 'selectWidget', 'select-widget' ]
+},
+  widgetModules = [];
 
-], function ( ng ) {
+angular.forEach( availableWidgets, function ( value ) {
+  this.push( 'isis.ui.' + value[ 0 ] );
+}, widgetModules );
 
-  'use strict';
+angular.module( 'isis.ui.valueWidgets', widgetModules )
+  .factory( '$valueWidgets', function () {
+    var getWidgetElementForType;
 
-  var availableWidgets = {
-    'string': [ 'stringWidget', 'string-widget' ],
-    'compound': [ 'compoundWidget', 'compound-widget' ],
-    'checkbox': [ 'checkboxWidget', 'checkbox-widget' ],
-    'select': [ 'selectWidget', 'select-widget' ]
-  },
-    widgetModules = [];
+    getWidgetElementForType = function ( type ) {
 
-  angular.forEach( availableWidgets, function ( value, key ) {
-    this.push( 'isis.ui.' + value[ 0 ] );
-  }, widgetModules );
+      var result = availableWidgets[ type ] && availableWidgets[ type ][ 1 ];
 
-  angular.module(
-    'isis.ui.valueWidgets',
+      if ( !result ) {
+        result = 'string-widget';
+      }
 
-    widgetModules
+      return result;
 
-  )
-    .factory( '$valueWidgets', function () {
-      var getWidgetElementForType;
+    };
 
-      getWidgetElementForType = function ( type ) {
-
-        var result = availableWidgets[ type ] && availableWidgets[ type ][ 1 ];
-
-        if ( !result ) {
-          result = 'string-widget';
-        }
-
-        return result;
-
-      };
+    return {
+      getWidgetElementForType: getWidgetElementForType
+    };
+  } )
+  .directive( 'valueWidget', [ '$log', '$compile', '$valueWidgets',
+    function ( $log, $compile, $valueWidgets ) {
 
       return {
-        getWidgetElementForType: getWidgetElementForType
-      };
-    } )
-    .directive( 'valueWidget', [ '$log', '$compile', '$valueWidgets',
-      function ( $log, $compile, $valueWidgets ) {
+        restrict: 'E',
+        replace: true,
+        require: 'ngModel',
+        scope: {
+          config: '=',
+          value: '='
+        },
 
-        return {
-          restrict: 'E',
-          replace: true,
-          scope: {
-            config: '=',
-            value: '=',
-            unresponsive: '='
-          },
+        controller: 'ValueWidgetController',
 
-          compile: function ( $elm, $attrs ) {
-            return {
-              pre: function ( $scope, $elm, $attrs, controllers ) {
+        compile: function () {
+          return {
+            pre: function ( scope ) {
 
-                if ( !$scope.config ) {
-                  $scope.config = {
-                    mode: 'edit'
-                  };
-                }
+              if ( !scope.config ) {
+                scope.config = {
+                  mode: 'edit'
+                };
+              }
 
-              },
-              post: function ( $scope, $elm, $attrs ) {
+            },
+            post: function ( scope, element, attributes, ngModel ) {
 
-                var
-                templateStr,
-                  template,
-                  widgetType,
-                  widgetElement;
+              var
+              templateStr,
+                template,
+                widgetType,
+                widgetElement;
 
-                if ( angular.isObject( $scope.value ) ) {
+              if ( angular.isObject( scope.value ) ) {
 
-                  if ( angular.isObject( $scope.value.widget ) ) {
-                    widgetType = $scope.value.widget.type;
-                  } else {
+                if ( angular.isObject( scope.value.widget ) ) {
+                  widgetType = scope.value.widget.type;
+                } else {
 
 
-                    if ( typeof $scope.value.value === 'boolean' ) {
-                      widgetType = 'checkbox';
-                    }
-
+                  if ( typeof scope.value.value === 'boolean' ) {
+                    widgetType = 'checkbox';
                   }
 
                 }
 
-
-                widgetElement = $valueWidgets.getWidgetElementForType( widgetType );
-
-                templateStr = '<' + widgetElement +
-                  ' value="value" config="config" unresponsive="unresponsive">' +
-                  '</' + widgetElement + '>';
-
-                $log.log( templateStr );
-
-                template = angular.element( templateStr );
-
-                $elm.append( $compile( template )( $scope ) );
-
               }
-            };
-          }
-        };
-
-      }
-    ] );
 
 
-} );
+              widgetElement = $valueWidgets.getWidgetElementForType( widgetType );
+
+              templateStr = '<' + widgetElement + '>' +
+                '</' + widgetElement + '>';
+
+              $log.log( templateStr );
+
+              template = angular.element( templateStr );
+
+              element.append( $compile( template )( scope ) );
+
+              console.log(ngModel.$viewValue);
+
+            }
+          };
+        }
+      };
+
+    }
+  ] );

@@ -1,35 +1,38 @@
-/*globals define, angular, alert*/
+/*globals angular*/
 
+'use strict';
 
-define( [
-  'angular',
-  'text!./templates/stringWidget.html',
-  'css!./styles/stringWidget.css'
+require( '../services/isisUIServices.js' );
 
-], function ( ng, template ) {
+angular.module(
+  'isis.ui.stringWidget', [ 'isis.ui.services' ]
 
-  'use strict';
+)
+  .directive(
+    'stringWidget', [ 'isisTemplateService', '$compile',
+      function ( isisTemplateService, $compile ) {
 
-  angular.module(
-    'isis.ui.stringWidget', []
-
-  )
-    .directive(
-      'stringWidget',
-      function () {
+        var defaultTemplateUrl = '/isis-ui-components/templates/stringWidget.html';
 
         return {
           restrict: 'E',
           replace: true,
-          template: template,
-          scope: {
-            config: '=',
-            value: '=',
-            unresponsive: '='
+          require: 'ngModel',
+          link: function ( scope, element, attributes, ngModel ) {
+
+            var templateUrl;
+
+            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
+
+            isisTemplateService.getTemplate( scope.config.template, templateUrl )
+              .then( function ( template ) {
+                element.replaceWidth( $compile( template, scope ) );
+              } );
+
+            console.log( ngModel.$viewValue );
+
           }
 
         };
-      } );
-
-
-} );
+      }
+    ] );
