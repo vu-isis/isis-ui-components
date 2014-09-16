@@ -1,6 +1,6 @@
 This is a collection of Angular ui-components originally developed for WebGME.
 
-## Intsall
+## Install
 
 ```
 bower install isis-ui-components
