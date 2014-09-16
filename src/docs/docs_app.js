@@ -3,6 +3,10 @@
 
 var components = [
   {
+    name: 'valueWidgets',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
     name: 'searchBox',
     sources: [ 'demo.html', 'demo.js']
   },
@@ -39,6 +43,7 @@ require( '../library/dropdownNavigator/docs/demo.js' );
 require( '../library/treeNavigator/docs/demo.js' );
 require( '../library/itemList/docs/demo.js' );
 require( '../library/searchBox/docs/demo.js' );
+require( '../library/valueWidgets/docs/demo.js' );
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
@@ -95,7 +100,7 @@ function ( $scope, $templateCache ) {
         viewerOptions = {
           lineWrapping: true,
           lineNumbers: true,
-          readOnly: 'nocursor',
+          readOnly: true,
           mode: codeMirrorModes[fileExtension[1]] || 'xml'
         };
 

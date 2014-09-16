@@ -39,6 +39,7 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
       getWidgetElementForType: getWidgetElementForType
     };
   } )
+  .controller('ValueWidgetController', function(){})
   .directive( 'valueWidget', [ '$log', '$compile', '$valueWidgets',
     function ( $log, $compile, $valueWidgets ) {
 
@@ -47,8 +48,8 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
         replace: true,
         require: 'ngModel',
         scope: {
-          config: '=',
-          value: '='
+          widgetType: '=',
+          widgetConfig: '='
         },
 
         controller: 'ValueWidgetController',
@@ -57,8 +58,8 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
           return {
             pre: function ( scope ) {
 
-              if ( !scope.config ) {
-                scope.config = {
+              if ( !scope.widgetConfig ) {
+                scope.widgetConfig = {
                   mode: 'edit'
                 };
               }
@@ -70,23 +71,21 @@ angular.module( 'isis.ui.valueWidgets', widgetModules )
               templateStr,
                 template,
                 widgetType,
-                widgetElement;
+                widgetElement,
+                modelValue;
 
-              if ( angular.isObject( scope.value ) ) {
+              modelValue = ngModel.$modelValue;
 
-                if ( angular.isObject( scope.value.widget ) ) {
-                  widgetType = scope.value.widget.type;
-                } else {
+              if ( scope.widgetType ) {
+                widgetType = attributes.widgetType;
+              } else {
 
 
-                  if ( typeof scope.value.value === 'boolean' ) {
-                    widgetType = 'checkbox';
-                  }
-
+                if ( typeof modelValue === 'boolean' ) {
+                  widgetType = 'checkbox';
                 }
 
               }
-
 
               widgetElement = $valueWidgets.getWidgetElementForType( widgetType );
 
