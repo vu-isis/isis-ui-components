@@ -63,7 +63,8 @@ var demoApp = angular.module(
 'isis.ui.demoApp', [
   'isis.ui.demoApp.templates',
   'btford.markdown',
-  'ui.codemirror'
+  'ui.codemirror',
+  'ui.bootstrap'
 ].concat( components.map( function ( e ) {
   return 'isis.ui.' + e.name + '.demo';
 } ) )
