@@ -7,8 +7,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ($scope) {
 
   var onValueChange;
 
-  onValueChange = function(newVal, oldVal) {
-    console.log('Value changed:', newVal, oldVal);
+  onValueChange = function() {
+    console.log('Value changed.');
   };
 
   $scope.valuesToRender = [ true ];
@@ -17,10 +17,16 @@ demoApp.controller( 'ValueWidgetsDemoController', function ($scope) {
 
     {
       name: 'stringWidget',
-      value: 'A line of text',
+      value: 'Shorter than 20?',
       config: {
         placeHolder: 'Enter something',
-        valueChange: onValueChange
+        valueChange: onValueChange,
+        validators: {
+          shorterThanTen: function(modelValue, viewValue) {
+            var value = modelValue || viewValue;
+            return angular.isString(value) && value.length < 20;
+          }
+        }
       }
     }
 

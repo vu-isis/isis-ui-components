@@ -8,9 +8,10 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="widget in widgets">
-                <td>{{widget.name}}</td>
+                <td><b>{{widget.name}}</b></td>
                 <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     <value-widget
+                        name="widget.name"
                         widgetType="widget.name"
                         ng-model="widget.value"
                         widget-mode="'edit'"
@@ -20,6 +21,7 @@
                 </td>
                 <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     <value-widget
+                        name="widget.name"
                         widgetType="widget.name"
                         ng-model="widget.value"
                         widget-mode="'display'"

@@ -1,0 +1,4 @@
+.value-widget.ng-invalid input {
+  border: 1px solid #ff0011; }
+.value-widget.ng-invalid .value-display {
+  color: #ff0011; }

@@ -17,7 +17,7 @@ angular.module(
         return {
           restrict: 'E',
           replace: true,
-          require: '?^ngModel',
+          require: '^ngModel',
           link: function ( scope, element ) {
             scope.getAndCompileWidgetTemplate(element, defaultTemplateUrl);
           }

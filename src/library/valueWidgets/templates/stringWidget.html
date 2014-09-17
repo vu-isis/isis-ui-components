@@ -1,8 +1,8 @@
 <div class="string-widget widget"
      ng-switch on="widgetMode">
-    <div ng-switch-when="display">{{$parent.value}}</div>
+    <div ng-switch-when="display" class="value-display">{{$parent.value}}</div>
     <div ng-switch-when="edit">
-        <input type="text" class="form-control" placeholder="{{widgetConfig.placeHolder}}" ng-model="$parent.value">
+        <input type="text" class="form-control" placeholder="{{widgetConfig.placeHolder}}" ng-model="$parent.value" name="{{name}}">
     </div>
 
 </div>

@@ -23,6 +23,7 @@ Include library CSS:
 
 ## Requirements
 
+- Angular (1.3.2)
 - jQuery UI (1.11.1)
 - Angular-ui-bootstrap (0.10.0)
 

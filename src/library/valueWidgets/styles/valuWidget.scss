@@ -1,0 +1,13 @@
+$error-color: #ff0011;
+
+.value-widget {
+  &.ng-invalid {
+    input {
+      border: 1px solid $error-color;
+    }
+
+    .value-display {
+      color: $error-color;
+    }
+  }
+}
