@@ -22,9 +22,12 @@ demoApp.controller( 'ValueWidgetsDemoController', function ($scope) {
         placeHolder: 'Enter something',
         valueChange: onValueChange,
         validators: {
-          shorterThanTen: function(modelValue, viewValue) {
-            var value = modelValue || viewValue;
-            return angular.isString(value) && value.length < 20;
+          shorterThanTwenty : {
+            errorMessage: 'This is not sorter than 20!',
+            method: function(modelValue, viewValue) {
+              var value = modelValue || viewValue;
+              return angular.isString(value) && value.length < 20;
+            }
           }
         }
       }

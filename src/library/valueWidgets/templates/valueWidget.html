@@ -1,1 +1,5 @@
-<div class="value-widget"></div>
+<div class="value-widget">
+    <label ng-if="inputLabel" for="{{inputId}}">{{inputLabel}}</label>
+    <value-widget-body></value-widget-body>
+    {{validationError}}
+</div>

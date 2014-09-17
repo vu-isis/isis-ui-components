@@ -2,7 +2,12 @@
      ng-switch on="widgetMode">
     <div ng-switch-when="display" class="value-display">{{$parent.value}}</div>
     <div ng-switch-when="edit">
-        <input type="text" class="form-control" placeholder="{{widgetConfig.placeHolder}}" ng-model="$parent.value" name="{{name}}">
+        <input type="text"
+               class="form-control"
+               placeholder="{{widgetConfig.placeHolder}}"
+               ng-model="$parent.value"
+               name="{{inputName}}"
+               id="{{inputId}}">
     </div>
 
 </div>

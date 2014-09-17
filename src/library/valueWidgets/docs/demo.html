@@ -2,27 +2,29 @@
 
     <table class="table table-condensed">
         <thead>
-            <th></th>
             <th>Mode: edit</th>
             <th>Mode: display</th>
         </thead>
         <tbody>
             <tr data-ng-repeat="widget in widgets">
-                <td><b>{{widget.name}}</b></td>
-                <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     <value-widget
-                        name="widget.name"
-                        widgetType="widget.name"
+                        input-name="widget.name"
+                        input-label="widget.name"
+                        input-id="widget.name"
+                        widget-type="widget.name"
                         ng-model="widget.value"
                         widget-mode="'edit'"
                         value-change="widget.valueChange"
                         widget-config="widget.config">
                     </value-widget>
                 </td>
-                <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                     <value-widget
-                        name="widget.name"
-                        widgetType="widget.name"
+                        input-name="widget.name"
+                        input-label="widget.name"
+                        input-id="widget.name + '_display'"
+                        widget-type="widget.name"
                         ng-model="widget.value"
                         widget-mode="'display'"
                         widget-config="widget.config">
