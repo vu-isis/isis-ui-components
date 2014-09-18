@@ -4,11 +4,7 @@
                 form-config="listData.config.newItemForm"></item-list-new-item>
     </div>
     <div class="row" ng-if="config.filter">
-        <div class="item-list-filter">
-            <div class="panel-group">
-                <input class="form-control" placeholder="Type to filter..." ng-model="config.filter.$">
-            </div>
-        </div>
+        <item-list-filter></item-list-filter>
     </div>
     <div class="row">
         <list-item-group></list-item-group>
