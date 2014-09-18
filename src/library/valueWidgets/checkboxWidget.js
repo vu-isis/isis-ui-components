@@ -26,7 +26,7 @@ angular.module(
 
             isisTemplateService.getTemplate( scope.config.template, templateUrl )
               .then( function ( template ) {
-                element.replaceWidth( $compile( template, scope ) );
+                element.replaceWith( $compile( template, scope ) );
               } );
 
             console.log( ngModel.$viewValue );

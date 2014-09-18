@@ -10,27 +10,16 @@ angular.module(
 )
   .directive(
     'stringWidget', [ 'isisTemplateService', '$compile',
-      function ( isisTemplateService, $compile ) {
+      function () {
 
         var defaultTemplateUrl = '/isis-ui-components/templates/stringWidget.html';
 
         return {
           restrict: 'E',
           replace: true,
-          require: 'ngModel',
-          link: function ( scope, element, attributes, ngModel ) {
-
-            var templateUrl;
-
-            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
-
-            isisTemplateService.getTemplate( scope.config.template, templateUrl )
-              .then( function ( template ) {
-                element.replaceWidth( $compile( template, scope ) );
-              } );
-
-            console.log( ngModel.$viewValue );
-
+          require: '^ngModel',
+          link: function ( scope, element ) {
+            scope.getAndCompileWidgetTemplate(element, defaultTemplateUrl);
           }
 
         };

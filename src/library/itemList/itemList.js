@@ -2,13 +2,14 @@
 'use strict';
 
 require( './listItemGroup.js' );
+require( './itemListFilter.js' );
 require( './itemListNewItem.js' );
 require( '../contextmenu/contextmenu.js' );
 
 angular.module(
   'isis.ui.itemList', [
     'isis.ui.itemList.newItem',
-    //  'isis.ui.filterInput',
+    'isis.ui.itemList.filter',
     'isis.ui.itemList.itemGroup',
     'isis.ui.contextmenu'
   ]
@@ -48,6 +49,9 @@ angular.module(
         triggerEvent: 'click',
         position: 'right bottom'
       };
+
+      $scope.config = $scope.config || {};
+      $scope.config.noItemsMessage = $scope.config.noItemsMessage || 'No items to show.';
 
     } )
 
