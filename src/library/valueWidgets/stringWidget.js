@@ -19,6 +19,9 @@ angular.module(
           replace: true,
           require: '^ngModel',
           link: function ( scope, element ) {
+
+            scope.placeHolder = scope.valueConfig.placeHolder || 'Enter value';
+
             scope.getAndCompileWidgetTemplate(element, defaultTemplateUrl);
           }
 

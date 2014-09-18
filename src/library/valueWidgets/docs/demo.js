@@ -3,47 +3,52 @@
 
 var demoApp = angular.module( 'isis.ui.valueWidgets.demo', [ 'isis.ui.valueWidgets' ] );
 
-demoApp.controller( 'ValueWidgetsDemoController', function ($scope) {
+demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
 
-  var onValueChange;
+  var onValueChange,
+  validators;
 
-  onValueChange = function() {
-    console.log('Value changed.');
+  onValueChange = function () {
+    console.log( 'Value changed.' );
   };
 
-  $scope.valuesToRender = [ true ];
+  validators = {
+    shorterThanTwenty: {
+      id: 'shorterThanTwenty',
+      errorMessage: 'This is not shorter than 20!',
+      method: function ( modelValue, viewValue ) {
+        var value = modelValue || viewValue;
+        return angular.isString( value ) && value.length < 20;
+      }
+    }
+  };
 
   $scope.widgets = [
 
     {
-      name: 'stringWidget',
       value: 'Shorter than 20?',
-      configEdit: {
-        placeHolder: 'Enter something',
+      valueConfigEdit: {
         valueChange: onValueChange,
-        errorMessagesEmbedded: true,
-        validators: {
-          shorterThanTwenty : {
-            errorMessage: 'This is not shorter than 20!',
-            method: function(modelValue, viewValue) {
-              var value = modelValue || viewValue;
-              return angular.isString(value) && value.length < 20;
-            }
-          }
-        }
+        validators: [ validators.shorterThanTwenty ]
       },
-      configDisplay: {
+      valueConfigDisplay: {
         placeHolder: 'Enter something',
         valueChange: onValueChange,
-        validators: {
-          shorterThanTwenty : {
-            errorMessage: 'This is not shorter than 20!',
-            method: function(modelValue, viewValue) {
-              var value = modelValue || viewValue;
-              return angular.isString(value) && value.length < 20;
-            }
-          }
-        }
+        validators: [ validators.shorterThanTwenty ]
+      },
+      widgetType: 'stringWidget',
+      widgetConfigEdit: {
+        placeHolder: 'Enter something',
+        label: 'stringWidget',
+        errorMessagesEmbedded: true
+      },
+      widgetConfigDisplay: {
+        placeHolder: 'Enter something',
+        label: 'stringWidget'
+      },
+      inputConfig: {
+        name: 'stringWidget',
+        id: 'stringWidget'
       }
     }
 

@@ -71,12 +71,15 @@ function () {
     templateUrl: '/isis-ui-components/templates/valueWidget.html',
     scope: {
       value: '=ngModel',
+      valueConfig: '=?',
+
+      inputConfig: '=?',
+
       widgetType: '=?',
-      widgetConfig: '=?',
       widgetMode: '=?',
-      inputLabel: '=?',
-      inputName: '=?',
-      inputId: '=?'
+      widgetConfig: '=?',
+      widgetDisabled: '=?'
+
     },
     priority: 0,
 
@@ -97,13 +100,6 @@ function () {
         return {
           pre: function ( scope ) {
 
-            if ( !scope.widgetConfig ) {
-              scope.widgetConfig = {
-                placeHolder: 'Enter a value'
-              };
-            }
-
-
             if ( !scope.widgetMode ) {
               scope.widgetMode = 'edit';
             }
@@ -122,15 +118,19 @@ function () {
 
             ngModel = controllers[0];
 
-            if ( scope.widgetConfig && angular.isObject( scope.widgetConfig.validators ) ) {
+            scope.valueConfig = scope.valueConfig || {};
+            scope.widgetConfig = scope.widgetConfig || {};
+            scope.inputConfig = scope.inputConfig || {};
+
+            if ( angular.isObject( scope.valueConfig.validators ) ) {
 
               ngModel.$validators = ngModel.$validators || {};
               scope.validatorMessages = scope.validatorMessages || {};
 
-              angular.forEach( scope.widgetConfig.validators, function ( validatorDescriptor, validatorId ) {
+              angular.forEach( scope.valueConfig.validators, function ( validatorDescriptor ) {
                 if ( angular.isFunction( validatorDescriptor.method ) ) {
-                  ngModel.$validators[validatorId] = validatorDescriptor.method;
-                  scope.validatorMessages[validatorId] = validatorDescriptor.errorMessage;
+                  ngModel.$validators[validatorDescriptor.id] = validatorDescriptor.method;
+                  scope.validatorMessages[validatorDescriptor.id] = validatorDescriptor.errorMessage;
                 }
               } );
 

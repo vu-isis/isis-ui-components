@@ -1,5 +1,7 @@
 <div class="value-widget">
-    <label ng-if="inputLabel" for="{{inputId}}">{{inputLabel}}</label>
+    <label ng-if="widgetConfig.label" for="{{inputConfig.id}}">{{widgetConfig.label}}</label>
     <value-widget-body></value-widget-body>
-    <validation-error-marker error-messages="validatorMessages" embedded="widgetConfig.errorMessagesEmbedded"></validation-error-marker>
+    <validation-error-marker
+            error-messages="validatorMessages"
+            embedded="widgetConfig.errorMessagesEmbedded"></validation-error-marker>
 </div>

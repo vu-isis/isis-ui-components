@@ -4,10 +4,10 @@
     <div ng-switch-when="edit">
         <input type="text"
                class="form-control"
-               placeholder="{{widgetConfig.placeHolder}}"
+               placeholder="{{placeHolder}}"
                ng-model="$parent.value"
-               name="{{inputName}}"
-               id="{{inputId}}">
+               name="{{inputConfig.name}}"
+               id="{{inputConfig.id}}"
+               ng-disabled="widgetDisabled">
     </div>
-
 </div>
