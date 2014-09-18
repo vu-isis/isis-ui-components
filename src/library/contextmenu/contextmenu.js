@@ -165,7 +165,7 @@ angular.module(
             menuDOMElement,
             sameTriggerElement = ( service.triggerElement === triggerElement );
 
-          autoCloseOnClick = doNotAutocloseOnClick === false;
+          autoCloseOnClick = doNotAutocloseOnClick !== true;
 
           if ( opened ) {
             service.close();
@@ -179,8 +179,8 @@ angular.module(
 
             menuScope.contentTemplateUrl = contentTemplateUrl;
 
+            body.append( shellAngularElement );
             menuDOMElement = $compile( shellAngularElement )( menuScope );
-            body.append( menuDOMElement );
 
             service.menuElement = menuDOMElement;
             service.triggerElement = triggerElement;
@@ -248,7 +248,7 @@ angular.module(
             disabled: '&contextmenuDisabled'
           },
 
-          link: function ( $scope, element ) {
+          link: function ( scope, element ) {
 
             var open,
               handleContextmenuEvent,
@@ -257,37 +257,39 @@ angular.module(
                 contentTemplateUrl: '/isis-ui-components/templates/contextmenu.DefaultContents.html'
               };
 
-            if ( !angular.isFunction( $scope.disabled ) ) {
-              $scope.disabled = function () {
+            if ( !angular.isFunction( scope.disabled ) ) {
+              scope.disabled = function () {
                 return false;
               };
             }
 
-            if ( angular.isObject( $scope.contextmenuConfig ) ) {
-              angular.extend( options, $scope.contextmenuConfig );
+            if ( angular.isObject( scope.contextmenuConfig ) ) {
+              angular.extend( options, scope.contextmenuConfig );
             }
 
             element.addClass( 'context-menu-trigger' );
 
             open = function ( event ) {
 
-              var position, bounds;
+              var position,
+                bounds,
+                menuParentScope;
 
               position = {
                 pageX: event.pageX,
                 pageY: event.pageY
               };
 
-              if ( $scope.contextmenuConfig && $scope.contextmenuConfig.position ) {
+              if ( scope.contextmenuConfig && scope.contextmenuConfig.position ) {
 
                 bounds = element[ 0 ].getBoundingClientRect();
 
-                if ( $scope.contextmenuConfig.position === 'left bottom' ) {
+                if ( scope.contextmenuConfig.position === 'left bottom' ) {
 
                   position.pageX = bounds.left + window.pageXOffset;
                   position.pageY = bounds.bottom + window.pageYOffset;
 
-                } else if ( $scope.contextmenuConfig.position === 'right bottom' ) {
+                } else if ( scope.contextmenuConfig.position === 'right bottom' ) {
 
                   position.pageX = bounds.right + window.pageXOffset;
                   position.pageY = bounds.bottom + window.pageYOffset;
@@ -295,25 +297,28 @@ angular.module(
                 }
               }
 
-              if ( !$scope.disabled() ) {
+              if ( !scope.disabled() ) {
+
+                menuParentScope = options.menuParentScope || scope;
+
                 contextmenuService.open(
-                  event.target, options.contentTemplateUrl, $scope, position, options.doNotAutoClose
+                  event.target, options.contentTemplateUrl, menuParentScope, position, options.doNotAutoClose
                 );
 
               }
             };
 
             handleContextmenuEvent = function ( event ) {
-              if ( !$scope.disabled() ) {
+              if ( !scope.disabled() ) {
 
                 if ( event.target !== contextmenuService.triggerElement ) {
 
                   event.preventDefault();
                   event.stopPropagation();
 
-                  $scope.$apply(
+                  scope.$apply(
                     function () {
-                      $scope.callback( {
+                      scope.callback( {
                         $event: event
                       } );
                       open( event );
@@ -334,7 +339,7 @@ angular.module(
               options.triggerEvent, handleContextmenuEvent
             );
 
-            $scope.$on(
+            scope.$on(
               '$destroy', function () {
                 element.unbind(
                   options.triggerEvent, handleContextmenuEvent

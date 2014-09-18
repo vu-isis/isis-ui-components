@@ -2,10 +2,13 @@
 
 'use strict';
 
+require( '../validationErrorMarker/validationErrorMarker.js' );
+
 require( './checkboxWidget.js' );
 require( './compoundWidget.js' );
 require( './selectWidget.js' );
 require( './stringWidget.js' );
+
 //require( 'angular-bindonce');
 
 var availableWidgets = {
@@ -20,7 +23,7 @@ angular.forEach( availableWidgets, function ( value ) {
   this.push( 'isis.ui.' + value[ 0 ] );
 }, widgetModules );
 
-angular.module( 'isis.ui.valueWidgets', [].concat( widgetModules ) )
+angular.module( 'isis.ui.valueWidgets', [ 'isis.ui.validationErrorMarker' ].concat( widgetModules ) )
 
 .factory( '$valueWidgets', function () {
   var getWidgetElementForType;
@@ -165,25 +168,6 @@ function () {
               }
 
             };
-
-            scope.$watch(
-              function () { return ngModel.$error; },
-              function ( error ) {
-                scope.validationError = error;
-              }
-            );
-
-            scope.$watch( 'value', function ( newVal, oldVal ) {
-
-              if ( scope.widgetMode === 'edit' ) {
-
-                if ( angular.isFunction( scope.widgetConfig.valueChange ) ) {
-                  scope.widgetConfig.valueChange( newVal, oldVal );
-                }
-
-              }
-
-            } );
 
             scope.$watch( 'widgetType', function () {
               linkIt();

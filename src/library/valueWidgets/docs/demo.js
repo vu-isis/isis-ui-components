@@ -18,12 +18,26 @@ demoApp.controller( 'ValueWidgetsDemoController', function ($scope) {
     {
       name: 'stringWidget',
       value: 'Shorter than 20?',
-      config: {
+      configEdit: {
+        placeHolder: 'Enter something',
+        valueChange: onValueChange,
+        errorMessagesEmbedded: true,
+        validators: {
+          shorterThanTwenty : {
+            errorMessage: 'This is not shorter than 20!',
+            method: function(modelValue, viewValue) {
+              var value = modelValue || viewValue;
+              return angular.isString(value) && value.length < 20;
+            }
+          }
+        }
+      },
+      configDisplay: {
         placeHolder: 'Enter something',
         valueChange: onValueChange,
         validators: {
           shorterThanTwenty : {
-            errorMessage: 'This is not sorter than 20!',
+            errorMessage: 'This is not shorter than 20!',
             method: function(modelValue, viewValue) {
               var value = modelValue || viewValue;
               return angular.isString(value) && value.length < 20;
