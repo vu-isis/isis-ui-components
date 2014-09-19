@@ -17,6 +17,7 @@ var availableWidgets = {
   'checkbox': [ 'checkboxWidget', 'checkbox-widget' ],
   'select': [ 'selectWidget', 'select-widget' ]
 },
+
 widgetModules = [];
 
 angular.forEach( availableWidgets, function ( value ) {
@@ -70,7 +71,7 @@ function () {
     require: 'ngModel',
     templateUrl: '/isis-ui-components/templates/valueWidget.html',
     scope: {
-      value: '=ngModel',
+      model: '=ngModel',
       modelConfig: '=?',
 
       inputConfig: '=?',
@@ -88,6 +89,8 @@ function () {
       scope.modelConfig = scope.modelConfig || {};
       scope.widgetConfig = scope.widgetConfig || {};
       scope.inputConfig = scope.inputConfig || {};
+
+      scope.placeHolder = scope.modelConfig.placeHolder || 'Enter value';
 
       if ( angular.isObject( scope.modelConfig.validators ) ) {
 
@@ -141,7 +144,7 @@ function () {
                 widgetType = scope.widgetType;
               } else {
 
-                if ( typeof scope.value === 'boolean' ) {
+                if ( typeof scope.model === 'boolean' ) {
                   widgetType = 'checkbox';
                 }
 

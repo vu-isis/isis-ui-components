@@ -9,10 +9,11 @@
         </thead>
         <tbody>
             <tr data-ng-repeat="widgetDescriptor in widgets">
-                <td style="max-width: 300px; overflow-x: hidden; text-overflow: ellipsis;">
+                <td style="max-width: 250px; overflow-x: hidden; text-overflow: ellipsis;">
                     <value-widget
 
-                        ng-model="widgetDescriptor.value"
+                        ng-model="widgetDescriptor.model"
+                        ng-change="widgetDescriptor.modelChange()"
                         model-config="widgetDescriptor.modelConfigEdit"
 
                         input-config="widgetDescriptor.inputConfig"
@@ -24,10 +25,10 @@
 
                     </value-widget>
                 </td>
-                <td style="max-width: 300px; overflow-x: hidden; text-overflow: ellipsis;">
+                <td style="max-width: 250px; overflow-x: hidden; text-overflow: ellipsis;">
                     <value-widget
 
-                        ng-model="widgetDescriptor.value"
+                        ng-model="widgetDescriptor.model"
                         model-config="widgetDescriptor.modelConfigDisplay"
 
                         input-config="widgetDescriptor.inputConfig"

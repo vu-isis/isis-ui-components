@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "angular-bindonce": "^0.3.1",
     "angular-markdown-directive": "^0.3.0",
     "angular-momentjs": "^0.1.8",
     "angular-sanitize": "0.0.1",
@@ -37,6 +36,7 @@
   },
   "browser": {
     "showdown": "./vendor/showdown_for_browserify.js",
+    "angular-bindonce": "./vendor/bindonce_fixed.js",
     "angular-dragdrop": "./bower_components/angular-dragdrop/src/angular-dragdrop.min.js",
     "angular-ui-sortable": "./bower_components/angular-ui-sortable/sortable.min.js",
     "angular-moment": "./bower_components/angular-moment/angular-moment.min.js",
