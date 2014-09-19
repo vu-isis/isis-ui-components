@@ -27,11 +27,11 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
 
     {
       value: 'Shorter than 20?',
-      valueConfigEdit: {
+      modelConfigEdit: {
         valueChange: onValueChange,
         validators: [ validators.shorterThanTwenty ]
       },
-      valueConfigDisplay: {
+      modelConfigDisplay: {
         placeHolder: 'Enter something',
         valueChange: onValueChange,
         validators: [ validators.shorterThanTwenty ]
@@ -40,7 +40,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
       widgetConfigEdit: {
         placeHolder: 'Enter something',
         label: 'stringWidget',
-        errorMessagesEmbedded: true
+        errorMessagesEmbedded: true,
+        tooltip: 'Enter something here. This value represents a very important something.'
       },
       widgetConfigDisplay: {
         placeHolder: 'Enter something',

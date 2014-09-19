@@ -71,7 +71,7 @@ function () {
     templateUrl: '/isis-ui-components/templates/valueWidget.html',
     scope: {
       value: '=ngModel',
-      valueConfig: '=?',
+      modelConfig: '=?',
 
       inputConfig: '=?',
 
@@ -82,8 +82,28 @@ function () {
 
     },
     priority: 0,
+    controller: 'ValueWidgetController',
+    link: function ( scope, element, attributes, ngModel ) {
 
-    controller: 'ValueWidgetController'
+      scope.modelConfig = scope.modelConfig || {};
+      scope.widgetConfig = scope.widgetConfig || {};
+      scope.inputConfig = scope.inputConfig || {};
+
+      if ( angular.isObject( scope.modelConfig.validators ) ) {
+
+        ngModel.$validators = ngModel.$validators || {};
+        scope.validatorMessages = scope.validatorMessages || {};
+
+        angular.forEach( scope.modelConfig.validators, function ( validatorDescriptor ) {
+          if ( angular.isFunction( validatorDescriptor.method ) ) {
+            ngModel.$validators[validatorDescriptor.id] = validatorDescriptor.method;
+            scope.validatorMessages[validatorDescriptor.id] = validatorDescriptor.errorMessage;
+          }
+        } );
+
+      }
+
+    }
   };
 } )
 .directive( 'valueWidgetBody', [ '$log', '$compile', '$valueWidgets',
@@ -105,7 +125,7 @@ function () {
             }
 
           },
-          post: function ( scope, element, attributes, controllers ) {
+          post: function ( scope, element ) {
 
             var
             widgetTemplateStr,
@@ -113,28 +133,7 @@ function () {
             widgetType,
             widgetDirective,
             newWidgetDirective,
-            linkIt,
-            ngModel;
-
-            ngModel = controllers[0];
-
-            scope.valueConfig = scope.valueConfig || {};
-            scope.widgetConfig = scope.widgetConfig || {};
-            scope.inputConfig = scope.inputConfig || {};
-
-            if ( angular.isObject( scope.valueConfig.validators ) ) {
-
-              ngModel.$validators = ngModel.$validators || {};
-              scope.validatorMessages = scope.validatorMessages || {};
-
-              angular.forEach( scope.valueConfig.validators, function ( validatorDescriptor ) {
-                if ( angular.isFunction( validatorDescriptor.method ) ) {
-                  ngModel.$validators[validatorDescriptor.id] = validatorDescriptor.method;
-                  scope.validatorMessages[validatorDescriptor.id] = validatorDescriptor.errorMessage;
-                }
-              } );
-
-            }
+            linkIt;
 
             linkIt = function () {
 
