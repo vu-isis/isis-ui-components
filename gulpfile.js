@@ -43,6 +43,7 @@ var
       'src/library/treeNavigator/*.js',
       'src/library/hierarchicalMenu/*.js',
       'src/library/itemList/*.js',
+      'src/library/decisionTable/*.js',
       'src/library/validationErrorMarker/*.js',
 
       'src/library/valueWidgets/*.js'

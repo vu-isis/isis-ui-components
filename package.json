@@ -40,8 +40,10 @@
     "angular-dragdrop": "./bower_components/angular-dragdrop/src/angular-dragdrop.min.js",
     "angular-ui-sortable": "./bower_components/angular-ui-sortable/sortable.min.js",
     "angular-moment": "./bower_components/angular-moment/angular-moment.min.js",
-    "codemirrorCSS": "./bower_components/codemirror/lib/codemirror.css",
-    "angular-ui-codemirror": "./bower_components/angular-ui-codemirror/ui-codemirror.js"
+    "codemirror-css": "./bower_components/codemirror/lib/codemirror.css",
+    "angular-ui-codemirror": "./bower_components/angular-ui-codemirror/ui-codemirror.js",
+    "ng-grid": "./bower_components/ng-grid/ng-grid-2.0.13.min.js",
+    "ng-grid-css": "./bower_components/ng-grid/ng-grid.min.css"
   },
   "browserify-shim": {
     "showdown": "Showdown",
