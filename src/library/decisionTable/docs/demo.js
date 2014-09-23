@@ -18,17 +18,17 @@ demoApp.service('decisionTableDataProvider', [function () {
       ],
       'conditions': {
         'event1_a': {
-          'index': 2,
+          'index': 1,
           'exp': 'ref_e1.a'
         },
         'event1': {
-          'index': 1,
+          'index': 0,
           'exp': 'ref_e1'
         }
       },
       'actions': {
         'action_1': {
-          'index': 1,
+          'index': 0,
           'exp': 'Action.out'
         }
       }
@@ -38,14 +38,16 @@ demoApp.service('decisionTableDataProvider', [function () {
 
 
   this.loadData = function () {
-    var result;
+    var result,
+    conditionsColumnDefs = [],
+    actionsColumnDefs = [];
 
     result = {
       declarations: {
         data: {},
         columnDefs: [
-          {field: 'ref', displayName: 'Reference'},
-          {field: 'name', displayName: 'Name'}
+          { field: 'ref', displayName: 'Reference' },
+          { field: 'name', displayName: 'Name' }
         ]
       },
       table: {
@@ -54,14 +56,28 @@ demoApp.service('decisionTableDataProvider', [function () {
       }
     };
 
-    angular.forEach(dummyData, function () {
-
+    angular.forEach(dummyData.table.conditions, function (condition, columnName) {
+      conditionsColumnDefs[ condition.index ] = {
+        field: columnName,
+        displayName: condition.exp
+      };
     });
+
+    angular.forEach(dummyData.table.actions, function (action, columnName) {
+      actionsColumnDefs[ action.index ] = {
+        field: columnName,
+        displayName: action.exp
+      };
+    });
+
+    result.table.columnDefs = conditionsColumnDefs.concat(actionsColumnDefs);
 
     return result;
   };
 
-}]);
+}
+])
+;
 
 demoApp.controller('DecisionTableDemoController', function ($scope, decisionTableDataProvider) {
 
