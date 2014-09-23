@@ -1,29 +1,13 @@
 /*globals angular*/
-
-
 'use strict';
 
+require('./decisionTable.decisions.js');
+require('./decisionTable.declarations.js');
+
 angular.module(
-'isis.ui.decisionTable', ['ngGrid']
+'isis.ui.decisionTable', ['isis.ui.decisionTable.decisions', 'isis.ui.decisionTable.declarations']
 
 )
-.directive(
-'decisionTable',
-function () {
-
-  return {
-    scope: {
-      tableData: '=',
-      config: '='
-    },
-    controller: 'DecisionTableController',
-    restrict: 'E',
-    replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.html'
-
-  };
-})
-
 .controller('DecisionTableController', function ($scope) {
 
   $scope.declarationsOptions = {
@@ -38,32 +22,18 @@ function () {
 
 })
 .directive(
-'decisionTableDeclarations',
+'decisionTable',
 function () {
 
   return {
     scope: {
-      declarationsData: '=',
-      declarationsOptions: '='
+      tableData: '=',
+      config: '='
     },
+    controller: 'DecisionTableController',
     restrict: 'E',
     replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.declarations.html'
-
-  };
-})
-.directive(
-'decisionTableDecisions',
-function () {
-
-  return {
-    scope: {
-      decisionsData: '=',
-      decisionsOptions: '='
-    },
-    restrict: 'E',
-    replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.decisions.html'
+    templateUrl: '/isis-ui-components/templates/decisionTable.html'
 
   };
 });
