@@ -42,19 +42,30 @@ demoApp.service('decisionTableDataProvider', [function () {
     conditionsColumnDefs = [],
     actionsColumnDefs = [];
 
+
     result = {
       declarations: {
-        data: {},
+        data: [],
         columnDefs: [
           { field: 'ref', displayName: 'Reference' },
           { field: 'name', displayName: 'Name' }
         ]
       },
-      table: {
-        data: {},
+      decisions: {
+        data: [
+          {'event1_a': 'true', 'action_1': 'X'},
+          {'action_1': 'a=100', 'event1': 'a&lt;100'}
+        ],
         columnDefs: []
       }
     };
+
+    angular.forEach(dummyData.declarations, function(declaration) {
+      result.declarations.data.push({
+        ref: declaration.ref,
+        name: declaration.name
+      });
+    });
 
     angular.forEach(dummyData.table.conditions, function (condition, columnName) {
       conditionsColumnDefs[ condition.index ] = {
@@ -70,7 +81,7 @@ demoApp.service('decisionTableDataProvider', [function () {
       };
     });
 
-    result.table.columnDefs = conditionsColumnDefs.concat(actionsColumnDefs);
+    result.decisions.columnDefs = conditionsColumnDefs.concat(actionsColumnDefs);
 
     return result;
   };
@@ -90,7 +101,9 @@ demoApp.controller('DecisionTableDemoController', function ($scope, decisionTabl
 
   initialData = decisionTableDataProvider.loadData();
 
-  $scope.declarations = initialData.declarations;
-  $scope.table = initialData.table;
+  $scope.tableData = {
+    declarations: initialData.declarations,
+    decisions: initialData.decisions
+  };
   $scope.config = config;
 });

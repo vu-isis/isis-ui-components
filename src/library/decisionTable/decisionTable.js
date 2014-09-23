@@ -13,8 +13,8 @@ function () {
 
   return {
     scope: {
-      declarations: '=',
-      table: '='
+      tableData: '=',
+      config: '='
     },
     controller: 'DecisionTableController',
     restrict: 'E',
@@ -23,22 +23,18 @@ function () {
 
   };
 })
+
 .controller('DecisionTableController', function ($scope) {
 
   $scope.declarationsOptions = {
-    data: 'declarations.data',
-    columnDefs: $scope.declarations.columnDefs
+    data: 'declarationsData',
+    columnDefs: $scope.tableData.declarations.columnDefs
   };
 
-  $scope.tableOptions = {
-    data: 'table.data',
-    columnDefs: $scope.table.columnDefs
+  $scope.decisionsOptions = {
+    data: 'decisionsData',
+    columnDefs: $scope.tableData.decisions.columnDefs
   };
-
-  console.log('declarationsOptions', $scope.declarationsOptions);
-  console.log($scope.declarations.data);
-  console.log('tableOptions', $scope.tableOptions);
-  console.log($scope.table.data);
 
 })
 .directive(
@@ -46,6 +42,10 @@ function () {
 function () {
 
   return {
+    scope: {
+      declarationsData: '=',
+      declarationsOptions: '='
+    },
     restrict: 'E',
     replace: true,
     templateUrl: '/isis-ui-components/templates/decisionTable.declarations.html'
@@ -53,13 +53,17 @@ function () {
   };
 })
 .directive(
-'decisionTableTable',
+'decisionTableDecisions',
 function () {
 
   return {
+    scope: {
+      decisionsData: '=',
+      decisionsOptions: '='
+    },
     restrict: 'E',
     replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.table.html'
+    templateUrl: '/isis-ui-components/templates/decisionTable.decisions.html'
 
   };
 });

@@ -46,7 +46,8 @@ var
       'src/library/decisionTable/*.js',
       'src/library/validationErrorMarker/*.js',
 
-      'src/library/valueWidgets/*.js'
+      'src/library/valueWidgets/*.js',
+      'src/library/decisionTable/*.js'
     ],
     libraryTemplates: [
       'src/**/templates/**/*.html'
