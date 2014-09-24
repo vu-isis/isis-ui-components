@@ -2,38 +2,54 @@
 
 'use strict';
 
-require( '../services/isisUIServices.js' );
-
 angular.module(
-  'isis.ui.checkboxWidget', [ 'isis.ui.services' ]
+'isis.ui.checkboxWidget', [ ]
 
 )
-  .directive(
-    'checkboxWidget', [ 'isisTemplateService', '$compile',
-      function ( isisTemplateService, $compile ) {
+.controller(
+'StringWidgetController', function () {
 
-        var defaultTemplateUrl = '/isis-ui-components/templates/checkboxWidget.html';
+})
+.directive(
+'checkboxWidget', [ 'valueWidgetsService',
+  function (valueWidgetsService) {
 
-        return {
-          restrict: 'E',
-          replace: true,
-          require: 'ngModel',
-          link: function ( scope, element, attributes, ngModel ) {
+    var defaultTemplateUrl = '/isis-ui-components/templates/checkboxWidget.html';
 
-            var templateUrl;
+    return {
+      restrict: 'E',
+      scope: true,
+      replace: true,
+      require: '^ngModel',
+      controller: 'StringWidgetController',
+      link: function ( scope, element, attributes, ngModel ) {
 
-            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
-
-            isisTemplateService.getTemplate( scope.config.template, templateUrl )
-              .then( function ( template ) {
-                element.replaceWith( $compile( template, scope ) );
-              } );
-
-            console.log( ngModel.$viewValue );
-
-          }
-
+        scope.myValue = {
 
         };
+
+        valueWidgetsService.getAndCompileWidgetTemplate( element, scope, defaultTemplateUrl );
+
+        ngModel.$formatters.push(function(modelValue) {
+          return modelValue;
+        });
+
+        ngModel.$render = function() {
+          scope.myValue.value = ngModel.$viewValue;
+        };
+
+        ngModel.$parsers.push(function(viewValue) {
+          return viewValue;
+        });
+
+        scope.$watch('myValue.value', function(val) {
+          ngModel.$setViewValue(val);
+        });
+
+        ngModel.$render();
+
       }
-    ] );
+
+    };
+  }
+] );

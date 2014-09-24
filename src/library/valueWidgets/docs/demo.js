@@ -37,7 +37,6 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         modelChange: onValueChange,
         validators: [ validators.shorterThanTwenty ]
       },
-      widgetType: 'stringWidget',
       widgetConfigEdit: {
         label: 'stringWidget',
         errorMessagesEmbedded: true,
@@ -51,6 +50,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         id: 'stringWidget'
       }
     },
+
     {
       model: 'The letter A stands for apple but can cause your brain melt. This is something you would not want to risk.',
       modelChange: onValueChange,
@@ -63,7 +63,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         modelChange: onValueChange,
         validators: [ validators.shorterThanTwenty ]
       },
-      widgetType: 'stringWidget',
+      widgetType: 'string',
       widgetConfigEdit: {
         label: 'stringWidget - multiline',
         errorMessagesEmbedded: true,
@@ -78,8 +78,32 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         name: 'stringWidget',
         id: 'stringWidget'
       }
-    }
+    },
 
+    {
+      model: true,
+      modelConfigEdit: {
+        validators: [ ],
+        modelChange: onValueChange
+      },
+      modelConfigDisplay: {
+        modelChange: onValueChange,
+        validators: []
+      },
+
+      widgetConfigEdit: {
+        label: 'checkboxWidget:',
+        errorMessagesEmbedded: true,
+        tooltip: 'Click it'
+      },
+      widgetConfigDisplay: {
+        label: 'checkboxWidget:'
+      },
+      inputConfig: {
+        name: 'checkboxWidget',
+        id: 'checkboxWidget'
+      }
+    }
 
 
   ];

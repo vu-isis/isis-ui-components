@@ -1,4 +1,5 @@
 <div class="string-widget widget"
+     ng-class="widgetMode"
      ng-switch on="widgetMode">
     <div ng-switch-when="display" class="value-display" ng-bind="myValue.value"></div>
     <div ng-switch-when="edit">
@@ -11,13 +12,13 @@
                id="{{inputConfig.id}}"
                ng-disabled="widgetDisabled">
         <textarea ng-if="widgetConfig.multiLine"
-               class="form-control"
-               placeholder="{{placeHolder}}"
-               ng-model="myValue.value"
-               name="{{inputConfig.name}}"
-               id="{{inputConfig.id}}"
-               rows="{{widgetConfig.rows}}"
-               cols="{{widgetConfig.cols}}"
-               ng-disabled="widgetDisabled"></textarea>
+                  class="form-control"
+                  placeholder="{{placeHolder}}"
+                  ng-model="myValue.value"
+                  name="{{inputConfig.name}}"
+                  id="{{inputConfig.id}}"
+                  rows="{{widgetConfig.rows}}"
+                  cols="{{widgetConfig.cols}}"
+                  ng-disabled="widgetDisabled"></textarea>
     </div>
 </div>

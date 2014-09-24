@@ -2,10 +2,8 @@
 
 'use strict';
 
-require( '../services/isisUIServices.js' );
-
 angular.module(
-'isis.ui.stringWidget', [ 'isis.ui.services' ]
+'isis.ui.stringWidget', [ ]
 
 )
 .controller(
