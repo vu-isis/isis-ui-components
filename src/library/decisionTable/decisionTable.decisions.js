@@ -3,7 +3,10 @@
 'use strict';
 
 var tableRowHeight = 31,
-  tableHeaderHeight = 31;
+  tableHeaderHeight = 31,
+  cellTemplate;
+
+cellTemplate = '<div class="ngCellText decisions" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD CUSTOM_FILTERS}}</span></div>';
 
 angular.module(
 'isis.ui.decisionTable.decisions', ['ngGrid']
@@ -24,7 +27,10 @@ angular.module(
     };
   };
 
-  console.log($scope);
+  angular.forEach($scope.decisionsOptions.columnDefs, function() {
+    //columnDef.cellTemplate = cellTemplate;
+  });
+
 
 })
 .directive(

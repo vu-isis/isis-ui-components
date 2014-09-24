@@ -1,23 +1,21 @@
 <div class="string-widget widget"
      ng-switch on="widgetMode">
-    <div ng-switch-when="display" class="value-display" ng-bind="$parent.model"></div>
+    <div ng-switch-when="display" class="value-display" ng-bind="myValue.value"></div>
     <div ng-switch-when="edit">
         <input ng-if="!widgetConfig.multiLine"
                type="text"
                class="form-control"
                placeholder="{{placeHolder}}"
-               ng-model="$parent.model"
+               ng-model="myValue.value"
                name="{{inputConfig.name}}"
                id="{{inputConfig.id}}"
-               maxlength="{{inputConfig.maxlength}}"
                ng-disabled="widgetDisabled">
         <textarea ng-if="widgetConfig.multiLine"
                class="form-control"
                placeholder="{{placeHolder}}"
-               ng-model="$parent.model"
+               ng-model="myValue.value"
                name="{{inputConfig.name}}"
                id="{{inputConfig.id}}"
-               maxlength="{{widgetConfig.maxlength}}"
                rows="{{widgetConfig.rows}}"
                cols="{{widgetConfig.cols}}"
                ng-disabled="widgetDisabled"></textarea>

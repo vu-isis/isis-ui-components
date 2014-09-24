@@ -8,8 +8,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
   var onValueChange,
   validators;
 
-  onValueChange = function () {
-    console.log( 'Value changed.' );
+  onValueChange = function (val) {
+    console.log( 'Value changed:', val);
   };
 
   validators = {
@@ -18,6 +18,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
       errorMessage: 'This is not shorter than 20!',
       method: function ( modelValue, viewValue ) {
         var value = modelValue || viewValue;
+
         return !value || angular.isString( value ) && value.length < 20;
       }
     }
@@ -26,11 +27,11 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
   $scope.widgets = [
 
     {
-      model: 'S',
-      modelChange: onValueChange,
+      model: 'A string',
       modelConfigEdit: {
         validators: [ validators.shorterThanTwenty ],
-        placeHolder: 'Enter something shorter than 20'
+        placeHolder: 'Enter something shorter than 20',
+        modelChange: onValueChange
       },
       modelConfigDisplay: {
         modelChange: onValueChange,
@@ -55,7 +56,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
       modelChange: onValueChange,
       modelConfigEdit: {
         validators: [ validators.shorterThanTwenty ],
-        placeHolder: 'Enter something'
+        placeHolder: 'Enter something',
+        modelChange: onValueChange
       },
       modelConfigDisplay: {
         modelChange: onValueChange,
@@ -67,7 +69,6 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         errorMessagesEmbedded: true,
         tooltip: 'Enter something here. This value represents a very important something.',
         multiLine: true,
-        maxlength: 50,
         rows: 6
       },
       widgetConfigDisplay: {
