@@ -2,40 +2,54 @@
 
 'use strict';
 
-require( '../services/isisUIServices.js' );
-
 angular.module(
-  'isis.ui.selectWidget', [ 'isis.ui.services' ]
+'isis.ui.selectWidget', [ ]
 
 )
-  .directive(
-    'selectWidget', [ 'isisTemplateService', '$compile',
-      function ( isisTemplateService, $compile ) {
+.controller(
+'StringWidgetController', function () {
 
-        var defaultTemplateUrl = '/isis-ui-components/templates/selectWidget.html';
+})
+.directive(
+'selectWidget', [ 'valueWidgetsService',
+  function (valueWidgetsService) {
 
-        return {
-          restrict: 'E',
-          replace: true,
-          require: 'ngModel',
-          scope: {
-            config: '=',
-          },
-          link: function ( scope, element, attributes, ngModel ) {
+    var defaultTemplateUrl = '/isis-ui-components/templates/selectWidget.html';
 
-            var templateUrl;
+    return {
+      restrict: 'E',
+      scope: true,
+      replace: true,
+      require: '^ngModel',
+      controller: 'StringWidgetController',
+      link: function ( scope, element, attributes, ngModel ) {
 
-            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
-
-            isisTemplateService.getTemplate( scope.config.template, templateUrl )
-              .then( function ( template ) {
-                element.replaceWidth( $compile( template, scope ) );
-              } );
-
-            console.log( ngModel.$viewValue );
-
-          }
+        scope.myValue = {
 
         };
+
+        valueWidgetsService.getAndCompileWidgetTemplate( element, scope, defaultTemplateUrl );
+
+        ngModel.$formatters.push(function(modelValue) {
+          return modelValue;
+        });
+
+        ngModel.$render = function() {
+          scope.myValue.value = ngModel.$viewValue;
+        };
+
+        ngModel.$parsers.push(function(viewValue) {
+          return viewValue;
+        });
+
+        scope.$watch('myValue.value', function(val) {
+          ngModel.$setViewValue(val);
+        });
+
+        ngModel.$render();
+
       }
-    ] );
+
+    };
+  }
+] );
