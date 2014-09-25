@@ -13,6 +13,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
   };
 
   validators = {
+
     shorterThanTwenty: {
       id: 'shorterThanTwenty',
       errorMessage: 'This is not shorter than 20!',
@@ -21,7 +22,28 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
 
         return !value || angular.isString( value ) && value.length < 20;
       }
+    },
+
+    shouldNotBeNo: {
+      id: 'shouldNotBeNo',
+      errorMessage: 'This can not be No!',
+      method: function ( modelValue, viewValue ) {
+        var value = modelValue || viewValue;
+
+        return value !== false;
+      }
+    },
+
+    shouldNotBeUndefined: {
+      id: 'shouldNotBeNo',
+      errorMessage: 'This can not be undefined!',
+      method: function ( modelValue, viewValue ) {
+        var value = modelValue || viewValue;
+
+        return value !== undefined;
+      }
     }
+
   };
 
   $scope.widgets = [
@@ -35,7 +57,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
       },
       modelConfigDisplay: {
         modelChange: onValueChange,
-        validators: [ validators.shorterThanTwenty ]
+        validators: [ validators.shorterThanTwenty ],
+        placeHolder: 'N/A'
       },
       widgetConfigEdit: {
         label: 'stringWidget',
@@ -61,7 +84,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
       },
       modelConfigDisplay: {
         modelChange: onValueChange,
-        validators: [ validators.shorterThanTwenty ]
+        validators: [ validators.shorterThanTwenty ],
+        placeHolder: 'N/A'
       },
       widgetType: 'string',
       widgetConfigEdit: {
@@ -83,7 +107,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
     {
       model: true,
       modelConfigEdit: {
-        validators: [ ],
+        validators: [ validators.shouldNotBeNo ],
         modelChange: onValueChange
       },
       modelConfigDisplay: {
@@ -103,7 +127,36 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         name: 'checkboxWidget',
         id: 'checkboxWidget'
       }
+    },
+
+    {
+      model: undefined,
+      widgetType: 'checkbox',
+      modelConfigEdit: {
+        validators: [ validators.shouldNotBeUndefined ],
+        modelChange: onValueChange
+      },
+      modelConfigDisplay: {
+        modelChange: onValueChange,
+        placeHolder: 'No set',
+        validators: []
+      },
+
+      widgetConfigEdit: {
+        label: 'checkboxWidget (no default value):',
+        errorMessagesEmbedded: true,
+        trueLabel: 'Yes',
+        falseLabel: 'No'
+      },
+      widgetConfigDisplay: {
+        label: 'checkboxWidget (no default value):'
+      },
+      inputConfig: {
+        name: 'checkboxWidget',
+        id: 'checkboxWidget'
+      }
     }
+
 
 
   ];

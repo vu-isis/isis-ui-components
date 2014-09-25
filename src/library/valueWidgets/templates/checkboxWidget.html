@@ -10,13 +10,16 @@
             <div ng-switch-when="false">
                 <i class="glyphicon glyphicon-remove"></i>
             </div>
+            <div ng-switch-when="undefined">
+                {{modelConfig.placeHolder}}
+            </div>
         </div>
 
     </div>
     <div ng-switch-when="edit">
         <div class="btn-group btn-group-sm">
-            <label class="btn btn-sm btn-default" ng-model="myValue.value" btn-radio="true">Yes</label>
-            <label class="btn btn-sm btn-default" ng-model="myValue.value" btn-radio="false">No</label>
+            <label class="btn btn-sm btn-default" ng-model="myValue.value" btn-radio="true">{{trueLabel}}</label>
+            <label class="btn btn-sm btn-default" ng-model="myValue.value" btn-radio="false">{{falseLabel}}</label>
         </div>
     </div>
 

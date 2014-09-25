@@ -9,6 +9,7 @@ angular.module(
 .controller(
 'StringWidgetController', function () {
 
+
 })
 .directive(
 'stringWidget', [ 'valueWidgetsService',
@@ -26,6 +27,14 @@ angular.module(
 
         scope.myValue = {
 
+        };
+
+        scope.getDisplayValue = function() {
+          var displayValue;
+          
+          displayValue = scope.myValue.value || scope.modelConfig.placeHolder || '';
+
+          return displayValue;
         };
 
         valueWidgetsService.getAndCompileWidgetTemplate( element, scope, defaultTemplateUrl );

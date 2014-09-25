@@ -1,7 +1,7 @@
 <div class="string-widget widget"
      ng-class="widgetMode"
      ng-switch on="widgetMode">
-    <div ng-switch-when="display" class="value-display" ng-bind="myValue.value"></div>
+    <div ng-switch-when="display" class="value-display">{{$parent.getDisplayValue()}}</div>
     <div ng-switch-when="edit">
         <input ng-if="!widgetConfig.multiLine"
                type="text"

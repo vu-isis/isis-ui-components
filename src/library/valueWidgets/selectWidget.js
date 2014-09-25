@@ -7,7 +7,7 @@ angular.module(
 
 )
 .controller(
-'StringWidgetController', function () {
+'SelectWidgetController', function () {
 
 })
 .directive(
@@ -21,7 +21,7 @@ angular.module(
       scope: true,
       replace: true,
       require: '^ngModel',
-      controller: 'StringWidgetController',
+      controller: 'SelectWidgetController',
       link: function ( scope, element, attributes, ngModel ) {
 
         scope.myValue = {
