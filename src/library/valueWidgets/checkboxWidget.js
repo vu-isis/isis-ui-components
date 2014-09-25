@@ -7,7 +7,10 @@ angular.module(
 
 )
 .controller(
-'StringWidgetController', function () {
+'CheckboxWidgetController', function ($scope) {
+
+  $scope.trueLabel = $scope.widgetConfig.trueLabel || 'True';
+  $scope.falseLabel = $scope.widgetConfig.falseLabel || 'False';
 
 })
 .directive(
@@ -21,7 +24,7 @@ angular.module(
       scope: true,
       replace: true,
       require: '^ngModel',
-      controller: 'StringWidgetController',
+      controller: 'CheckboxWidgetController',
       link: function ( scope, element, attributes, ngModel ) {
 
         scope.myValue = {

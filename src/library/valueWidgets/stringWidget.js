@@ -7,7 +7,21 @@ angular.module(
 'isis.ui.stringWidget', [ 'isis.ui.services', 'ui.utils' ]
 )
 .controller(
-'StringWidgetController', function () {
+'StringWidgetController', function ($scope) {
+
+
+  $scope.getDisplayValue = function() {
+    var displayValue;
+
+    displayValue = $scope.myValue.value || $scope.modelConfig.placeHolder || '';
+
+    return displayValue;
+  };
+
+  if ($scope.widgetConfig.mask) {
+    $scope.placeHolder = undefined;
+  }
+
 
 })
 .directive(
@@ -48,6 +62,8 @@ angular.module(
         });
 
         ngModel.$render();
+
+        console.log(scope.myValue.value);
 
       }
 
