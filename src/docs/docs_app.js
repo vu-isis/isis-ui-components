@@ -64,6 +64,7 @@ require( 'code-mirror/mode/javascript' );
 require( 'angular-ui-codemirror' );
 require( 'ng-grid' );
 require( 'ng-grid-css');
+require( 'ui-utils');
 
 
 var demoApp = angular.module(
