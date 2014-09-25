@@ -26,41 +26,42 @@ angular.forEach( availableWidgets, function ( value ) {
 
 angular.module( 'isis.ui.valueWidgets', [ 'isis.ui.validationErrorMarker' ].concat( widgetModules ) )
 
-.factory( '$valueWidgets', function () {
-  var getWidgetElementForType;
+.factory( 'valueWidgetsService', function ( isisTemplateService, $compile ) {
 
-  getWidgetElementForType = function ( type ) {
+  var services = {
 
-    var result = availableWidgets[ type ] && availableWidgets[ type ][ 1 ];
+    getWidgetElementForType: function ( type ) {
 
-    if ( !result ) {
-      result = 'string-widget';
+      var result = availableWidgets[ type ] && availableWidgets[ type ][ 1 ];
+
+      if ( !result ) {
+        result = 'string-widget';
+      }
+
+      return result;
+
+    },
+
+    getAndCompileWidgetTemplate: function ( widgetElement, $scope, defaultTemplateUrl ) {
+
+      var templateUrl,
+      templateElement;
+
+      templateUrl = $scope.widgetConfig && $scope.widgetConfig.templateUrl || defaultTemplateUrl;
+
+      isisTemplateService.getTemplate( $scope.widgetConfig.template, templateUrl )
+      .then( function ( template ) {
+        templateElement = angular.element( template );
+        widgetElement.replaceWith( templateElement );
+        $compile( templateElement )( $scope );
+      } );
     }
-
-    return result;
-
   };
 
-  return {
-    getWidgetElementForType: getWidgetElementForType
-  };
+  return services;
+
 } )
-.controller( 'ValueWidgetController', function ( $scope, isisTemplateService, $compile ) {
-
-  $scope.getAndCompileWidgetTemplate = function ( widgetElement, defaultTemplateUrl ) {
-
-    var templateUrl,
-    templateElement;
-
-    templateUrl = $scope.widgetConfig && $scope.widgetConfig.templateUrl || defaultTemplateUrl;
-
-    isisTemplateService.getTemplate( $scope.widgetConfig.template, templateUrl )
-    .then( function ( template ) {
-      templateElement = angular.element( template );
-      widgetElement.replaceWith( templateElement );
-      $compile( templateElement )( $scope );
-    } );
-  };
+.controller( 'ValueWidgetController', function () {
 
 } )
 .directive( 'valueWidget',
@@ -106,11 +107,18 @@ function () {
 
       }
 
+      if ( angular.isFunction( scope.modelConfig.modelChange ) ) {
+        ngModel.$viewChangeListeners.push( function () {
+          scope.modelConfig.modelChange(ngModel.$modelValue);
+        } );
+
+      }
     }
   };
-} )
-.directive( 'valueWidgetBody', [ '$log', '$compile', '$valueWidgets',
-  function ( $log, $compile, $valueWidgets ) {
+})
+.
+directive( 'valueWidgetBody', [ '$log', '$compile', 'valueWidgetsService',
+  function ( $log, $compile, valueWidgetsService ) {
 
     return {
       restrict: 'E',
@@ -150,7 +158,7 @@ function () {
 
               }
 
-              newWidgetDirective = $valueWidgets.getWidgetElementForType( widgetType );
+              newWidgetDirective = valueWidgetsService.getWidgetElementForType( widgetType );
 
               if ( widgetDirective !== newWidgetDirective ) {
 

@@ -2,6 +2,10 @@ $error-color: #ff0022;
 
 .value-widget {
 
+  .value-widget-body {
+    display: inline-block;
+  }
+
   max-width: 100%;
 
   label {

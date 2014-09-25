@@ -1,6 +1,8 @@
 .value-widget {
   max-width: 100%;
   position: relative; }
+  .value-widget .value-widget-body {
+    display: inline-block; }
   .value-widget label {
     color: #555; }
   .value-widget .value-display {
