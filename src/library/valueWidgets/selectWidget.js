@@ -7,7 +7,16 @@ angular.module(
 
 )
 .controller(
-'SelectWidgetController', function () {
+'SelectWidgetController', function ($scope) {
+
+  $scope.getDisplayValue = function() {
+    var displayValue;
+
+    displayValue =  ($scope.myValue.value && $scope.myValue.value.label) || $scope.modelConfig.placeHolder || '';
+
+    return displayValue;
+  };
+
 
 })
 .directive(

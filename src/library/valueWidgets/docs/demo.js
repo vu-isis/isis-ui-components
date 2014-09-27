@@ -1,15 +1,15 @@
 /*globals angular*/
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.valueWidgets.demo', [ 'isis.ui.valueWidgets' ] );
+var demoApp = angular.module('isis.ui.valueWidgets.demo', [ 'isis.ui.valueWidgets' ]);
 
-demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
+demoApp.controller('ValueWidgetsDemoController', function ($scope) {
 
   var onValueChange,
   validators;
 
   onValueChange = function (val) {
-    console.log( 'Value changed:', val);
+    console.log('Value changed:', val);
   };
 
   validators = {
@@ -17,17 +17,17 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
     shorterThanTwenty: {
       id: 'shorterThanTwenty',
       errorMessage: 'This is not shorter than 20!',
-      method: function ( modelValue, viewValue ) {
+      method: function (modelValue, viewValue) {
         var value = modelValue || viewValue;
 
-        return !value || angular.isString( value ) && value.length < 20;
+        return !value || angular.isString(value) && value.length < 20;
       }
     },
 
     shouldNotBeNo: {
       id: 'shouldNotBeNo',
       errorMessage: 'This can not be No!',
-      method: function ( modelValue, viewValue ) {
+      method: function (modelValue, viewValue) {
         var value = modelValue || viewValue;
 
         return value !== false;
@@ -37,7 +37,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
     shouldNotBeUndefined: {
       id: 'shouldNotBeNo',
       errorMessage: 'This can not be undefined!',
-      method: function ( modelValue, viewValue ) {
+      method: function (modelValue, viewValue) {
         var value = modelValue || viewValue;
 
         return value !== undefined;
@@ -181,10 +181,59 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         name: 'checkboxWidget',
         id: 'checkboxWidget'
       }
-    }
+    },
 
+    {
+      model: undefined,
+      widgetType: 'select',
+      modelConfigEdit: {
+        validators: [ validators.shouldNotBeUndefined ],
+        modelChange: onValueChange,
+        options: [
+          {
+            label: 'Option 1',
+            value: 'option_1'
+          },
+          {
+            label: 'Option 2',
+            value: 'option_2'
+          },
+          {
+            label: 'Option 3',
+            value: 'option_3'
+          },
+          {
+            label: 'Option 4',
+            value: 'option_4'
+          },
+          {
+            label: 'Option 5',
+            value: 'option_5'
+          }
+        ]
+      },
+      modelConfigDisplay: {
+        modelChange: onValueChange,
+        placeHolder: 'No set',
+        validators: []
+      },
+
+      widgetConfigEdit: {
+        label: 'selectWidget (no default value):',
+        errorMessagesEmbedded: true,
+        trueLabel: 'Yes',
+        falseLabel: 'No'
+      },
+      widgetConfigDisplay: {
+        label: 'selectWidget (no default value):'
+      },
+      inputConfig: {
+        name: 'selectWidget',
+        id: 'selectWidget'
+      }
+    }
 
 
   ];
 
-} );
+});
