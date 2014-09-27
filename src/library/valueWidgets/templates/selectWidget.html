@@ -7,6 +7,8 @@
                 name="{{inputConfig.name}}"
                 id="{{inputConfig.id}}"
                 ng-disabled="widgetDisabled"
+                multiple-select="modelConfig.multiple"
+
                 class="form-control" ng-model="myValue.value" ng-options="option.label for option in modelConfig.options">
         </select>
     </div>

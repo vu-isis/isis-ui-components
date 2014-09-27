@@ -231,6 +231,58 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
         name: 'selectWidget',
         id: 'selectWidget'
       }
+    },
+
+
+    {
+      model: undefined,
+      widgetType: 'select',
+      modelConfigEdit: {
+        validators: [ validators.shouldNotBeUndefined ],
+        modelChange: onValueChange,
+        multiple: true,
+        options: [
+          {
+            label: 'Option 1',
+            value: 'option_1'
+          },
+          {
+            label: 'Option 2',
+            value: 'option_2'
+          },
+          {
+            label: 'Option 3',
+            value: 'option_3'
+          },
+          {
+            label: 'Option 4',
+            value: 'option_4'
+          },
+          {
+            label: 'Option 5',
+            value: 'option_5'
+          }
+        ]
+      },
+      modelConfigDisplay: {
+        modelChange: onValueChange,
+        placeHolder: 'No set',
+        validators: []
+      },
+
+      widgetConfigEdit: {
+        label: 'selectWidget (multiple):',
+        errorMessagesEmbedded: true,
+        trueLabel: 'Yes',
+        falseLabel: 'No'
+      },
+      widgetConfigDisplay: {
+        label: 'selectWidget (multiple):'
+      },
+      inputConfig: {
+        name: 'selectWidget',
+        id: 'selectWidget'
+      }
     }
 
 
