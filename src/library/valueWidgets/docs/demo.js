@@ -1,15 +1,47 @@
 /*globals angular*/
 'use strict';
 
-var demoApp = angular.module('isis.ui.valueWidgets.demo', [ 'isis.ui.valueWidgets' ]);
+var demoApp = angular.module( 'isis.ui.valueWidgets.demo', [ 'isis.ui.valueWidgets' ] );
 
-demoApp.controller('ValueWidgetsDemoController', function ($scope) {
+demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
 
   var onValueChange,
-  validators;
+  validators,
+  selectedOption,
+  options;
 
-  onValueChange = function (val) {
-    console.log('Value changed:', val);
+  selectedOption = {
+    label: 'Should be selected',
+    value: 'option_selected'
+  };
+
+  options = [
+    {
+      label: 'Option 1',
+      value: 'option_1'
+    },
+    {
+      label: 'Option 2',
+      value: 'option_2'
+    },
+    {
+      label: 'Option 3',
+      value: 'option_3'
+    },
+    {
+      label: 'Option 4',
+      value: 'option_4'
+    },
+    {
+      label: 'Option 5',
+      value: 'option_5'
+    }
+  ];
+
+  options.push(selectedOption);
+
+  onValueChange = function ( val ) {
+    console.log( 'Value changed:', val );
   };
 
   validators = {
@@ -17,30 +49,30 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
     shorterThanTwenty: {
       id: 'shorterThanTwenty',
       errorMessage: 'This is not shorter than 20!',
-      method: function (modelValue, viewValue) {
+      method: function ( modelValue, viewValue ) {
         var value = modelValue || viewValue;
 
-        return !value || angular.isString(value) && value.length < 20;
+        return !value || angular.isString( value ) && value.length < 20;
       }
     },
 
     shouldNotBeNo: {
       id: 'shouldNotBeNo',
       errorMessage: 'This can not be No!',
-      method: function (modelValue, viewValue) {
+      method: function ( modelValue, viewValue ) {
         var value = modelValue || viewValue;
 
         return value !== false;
       }
     },
 
-    shouldNotBeUndefined: {
+    shouldNotBeUndefinedOrNull: {
       id: 'shouldNotBeNo',
-      errorMessage: 'This can not be undefined!',
-      method: function (modelValue, viewValue) {
+      errorMessage: 'This can not be undefined or null!',
+      method: function ( modelValue, viewValue ) {
         var value = modelValue || viewValue;
 
-        return value !== undefined;
+        return value !== undefined && value !== null;
       }
     }
 
@@ -76,7 +108,7 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
 
     {
       modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefined ],
+        validators: [ validators.shouldNotBeUndefinedOrNull ],
         placeHolder: 'Credit card',
         modelChange: onValueChange
       },
@@ -159,7 +191,7 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
       model: undefined,
       widgetType: 'checkbox',
       modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefined ],
+        validators: [ validators.shouldNotBeUndefinedOrNull ],
         modelChange: onValueChange
       },
       modelConfigDisplay: {
@@ -184,37 +216,17 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
     },
 
     {
-      model: undefined,
+      model: selectedOption,
       widgetType: 'select',
       modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefined ],
+        validators: [ validators.shouldNotBeUndefinedOrNull ],
         modelChange: onValueChange,
-        options: [
-          {
-            label: 'Option 1',
-            value: 'option_1'
-          },
-          {
-            label: 'Option 2',
-            value: 'option_2'
-          },
-          {
-            label: 'Option 3',
-            value: 'option_3'
-          },
-          {
-            label: 'Option 4',
-            value: 'option_4'
-          },
-          {
-            label: 'Option 5',
-            value: 'option_5'
-          }
-        ]
+        placeHolder: '---',
+        options: options
       },
       modelConfigDisplay: {
         modelChange: onValueChange,
-        placeHolder: 'No set',
+        placeHolder: 'Not set',
         validators: []
       },
 
@@ -235,38 +247,19 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
 
 
     {
-      model: undefined,
+      model: [selectedOption],
       widgetType: 'select',
       modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefined ],
+        validators: [ validators.shouldNotBeUndefinedOrNull ],
         modelChange: onValueChange,
         multiple: true,
-        options: [
-          {
-            label: 'Option 1',
-            value: 'option_1'
-          },
-          {
-            label: 'Option 2',
-            value: 'option_2'
-          },
-          {
-            label: 'Option 3',
-            value: 'option_3'
-          },
-          {
-            label: 'Option 4',
-            value: 'option_4'
-          },
-          {
-            label: 'Option 5',
-            value: 'option_5'
-          }
-        ]
+        placeHolder: '---',
+        options: options
       },
       modelConfigDisplay: {
         modelChange: onValueChange,
-        placeHolder: 'No set',
+        placeHolder: 'Not set',
+        multiple: true,
         validators: []
       },
 
@@ -288,4 +281,4 @@ demoApp.controller('ValueWidgetsDemoController', function ($scope) {
 
   ];
 
-});
+} );

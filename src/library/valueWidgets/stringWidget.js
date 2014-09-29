@@ -63,8 +63,6 @@ angular.module(
 
         ngModel.$render();
 
-        console.log(scope.myValue.value);
-
       }
 
     };

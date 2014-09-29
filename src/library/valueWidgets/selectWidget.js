@@ -10,9 +10,27 @@ angular.module(
 'SelectWidgetController', function ($scope) {
 
   $scope.getDisplayValue = function () {
-    var displayValue;
+    var displayValue,
+        labelsList;
 
-    displayValue = ($scope.myValue.value && $scope.myValue.value.label) || $scope.modelConfig.placeHolder || '';
+
+    if ($scope.modelConfig.multiple) {
+
+      displayValue = $scope.modelConfig.placeHolder;
+
+      if ($scope.myValue && angular.isArray($scope.myValue.value)) {
+
+        labelsList = [];
+
+        angular.forEach($scope.myValue.value, function(opt) {
+          labelsList.push(opt.label);
+          displayValue = labelsList.join(', ');
+        });
+      }
+
+    } else {
+      displayValue = ($scope.myValue.value && $scope.myValue.value.label) || $scope.modelConfig.placeHolder || '';
+    }
 
     return displayValue;
   };
@@ -36,6 +54,8 @@ angular.module(
         scope.myValue = {
 
         };
+
+        scope.optionsList = scope.modelConfig.options;
 
         valueWidgetsService.getAndCompileWidgetTemplate(element, scope, defaultTemplateUrl);
 
@@ -66,16 +86,17 @@ angular.module(
 
   return {
     restrict: 'A',
+    priority: 1000,
     scope: {
       multipleSelect: '=multipleSelect'
     },
     replace: true,
-    link: function (scope, element, attributes) {
+    link: function (scope, element) {
 
       scope.$watch('multipleSelect', function (value) {
 
         if (value) {
-          attributes.$set('multiple', true);
+          element.attr('multiple', 'true');
         }
 
       });
