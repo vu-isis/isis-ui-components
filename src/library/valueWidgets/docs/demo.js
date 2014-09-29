@@ -38,7 +38,7 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
     }
   ];
 
-  options.push(selectedOption);
+  options.push( selectedOption );
 
   onValueChange = function ( val ) {
     console.log( 'Value changed:', val );
@@ -93,9 +93,14 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         placeHolder: 'N/A'
       },
       widgetConfigEdit: {
-        label: 'stringWidget',
+        label: 'stringWidget (autocomplete)',
         errorMessagesEmbedded: true,
-        tooltip: 'Enter something here. This value represents a very important something.'
+        tooltip: 'Enter something here. This value represents a very important something.',
+        autoCompleteItems: ['john', 'bill', 'charlie', 'robert', 'alban',
+          'oscar', 'marie', 'celine', 'brad', 'drew', 'rebecca', 'michel',
+          'francis', 'jean', 'paul', 'pierre', 'nicolas', 'alfred', 'gerard',
+          'louis', 'albert', 'edouard', 'benoit', 'guillaume', 'nicolas', 'joseph']
+
       },
       widgetConfigDisplay: {
         label: 'stringWidget'
@@ -204,7 +209,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         label: 'checkboxWidget (no default value):',
         errorMessagesEmbedded: true,
         trueLabel: 'Yes',
-        falseLabel: 'No'
+        falseLabel: 'No',
+        tooltip: 'Some tooltip text'
       },
       widgetConfigDisplay: {
         label: 'checkboxWidget (no default value):'
@@ -234,7 +240,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         label: 'selectWidget (no default value):',
         errorMessagesEmbedded: true,
         trueLabel: 'Yes',
-        falseLabel: 'No'
+        falseLabel: 'No',
+        tooltip: 'Some tooltip text'
       },
       widgetConfigDisplay: {
         label: 'selectWidget (no default value):'
@@ -267,7 +274,8 @@ demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
         label: 'selectWidget (multiple):',
         errorMessagesEmbedded: true,
         trueLabel: 'Yes',
-        falseLabel: 'No'
+        falseLabel: 'No',
+        tooltip: 'Some tooltip text'
       },
       widgetConfigDisplay: {
         label: 'selectWidget (multiple):'

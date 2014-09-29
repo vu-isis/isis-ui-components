@@ -81,28 +81,4 @@ angular.module(
 
     };
   }
-])
-.directive('multipleSelect', [ function () {
-
-  return {
-    restrict: 'A',
-    priority: 1000,
-    scope: {
-      multipleSelect: '=multipleSelect'
-    },
-    replace: true,
-    link: function (scope, element) {
-
-      scope.$watch('multipleSelect', function (value) {
-
-        if (value) {
-          element.attr('multiple', 'true');
-        }
-
-      });
-
-    }
-  };
-
-
-}]);
+]);

@@ -11,6 +11,7 @@
                name="{{inputConfig.name}}"
                id="{{inputConfig.id}}"
                ng-disabled="widgetDisabled"
+               auto-complete="widgetConfig.autoCompleteItems"
                ui-mask="{{widgetConfig.mask}}">
         <textarea ng-if="widgetConfig.multiLine"
                   class="form-control"
