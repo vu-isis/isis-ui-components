@@ -28,7 +28,7 @@ If `scopeMenu` or `preferencesMenu` is not set, header is not displayed.
 Rendering options:
 
    * `collapsedIconClass`: {string} default: 'icon-arrow-right',
-   * `expandedIconClass`: {string} default: 'icon-arrow-down',
+   * `expandedIconClass`: {string} default: 'icon-arrow-down', compile
    * `folderIconClass`: {string} if set, this icon will decorate nodes with children,
    * `showRootLabel`: {boolean} if root node should get displayed. False by default.
 
