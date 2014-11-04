@@ -146,6 +146,28 @@ angular.module(
     return node.unCollapsible !== true;
   };
 
+  $scope.getNodeClass = function (node) {
+    var cssClassStr = '';
+
+    if ($scope.isNodeExpanded(node)) {
+      cssClassStr += 'expanded';
+    }
+
+    if ($scope.config.state.activeNode === node.id) {
+      cssClassStr += ' active-node';
+    }
+
+    if ($scope.isNodeSelected(node) === node.id) {
+      cssClassStr += ' selected-node';
+    }
+
+    if (angular.isFunction($scope.config.nodeClassGetter)) {
+      cssClassStr += ' ' + $scope.config.nodeClassGetter(node);
+    }
+
+    return cssClassStr;
+  };
+
   // Node event handlers
 
   $scope.nodeClick = function ( $event, node ) {
