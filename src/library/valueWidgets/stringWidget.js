@@ -2,37 +2,92 @@
 
 'use strict';
 
-require( '../services/isisUIServices.js' );
-
 angular.module(
-  'isis.ui.stringWidget', [ 'isis.ui.services' ]
 
+'isis.ui.stringWidget', [ 'isis.ui.services', 'ui.utils' ]
 )
-  .directive(
-    'stringWidget', [ 'isisTemplateService', '$compile',
-      function ( isisTemplateService, $compile ) {
+.controller(
+'StringWidgetController', function ( $scope ) {
 
-        var defaultTemplateUrl = '/isis-ui-components/templates/stringWidget.html';
 
-        return {
-          restrict: 'E',
-          replace: true,
-          require: 'ngModel',
-          link: function ( scope, element, attributes, ngModel ) {
+  $scope.getDisplayValue = function () {
+    var displayValue;
 
-            var templateUrl;
+    displayValue = $scope.myValue.value || $scope.modelConfig.placeHolder || '';
 
-            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
+    return displayValue;
+  };
 
-            isisTemplateService.getTemplate( scope.config.template, templateUrl )
-              .then( function ( template ) {
-                element.replaceWidth( $compile( template, scope ) );
-              } );
+  if ( $scope.widgetConfig.mask ) {
+    $scope.placeHolder = undefined;
+  }
 
-            console.log( ngModel.$viewValue );
 
-          }
+} )
+.directive(
+'stringWidget', [ 'valueWidgetsService',
+  function ( valueWidgetsService ) {
+
+    var defaultTemplateUrl = '/isis-ui-components/templates/stringWidget.html';
+
+    return {
+      restrict: 'E',
+      scope: true,
+      replace: true,
+      require: '^ngModel',
+      controller: 'StringWidgetController',
+      link: function ( scope, element, attributes, ngModel ) {
+
+        scope.myValue = {
 
         };
+
+        valueWidgetsService.getAndCompileWidgetTemplate( element, scope, defaultTemplateUrl );
+
+        ngModel.$formatters.push( function ( modelValue ) {
+          return modelValue;
+        } );
+
+        ngModel.$render = function () {
+          scope.myValue.value = ngModel.$viewValue;
+        };
+
+        ngModel.$parsers.push( function ( viewValue ) {
+          return viewValue;
+        } );
+
+        scope.$watch( 'myValue.value', function ( val ) {
+          ngModel.$setViewValue( val );
+        } );
+
+        ngModel.$render();
+
+
       }
-    ] );
+
+    };
+  }
+] )
+.directive(
+'autoComplete', ['$timeout', function ( $timeout ) {
+  return {
+    scope: {
+      'autoComplete': '=autoComplete'
+    },
+    restrict: 'A',
+    link: function ( scope, element ) {
+
+      var autoCompleteItems = scope.autoComplete;
+      if ( autoCompleteItems ) {
+        element.autocomplete( {
+          source: autoCompleteItems,
+          select: function () {
+            $timeout( function () {
+              element.trigger( 'input' );
+            }, 0 );
+          }
+        } );
+      }
+    }
+  };
+}] );

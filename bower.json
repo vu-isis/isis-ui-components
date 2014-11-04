@@ -1,6 +1,6 @@
 {
   "name": "isis-ui-components",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "https://github.com/vu-isis/isis-ui-components",
   "authors": [
     "Laszlo Juracz <laszlo.juracz@vanderbilt.edu>"
@@ -22,5 +22,8 @@
     "angular-moment": "~0.8.2",
     "angular-ui-sortable": "~0.12.11",
     "moment": "~0.8.2"
+  },
+  "dependencies": {
+    "angular-ui-utils": "~0.1.1"
   }
 }

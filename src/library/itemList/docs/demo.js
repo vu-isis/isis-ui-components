@@ -106,9 +106,7 @@ demoApp.controller( 'ListItemDetailsDemoController2', function ( $scope ) {
 
         };
       }
-    },
-
-    filter: {}
+    }
 
   };
 
@@ -223,6 +221,8 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
     detailsCollapsible: true,
     showDetailsLabel: 'Show details',
     hideDetailsLabel: 'Hide details',
+
+    noItemsMessage: 'List is empty.',
 
     // Event handlers
 

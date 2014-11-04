@@ -7,19 +7,19 @@ require( '../helpers/angular-recursion.js' );
 require( 'angular-dragdrop' );
 
 angular.module(
-  'isis.ui.treeNavigator.nodeList', [
-    'isis.ui.treeNavigator.node',
-    'RecursionHelper',
-    'ngDragDrop'
-  ]
+'isis.ui.treeNavigator.nodeList', [
+  'isis.ui.treeNavigator.node',
+  'RecursionHelper',
+  'ngDragDrop'
+]
 )
 
 .controller( 'TreeNavigatorNodeListController', function ( $scope, $log ) {
 
   var initializeScope,
-    updateSelection,
-    removeNodeFromList,
-    markNodeExpanded;
+  updateSelection,
+  removeNodeFromList,
+  markNodeExpanded;
 
   // Tree helpers
 
@@ -91,8 +91,6 @@ angular.module(
           $log.warn( 'Range selection is not implemented properly yet.' );
 
 
-
-
         } else if ( $event.ctrlKey || $event.metaKey ) {
           index = $scope.config.state.selectedNodes.indexOf( node.id );
 
@@ -148,6 +146,28 @@ angular.module(
     return node.unCollapsible !== true;
   };
 
+  $scope.getNodeClass = function (node) {
+    var cssClassStr = '';
+
+    if ($scope.isNodeExpanded(node)) {
+      cssClassStr += 'expanded';
+    }
+
+    if ($scope.config.state.activeNode === node.id) {
+      cssClassStr += ' active-node';
+    }
+
+    if ($scope.isNodeSelected(node)) {
+      cssClassStr += ' selected-node';
+    }
+
+    if (angular.isFunction($scope.config.nodeClassGetter)) {
+      cssClassStr += ' ' + $scope.config.nodeClassGetter(node);
+    }
+
+    return cssClassStr;
+  };
+
   // Node event handlers
 
   $scope.nodeClick = function ( $event, node ) {
@@ -156,7 +176,9 @@ angular.module(
       $scope.config.nodeClick( $event, node );
     }
 
-    updateSelection( $event, node );
+    if (!$scope.config.disableManualSelection) {
+      updateSelection( $event, node );
+    }
 
   };
 
@@ -206,10 +228,10 @@ angular.module(
             if ( angular.isFunction( $scope.config.loadChildren ) ) {
               $scope.config.state.loadingNodes.push( node.id );
               $scope.config.loadChildren( $event, node )
-                .then( function () {
-                  removeNodeFromList( $scope.config.state.loadingNodes, node );
-                  markNodeExpanded( $event, node );
-                } );
+              .then( function () {
+                removeNodeFromList( $scope.config.state.loadingNodes, node );
+                markNodeExpanded( $event, node );
+              } );
             }
 
           } else {
@@ -233,20 +255,20 @@ angular.module(
 } )
 
 .directive(
-  'treeNavigatorNodeList', function ( RecursionHelper ) {
-    return {
-      scope: {
-        nodes: '=',
-        config: '='
-      },
-      restrict: 'E',
-      replace: true,
-      templateUrl: '/isis-ui-components/templates/treeNavigator.nodeList.html',
-      controller: 'TreeNavigatorNodeListController',
-      compile: function ( element ) {
-        return RecursionHelper.compile( element );
-      }
+'treeNavigatorNodeList', function ( RecursionHelper ) {
+  return {
+    scope: {
+      nodes: '=',
+      config: '='
+    },
+    restrict: 'E',
+    replace: true,
+    templateUrl: '/isis-ui-components/templates/treeNavigator.nodeList.html',
+    controller: 'TreeNavigatorNodeListController',
+    compile: function ( element ) {
+      return RecursionHelper.compile( element );
+    }
 
-    };
-  }
+  };
+}
 );

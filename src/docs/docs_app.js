@@ -3,6 +3,14 @@
 
 var components = [
   {
+    name: 'decisionTable',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
+    name: 'valueWidgets',
+    sources: [ 'demo.html', 'demo.js']
+  },
+  {
     name: 'searchBox',
     sources: [ 'demo.html', 'demo.js']
   },
@@ -39,26 +47,32 @@ require( '../library/dropdownNavigator/docs/demo.js' );
 require( '../library/treeNavigator/docs/demo.js' );
 require( '../library/itemList/docs/demo.js' );
 require( '../library/searchBox/docs/demo.js' );
+require( '../library/valueWidgets/docs/demo.js' );
+require( '../library/decisionTable/docs/demo.js' );
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
 require( 'angular-markdown-directive' );
 
-require( 'codemirrorCSS' );
-window.CodeMirror = require( 'code-mirror' );
+require( 'codemirror-css' );
+window.CodeMirror = require( 'codemirror' );
 
-require( 'code-mirror/mode/htmlmixed' );
-require( 'code-mirror/mode/xml' );
-require( 'code-mirror/mode/javascript' );
+require( 'codemirror/mode/htmlmixed/htmlmixed' );
+require( 'codemirror/mode/xml/xml' );
+require( 'codemirror/mode/javascript/javascript' );
 
 require( 'angular-ui-codemirror' );
+require( 'ng-grid' );
+require( 'ng-grid-css');
+require( 'ui-utils');
 
 
 var demoApp = angular.module(
 'isis.ui.demoApp', [
   'isis.ui.demoApp.templates',
   'btford.markdown',
-  'ui.codemirror'
+  'ui.codemirror',
+  'ui.bootstrap'
 ].concat( components.map( function ( e ) {
   return 'isis.ui.' + e.name + '.demo';
 } ) )
@@ -95,7 +109,7 @@ function ( $scope, $templateCache ) {
         viewerOptions = {
           lineWrapping: true,
           lineNumbers: true,
-          readOnly: 'nocursor',
+          readOnly: true,
           mode: codeMirrorModes[fileExtension[1]] || 'xml'
         };
 
