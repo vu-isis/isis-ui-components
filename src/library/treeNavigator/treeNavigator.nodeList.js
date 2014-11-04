@@ -157,7 +157,7 @@ angular.module(
       cssClassStr += ' active-node';
     }
 
-    if ($scope.isNodeSelected(node) === node.id) {
+    if ($scope.isNodeSelected(node)) {
       cssClassStr += ' selected-node';
     }
 
@@ -176,7 +176,9 @@ angular.module(
       $scope.config.nodeClick( $event, node );
     }
 
-    updateSelection( $event, node );
+    if (!$scope.config.disableManualSelection) {
+      updateSelection( $event, node );
+    }
 
   };
 

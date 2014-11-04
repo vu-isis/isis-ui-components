@@ -33,6 +33,7 @@ Rendering options:
    * `showRootLabel`: {boolean} if root node should get displayed. False by default.
    * `nodeClassGetter`: {function(node)}. If specified, it should return a string of CSS class for the given node.
    Make it work fast.
+   * `disableManualSelection`: {boolean} set if node is manually selectable (eg. by clicking) or not
 
 Event callbacks:
 

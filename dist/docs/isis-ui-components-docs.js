@@ -13301,10 +13301,10 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       return deferred.promise;
     }
 
-
   };
 
   $scope.config = config;
+  //$scope.config.disableManualSelection = true;
   $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 0 ];
   $scope.config.nodeClassGetter = function(node) {
     var nodeCssClass = '';
