@@ -12,7 +12,7 @@ require( './itemList/itemList.js' );
 require( './searchBox/searchBox.js' );
 require( './valueWidgets/valueWidgets.js' );
 require( './decisionTable/decisionTable.js' );
-
+require( './taxonomyTerms/taxonomyTerms.js' );
 
 angular.module( 'isis.ui.components', [
   'isis.ui.components.templates',
@@ -29,7 +29,7 @@ angular.module( 'isis.ui.components', [
   'isis.ui.decisionTable'
 
 ] );
-},{"./contextmenu/contextmenu.js":6,"./decisionTable/decisionTable.js":9,"./dropdownNavigator/dropdownNavigator.js":10,"./hierarchicalMenu/hierarchicalMenu.js":12,"./itemList/itemList.js":14,"./searchBox/searchBox.js":21,"./services/isisUIServices.js":22,"./simpleDialog/simpleDialog.js":23,"./treeNavigator/treeNavigator.js":25,"./valueWidgets/valueWidgets.js":34}],2:[function(require,module,exports){
+},{"./contextmenu/contextmenu.js":6,"./decisionTable/decisionTable.js":9,"./dropdownNavigator/dropdownNavigator.js":10,"./hierarchicalMenu/hierarchicalMenu.js":12,"./itemList/itemList.js":14,"./searchBox/searchBox.js":21,"./services/isisUIServices.js":22,"./simpleDialog/simpleDialog.js":23,"./taxonomyTerms/taxonomyTerms.js":25,"./treeNavigator/treeNavigator.js":27,"./valueWidgets/valueWidgets.js":36}],2:[function(require,module,exports){
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -3647,7 +3647,8 @@ angular.module(
     'isis.ui.itemList.newItem',
     'isis.ui.itemList.filter',
     'isis.ui.itemList.itemGroup',
-    'isis.ui.contextmenu'
+    'isis.ui.contextmenu',
+    'isis.ui.taxonomyTerms'
   ]
 )
   .controller(
@@ -4042,6 +4043,70 @@ angular.module(
   } );
 },{}],24:[function(require,module,exports){
 /*globals angular*/
+'use strict';
+
+angular.module(
+'isis.ui.taxonomyTerm', []
+
+)
+.controller('TaxonomyTermController', function ($scope) {
+
+  $scope.getTermUrl = function() {
+    return ($scope.term && $scope.term.url) || '#';
+  };
+
+})
+.directive(
+'taxonomyTerm',
+function () {
+
+  return {
+    scope: {
+      term: '='
+    },
+    controller: 'TaxonomyTermController',
+    restrict: 'E',
+    replace: true,
+    templateUrl: '/isis-ui-components/templates/taxonomyTerm.html'
+
+  };
+});
+
+
+},{}],25:[function(require,module,exports){
+/*globals angular*/
+'use strict';
+
+require( './taxonomyTerm.js' );
+
+angular.module(
+'isis.ui.taxonomyTerms', [
+  'isis.ui.taxonomyTerm'
+]
+
+)
+.controller('TaxonomyTermsController', function () {
+
+})
+.directive(
+'taxonomyTerms',
+function () {
+
+  return {
+    scope: {
+      terms: '='
+    },
+    controller: 'TaxonomyTermsController',
+    restrict: 'E',
+    replace: true,
+    templateUrl: '/isis-ui-components/templates/taxonomyTerms.html'
+
+  };
+});
+
+
+},{"./taxonomyTerm.js":24}],26:[function(require,module,exports){
+/*globals angular*/
 
 'use strict';
 
@@ -4065,7 +4130,7 @@ angular.module(
       };
     }
 );
-},{"../contextmenu/contextmenu.js":6}],25:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6}],27:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4118,7 +4183,7 @@ angular.module(
     };
   }
 );
-},{"./treeNavigator.header.js":24,"./treeNavigator.node.label.js":27,"./treeNavigator.nodeList.js":28}],26:[function(require,module,exports){
+},{"./treeNavigator.header.js":26,"./treeNavigator.node.label.js":29,"./treeNavigator.nodeList.js":30}],28:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4141,7 +4206,7 @@ angular.module(
       };
     }
 );
-},{"./treeNavigator.node.label.js":27}],27:[function(require,module,exports){
+},{"./treeNavigator.node.label.js":29}],29:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4164,7 +4229,7 @@ angular.module(
       };
     }
 );
-},{"../contextmenu/contextmenu.js":6}],28:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6}],30:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4439,7 +4504,7 @@ angular.module(
   };
 }
 );
-},{"../helpers/angular-recursion.js":11,"./treeNavigator.node.js":26,"angular-dragdrop":2}],29:[function(require,module,exports){
+},{"../helpers/angular-recursion.js":11,"./treeNavigator.node.js":28,"angular-dragdrop":2}],31:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4517,7 +4582,7 @@ angular.module(
       }
     };
   });
-},{"../contextmenu/contextmenu.js":6}],30:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6}],32:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4576,7 +4641,7 @@ angular.module(
     };
   }
 ] );
-},{}],31:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /*globals angular*/
 
 
@@ -4618,7 +4683,7 @@ angular.module(
         };
       }
     ] );
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4703,7 +4768,7 @@ angular.module(
     };
   }
 ]);
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4797,7 +4862,7 @@ angular.module(
     }
   };
 }] );
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4994,4 +5059,4 @@ directive( 'valueWidgetBody', [ '$log', '$compile', 'valueWidgetsService',
 
   }
 ] );
-},{"../validationErrorMarker/validationErrorMarker.js":29,"./checkboxWidget.js":30,"./compoundWidget.js":31,"./selectWidget.js":32,"./stringWidget.js":33}]},{},[1]);
+},{"../validationErrorMarker/validationErrorMarker.js":31,"./checkboxWidget.js":32,"./compoundWidget.js":33,"./selectWidget.js":34,"./stringWidget.js":35}]},{},[1]);

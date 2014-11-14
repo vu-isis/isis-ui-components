@@ -45,7 +45,7 @@ sourcePaths = {
     'src/library/itemList/*.js',
     'src/library/decisionTable/*.js',
     'src/library/validationErrorMarker/*.js',
-
+    'src/library/taxonomyTerms/*.js',
     'src/library/valueWidgets/*.js',
     'src/library/decisionTable/*.js'
   ],
@@ -316,7 +316,7 @@ gulp.task( 'refresh-server', function () {
 } );
 
 
-gulp.task( 'register-watchers', function ( cb ) {
+gulp.task( 'register-watchers', [ 'compile-all' ], function ( cb ) {
   gulp.watch( sourcePaths.index, [ 'compile-index', 'refresh-server' ] );
 
   gulp.watch( sourcePaths.docsSourceIndex, [ 'compile-docs', 'refresh-server' ] );
@@ -337,6 +337,6 @@ gulp.task( 'register-watchers', function ( cb ) {
 // Dev task
 gulp.task( 'dev', [ 'compile-all' ], function ( cb ) {
 
-  runSequence( 'start-server', 'register-watchers', cb );
+  runSequence( 'start-server', 'register-watchers',  cb );
 
 } );
