@@ -29,7 +29,7 @@ angular.module( 'isis.ui.components', [
   'isis.ui.decisionTable'
 
 ] );
-},{"./contextmenu/contextmenu.js":6,"./decisionTable/decisionTable.js":9,"./dropdownNavigator/dropdownNavigator.js":10,"./hierarchicalMenu/hierarchicalMenu.js":12,"./itemList/itemList.js":14,"./searchBox/searchBox.js":21,"./services/isisUIServices.js":22,"./simpleDialog/simpleDialog.js":23,"./taxonomyTerms/taxonomyTerms.js":25,"./treeNavigator/treeNavigator.js":27,"./valueWidgets/valueWidgets.js":36}],2:[function(require,module,exports){
+},{"./contextmenu/contextmenu.js":6,"./decisionTable/decisionTable.js":9,"./dropdownNavigator/dropdownNavigator.js":10,"./hierarchicalMenu/hierarchicalMenu.js":12,"./itemList/itemList.js":15,"./searchBox/searchBox.js":22,"./services/isisUIServices.js":23,"./simpleDialog/simpleDialog.js":24,"./taxonomyTerms/taxonomyTerms.js":26,"./treeNavigator/treeNavigator.js":28,"./valueWidgets/valueWidgets.js":37}],2:[function(require,module,exports){
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -3637,6 +3637,28 @@ angular.module(
 /*globals angular*/
 'use strict';
 
+angular.module(
+  'isis.ui.itemList.item.header', []
+)
+  .directive(
+
+    'ilItemHeader',
+
+    function () {
+
+      return {
+        restrict: 'E',
+        replace: true,
+        require: '^itemList',
+        templateUrl: '/isis-ui-components/templates/itemHeader.html'
+      };
+
+
+    } );
+},{}],15:[function(require,module,exports){
+/*globals angular*/
+'use strict';
+
 require( './listItemGroup.js' );
 require( './itemListFilter.js' );
 require( './itemListNewItem.js' );
@@ -3708,7 +3730,7 @@ angular.module(
     };
   }
 );
-},{"../contextmenu/contextmenu.js":6,"./itemListFilter.js":15,"./itemListNewItem.js":17,"./listItemGroup.js":20}],15:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6,"./itemListFilter.js":16,"./itemListNewItem.js":18,"./listItemGroup.js":21}],16:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3727,19 +3749,21 @@ angular.module(
         require: '^itemList'
       };
     } );
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
 require( './itemStats.js' );
 require( './itemMenu.js' );
 require( './itemDetails.js' );
+require( './itemHeader.js' );
 
 angular.module(
   'isis.ui.itemList.item', [
     'isis.ui.itemList.item.stats',
     'isis.ui.itemList.item.menu',
-    'isis.ui.itemList.item.details'
+    'isis.ui.itemList.item.details',
+    'isis.ui.itemList.item.header'
   ]
 )
   .directive(
@@ -3753,7 +3777,7 @@ angular.module(
       };
     }
 );
-},{"./itemDetails.js":13,"./itemMenu.js":18,"./itemStats.js":19}],17:[function(require,module,exports){
+},{"./itemDetails.js":13,"./itemHeader.js":14,"./itemMenu.js":19,"./itemStats.js":20}],18:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3791,7 +3815,7 @@ angular.module(
         }
       };
     } );
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3813,7 +3837,7 @@ angular.module(
 
 
     } );
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /*globals angular, window*/
 'use strict';
 
@@ -3837,7 +3861,7 @@ angular.module(
         require: '^itemList'
       };
     } );
-},{"angular-moment":3,"moment":5}],20:[function(require,module,exports){
+},{"angular-moment":3,"moment":5}],21:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3861,15 +3885,17 @@ angular.module(
         templateUrl: '/isis-ui-components/templates/listItemGroup.html',
         link: function ( scope, element ) {
 
+          var listElement = element.find('>ul' );
+
           if ( scope.listData && scope.config && scope.config.sortable === true ) {
-            element.attr( 'ui-sortable', 'sortableOptions' );
+            listElement.attr( 'ui-sortable', 'sortableOptions' );
             element.attr( 'ng-model', 'listData.items' );
             $compile( element )( scope );
           }
         }
       };
     } );
-},{"./itemListItem.js":16,"angular-ui-sortable":4}],21:[function(require,module,exports){
+},{"./itemListItem.js":17,"angular-ui-sortable":4}],22:[function(require,module,exports){
 /*globals angular*/
 
 
@@ -3894,7 +3920,7 @@ angular.module(
 
       };
     } );
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -3952,7 +3978,7 @@ angular.module(
 
   }
 ] );
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4041,7 +4067,7 @@ angular.module(
 
     return $simpleDialogProvider;
   } );
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4073,7 +4099,7 @@ function () {
 });
 
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4105,7 +4131,7 @@ function () {
 });
 
 
-},{"./taxonomyTerm.js":24}],26:[function(require,module,exports){
+},{"./taxonomyTerm.js":25}],27:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4130,7 +4156,7 @@ angular.module(
       };
     }
 );
-},{"../contextmenu/contextmenu.js":6}],27:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6}],28:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4183,7 +4209,7 @@ angular.module(
     };
   }
 );
-},{"./treeNavigator.header.js":26,"./treeNavigator.node.label.js":29,"./treeNavigator.nodeList.js":30}],28:[function(require,module,exports){
+},{"./treeNavigator.header.js":27,"./treeNavigator.node.label.js":30,"./treeNavigator.nodeList.js":31}],29:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4206,7 +4232,7 @@ angular.module(
       };
     }
 );
-},{"./treeNavigator.node.label.js":29}],29:[function(require,module,exports){
+},{"./treeNavigator.node.label.js":30}],30:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4229,7 +4255,7 @@ angular.module(
       };
     }
 );
-},{"../contextmenu/contextmenu.js":6}],30:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6}],31:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4504,7 +4530,7 @@ angular.module(
   };
 }
 );
-},{"../helpers/angular-recursion.js":11,"./treeNavigator.node.js":28,"angular-dragdrop":2}],31:[function(require,module,exports){
+},{"../helpers/angular-recursion.js":11,"./treeNavigator.node.js":29,"angular-dragdrop":2}],32:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4582,7 +4608,7 @@ angular.module(
       }
     };
   });
-},{"../contextmenu/contextmenu.js":6}],32:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":6}],33:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4641,7 +4667,7 @@ angular.module(
     };
   }
 ] );
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 /*globals angular*/
 
 
@@ -4683,7 +4709,7 @@ angular.module(
         };
       }
     ] );
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4768,7 +4794,7 @@ angular.module(
     };
   }
 ]);
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4862,7 +4888,7 @@ angular.module(
     }
   };
 }] );
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -5059,4 +5085,4 @@ directive( 'valueWidgetBody', [ '$log', '$compile', 'valueWidgetsService',
 
   }
 ] );
-},{"../validationErrorMarker/validationErrorMarker.js":31,"./checkboxWidget.js":32,"./compoundWidget.js":33,"./selectWidget.js":34,"./stringWidget.js":35}]},{},[1]);
+},{"../validationErrorMarker/validationErrorMarker.js":32,"./checkboxWidget.js":33,"./compoundWidget.js":34,"./selectWidget.js":35,"./stringWidget.js":36}]},{},[1]);

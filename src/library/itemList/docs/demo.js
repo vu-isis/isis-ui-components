@@ -149,6 +149,7 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
       cssClass: 'my-item',
       toolTip: 'Open item',
       description: 'This is description here',
+      headerTemplateUrl: Math.random() > 0.5 ? '/library/itemList/docs/headerTemplate.html' : undefined,
       taxonomyTerms: [
         {
           id: 'tag1',

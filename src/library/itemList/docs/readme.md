@@ -17,6 +17,7 @@ the following properties:
     - toolTip: {string},
     - iconClass: {string}.
 * `details`: {string},
+* `headerTemplateUrl`: {string},
 * `detailsTemplateUrl`: {string},
 * `taxonomyTerms`: {Array of objects with the following properties}:
     - id: {string}
