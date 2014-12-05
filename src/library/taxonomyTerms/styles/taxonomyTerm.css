@@ -8,7 +8,8 @@
   padding: 0.4ex 1ex 0.25ex 1ex;
   font-size: 70%;
   line-height: 140%;
-  opacity: .85; }
+  opacity: .85;
+  cursor: pointer; }
   .taxonomy-term:hover {
     opacity: 1; }
   .taxonomy-term a {
