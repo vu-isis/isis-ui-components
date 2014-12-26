@@ -2981,7 +2981,9 @@ angular.module(
             ( event.target !== service.triggerElement ) ) {
 
             service.close();
+            return false;
           }
+
         };
 
         handleScrollEvent = function () {
@@ -3154,6 +3156,7 @@ angular.module(
             service.menuElement = null;
             service.triggerElement = null;
 
+            opened = false;
           }
         };
 
