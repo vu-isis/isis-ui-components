@@ -1,5 +1,5 @@
 /* License: MIT.
- * Copyright (C) 2013, 2014, Uri Shaked.
+ * Copyright (C) 2013, 2014, 2015, Uri Shaked.
  */
 
 /* global describe, inject, module, beforeEach, afterEach, it, expect, spyOn, jasmine */
@@ -252,6 +252,35 @@ describe('module angularMoment', function () {
 			expect(element.attr('datetime')).toBe('2012-09-20T15:20:12.000Z');
 		});
 
+		describe('setting the element title', function() {
+			it('should not set the title attribute of the element to the date by default', function () {
+				$rootScope.testDate = new Date().getTime() / 1000;
+				var element = angular.element('<span am-time-ago="testDate"></span>');
+				element = $compile(element)($rootScope);
+				$rootScope.$digest();
+				expect(element.attr('title')).toBeUndefined();
+			});
+
+			it('should not change the title attribute of the element if the element already has a title', function () {
+				amTimeAgoConfig.titleFormat = 'MMMM Do YYYY, h:mm:ss a';
+				$rootScope.testDate = new Date().getTime() / 1000;
+				var element = angular.element('<span am-time-ago="testDate" title="test"></span>');
+				element = $compile(element)($rootScope);
+				$rootScope.$digest();
+				expect(element.attr('title')).toBe('test');
+			});
+
+			it('should set the title attribute of the element to the formatted date as per the config', function () {
+				amTimeAgoConfig.titleFormat = 'MMMM Do YYYY, h:mm:ss a';
+				$rootScope.testDate = new Date().getTime() / 1000;
+				var element = angular.element('<span am-time-ago="testDate"></span>');
+				element = $compile(element)($rootScope);
+				$rootScope.$digest();
+				var testDateWithCustomFormatting = moment($rootScope.testDate).format(amTimeAgoConfig.titleFormat);
+				expect(element.attr('title')).toBe(testDateWithCustomFormatting);
+			});
+		});
+
 		describe('am-without-suffix attribute', function () {
 			it('should generate a time string without suffix when true', function () {
 				$rootScope.testDate = new Date();
@@ -475,6 +504,34 @@ describe('module angularMoment', function () {
 		});
 	});
 
+
+	describe('amTimeAgo filter', function () {
+		var amTimeAgo;
+
+		beforeEach(function () {
+			amTimeAgo = $filter('amTimeAgo');
+		});
+
+		it('should support return the time ago as text', function () {
+			var date = new Date();
+			expect(amTimeAgo(date)).toBe('a few seconds ago');
+		});
+
+		it('should remove suffix from the result if the third parameter (suffix) is true', function () {
+			var date = new Date();
+			expect(amTimeAgo(date, null, true)).toBe('a few seconds');
+		});
+
+		it('should gracefully handle undefined values', function () {
+			expect(amTimeAgo()).toBe('');
+		});
+
+		it('should gracefully handle invalid input', function () {
+			expect(amTimeAgo('noDate')).toBe('');
+		});
+
+	});
+
 	describe('amMoment service', function () {
 		describe('#changeLocale', function () {
 			it('should return the current locale', function () {
@@ -498,14 +555,6 @@ describe('module angularMoment', function () {
 				amMoment.changeLocale();
 				expect(eventBroadcasted).toBe(false);
 			});
-		});
-
-		describe('#changeLanguage', function () {
-			it('should issue a warning about changeLanguage() deprecation', inject(function ($log) {
-				spyOn($log, 'warn');
-				amMoment.changeLanguage('fr');
-				expect($log.warn).toHaveBeenCalledWith('angular-moment: Usage of amMoment.changeLanguage() is deprecated. Please use changeLocale()');
-			}));
 		});
 
 		describe('#preprocessDate', function () {

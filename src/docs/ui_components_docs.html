@@ -30,20 +30,26 @@
             <div btf-markdown class="col-md-6" ng-include="component.docs">
             </div>
         </div>
-            <div class="row">
-                <tabset class="col-md-12" ng-if="component.sources">
-                    <tab ng-repeat="sourceFile in component.sources"
-                         heading="{{sourceFile.fileName}}"
-                         select="selectedSourceFile=sourceFile">
-                        <div ui-codemirror
-                             ui-codemirror-opts="sourceFile.viewerOptions"
-                             ng-model="sourceFile.code"
-                             ui-refresh="selectedSourceFile"
-                             >
+            <div class="row"
+                 ng-if="component.sources">
 
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="sourceFile in component.sources"
+                        ng-click="component.selectedSourceFile = component.sources[$index]">
+                        <a href="#">{{sourceFile.fileName}}</a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel"
+                         class="tab-pane active">
+                        <div ui-codemirror
+                             ui-codemirror-opts="component.selectedSourceFile.viewerOptions"
+                             ng-model="component.selectedSourceFile.code"
+                             ui-refresh="component.selectedSourceFile">
                         </div>
-                    </tab>
-                </tabset>
+                    </div>
+                </div>
             </div>
 
     </section>

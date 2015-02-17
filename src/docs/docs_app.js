@@ -101,7 +101,8 @@ function ( $scope, $templateCache ) {
       name: component.name,
       template: '/library/' + component.name + '/docs/demo.html',
       docs: '/library/' + component.name + '/docs/readme.md',
-      sources: sources
+      sources: sources,
+      selectedSourceFile: sources[0]
     };
   } );
 
