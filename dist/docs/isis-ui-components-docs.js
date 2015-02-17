@@ -11118,6 +11118,7 @@ demoApp.controller( 'ListItemDetailsDemoController2', function ( $scope ) {
     config;
 
   itemGenerator2 = function ( id ) {
+
     return {
       id: id,
       title: 'List sub-item ' + id,
@@ -11235,6 +11236,17 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
     config;
 
   itemGenerator = function ( id ) {
+
+    var lastUpdated;
+
+    if (Math.random() > 0.5) {
+      lastUpdated = {
+        time: Date.now(),
+        user: 'N/A'
+
+      };
+    }
+
     return {
       id: id,
       title: 'List item ' + id,
@@ -11254,11 +11266,7 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
           url: 'http://vanderbilt.edu'
         }
       ],
-      lastUpdated: {
-        time: Date.now(),
-        user: 'N/A'
-
-      },
+      lastUpdated: lastUpdated,
       stats: [
         {
           value: id,
