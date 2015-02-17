@@ -6,6 +6,7 @@
       contextmenu="nodeContextmenu($event, node)"
       contextmenu-data="nodeContextMenuData">
     <a class="node-expander"
+        isis-stop-event
         data-ng-if="canNodeExpand(node) && canNodeCollapse(node)"
         data-isis-sglclick="nodeExpanderClick($event, node)">
         <i data-ng-if="!isNodeExpanded(node)" data-ng-class="node.collapsedIconClass || config.collapsedIconClass"></i>

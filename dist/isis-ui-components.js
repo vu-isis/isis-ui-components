@@ -4394,7 +4394,17 @@ angular.module(
                 });
             }
         };
-    }]);
+    }])
+    .directive('isisStopEvent', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element) {
+                element.bind('click', function (e) {
+                    e.stopPropagation();
+                });
+            }
+        };
+    });
 },{"./treeNavigator.header.js":26,"./treeNavigator.node.label.js":29,"./treeNavigator.nodeList.js":30}],28:[function(require,module,exports){
 /*globals angular*/
 
