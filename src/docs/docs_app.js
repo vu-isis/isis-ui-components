@@ -42,9 +42,6 @@ require( 'codemirror/mode/xml/xml' );
 require( 'codemirror/mode/javascript/javascript' );
 
 require( 'angular-ui-codemirror' );
-require( 'ng-grid' );
-require( 'ng-grid-css');
-require( 'ui-utils');
 
 
 var demoApp = angular.module(

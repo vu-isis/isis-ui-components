@@ -25,11 +25,9 @@ Include library CSS:
 
 ## Library-dependencies
 
-- Angular (1.3.2)
+- Angular (1.3.13)
 - jQuery UI (1.11.1)
-- Angular-ui-bootstrap (0.10.0)
 - Angular-ui-utils
-- Ng-grid
 
 
 ## Development
