@@ -4,24 +4,8 @@
 
 var components = [
   {
-    name: 'decisionTable',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
-    name: 'valueWidgets',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
-    name: 'searchBox',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
     name: 'itemList',
     sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
-  },
-  {
-    name: 'simpleDialog',
-    sources: [ 'demo.html', 'demo.js']
   },
   {
     name: 'hierarchicalMenu',
@@ -41,15 +25,11 @@ var components = [
   }
 ];
 
-require( '../library/simpleDialog/docs/demo.js' );
 require( '../library/hierarchicalMenu/docs/demo.js' );
 require( '../library/contextmenu/docs/demo.js' );
 require( '../library/dropdownNavigator/docs/demo.js' );
 require( '../library/treeNavigator/docs/demo.js' );
 require( '../library/itemList/docs/demo.js' );
-require( '../library/searchBox/docs/demo.js' );
-require( '../library/valueWidgets/docs/demo.js' );
-require( '../library/decisionTable/docs/demo.js' );
 
 require( 'angular-sanitize' );
 window.Showdown = require( 'showdown' );
@@ -72,8 +52,7 @@ var demoApp = angular.module(
 'isis.ui.demoApp', [
   'isis.ui.demoApp.templates',
   'btford.markdown',
-  'ui.codemirror',
-  'ui.bootstrap'
+  'ui.codemirror'
 ].concat( components.map( function ( e ) {
   return 'isis.ui.' + e.name + '.demo';
 } ) )
@@ -131,7 +110,7 @@ function ( $scope, $templateCache ) {
   } );
 
 } );
-},{"../library/contextmenu/docs/demo.js":16,"../library/decisionTable/docs/demo.js":17,"../library/dropdownNavigator/docs/demo.js":18,"../library/hierarchicalMenu/docs/demo.js":19,"../library/itemList/docs/demo.js":20,"../library/searchBox/docs/demo.js":21,"../library/simpleDialog/docs/demo.js":22,"../library/treeNavigator/docs/demo.js":23,"../library/valueWidgets/docs/demo.js":24,"angular-markdown-directive":8,"angular-sanitize":9,"angular-ui-codemirror":3,"codemirror":10,"codemirror-css":5,"codemirror/mode/htmlmixed/htmlmixed":12,"codemirror/mode/javascript/javascript":13,"codemirror/mode/xml/xml":14,"ng-grid":6,"ng-grid-css":7,"showdown":25,"ui-utils":4}],2:[function(require,module,exports){
+},{"../library/contextmenu/docs/demo.js":16,"../library/dropdownNavigator/docs/demo.js":17,"../library/hierarchicalMenu/docs/demo.js":18,"../library/itemList/docs/demo.js":19,"../library/treeNavigator/docs/demo.js":20,"angular-markdown-directive":8,"angular-sanitize":9,"angular-ui-codemirror":3,"codemirror":10,"codemirror-css":5,"codemirror/mode/htmlmixed/htmlmixed":12,"codemirror/mode/javascript/javascript":13,"codemirror/mode/xml/xml":14,"ng-grid":6,"ng-grid-css":7,"showdown":21,"ui-utils":4}],2:[function(require,module,exports){
 /**
  * Created with IntelliJ IDEA.
  * User: Ganaraj.Pr
@@ -12855,116 +12834,6 @@ demoApp.controller( 'ContextmenuDemoController', function ( $scope ) {
 
 } );
 },{}],17:[function(require,module,exports){
-/*globals angular*/
-'use strict';
-
-var demoApp = angular.module('isis.ui.decisionTable.demo', [ 'isis.ui.decisionTable' ]);
-
-demoApp.service('decisionTableDataProvider', [function () {
-
-  var dummyData;
-
-  dummyData = {
-    'declarations': [
-      { 'ref': 'ref_e1', 'name': 'event'}
-    ],
-    'table': {
-      'rows': [
-        {'event1_a': 'true', 'action_1': 'X'},
-        {'action_1': 'a=100', 'event1': 'a&lt;100'}
-      ],
-      'conditions': {
-        'event1_a': {
-          'index': 1,
-          'exp': 'ref_e1.a'
-        },
-        'event1': {
-          'index': 0,
-          'exp': 'ref_e1'
-        }
-      },
-      'actions': {
-        'action_1': {
-          'index': 0,
-          'exp': 'Action.out'
-        }
-      }
-
-    }
-  };
-
-
-  this.loadData = function () {
-    var result,
-    conditionsColumnDefs = [],
-    actionsColumnDefs = [];
-
-
-    result = {
-      declarations: {
-        data: [],
-        columnDefs: [
-          { field: 'ref', displayName: 'Reference' },
-          { field: 'name', displayName: 'Name' }
-        ]
-      },
-      decisions: {
-        data: [
-          {'event1_a': 'true', 'action_1': 'X'},
-          {'action_1': 'a=100', 'event1': 'a&lt;100'}
-        ],
-        columnDefs: []
-      }
-    };
-
-    angular.forEach(dummyData.declarations, function(declaration) {
-      result.declarations.data.push({
-        ref: declaration.ref,
-        name: declaration.name
-      });
-    });
-
-    angular.forEach(dummyData.table.conditions, function (condition, columnName) {
-      conditionsColumnDefs[ condition.index ] = {
-        field: columnName,
-        displayName: condition.exp
-      };
-    });
-
-    angular.forEach(dummyData.table.actions, function (action, columnName) {
-      actionsColumnDefs[ action.index ] = {
-        field: columnName,
-        displayName: action.exp
-      };
-    });
-
-    result.decisions.columnDefs = conditionsColumnDefs.concat(actionsColumnDefs);
-
-    return result;
-  };
-
-}
-])
-;
-
-demoApp.controller('DecisionTableDemoController', function ($scope, decisionTableDataProvider) {
-
-  var config,
-  initialData;
-
-  config = {
-
-  };
-
-  initialData = decisionTableDataProvider.loadData();
-
-  $scope.tableData = {
-    declarations: initialData.declarations,
-    decisions: initialData.decisions
-  };
-  $scope.config = config;
-});
-},{}],18:[function(require,module,exports){
 /*globals console, angular*/
 'use strict';
 
@@ -13100,11 +12969,11 @@ demoApp.controller( 'DropdownDemoController', function ( $scope ) {
 
 
 } );
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /*globals console, angular*/
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.hierarchicalMenu.demo', [ 'ui.bootstrap',
+var demoApp = angular.module( 'isis.ui.hierarchicalMenu.demo', [
   'isis.ui.hierarchicalMenu'
 ] );
 
@@ -13236,7 +13105,7 @@ demoApp.controller( 'HierarchicalMenuDemoController', function ( $scope ) {
   $scope.menu = menu;
 
 } );
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -13528,77 +13397,7 @@ demoApp.controller( 'ItemListDemoController', function ( $scope ) {
 
 } );
 
-},{}],21:[function(require,module,exports){
-/*globals angular*/
-'use strict';
-
-var demoApp = angular.module( 'isis.ui.searchBox.demo', [ 'isis.ui.searchBox' ] );
-
-demoApp.controller( 'SearchBoxDemoController', function () {
-
-} );
-},{}],22:[function(require,module,exports){
-/*globals console, angular*/
-
-'use strict';
-
-var isValid,
-  demoApp = angular.module( 'isis.ui.simpleDialog.demo', [ 'isis.ui.simpleDialog' ] ),
-
-  parameter = {
-    value: 10,
-    invalid: true
-  };
-
-demoApp.controller( 'ConfirmDialogDemoController', function ( $scope, $simpleDialog ) {
-
-  isValid = function () {
-
-    var result = ( Number( parameter.value ) === 4 );
-
-    console.log( 'Validator was called' );
-    console.log( 'Sum is: ' + parameter.value, result );
-    parameter.invalid = !result;
-
-    return result;
-
-  };
-
-
-  $scope.parameter = parameter;
-
-  $scope.isValid = function () {
-    isValid();
-    if ( !$scope.$$phase ) {
-      $scope.$apply();
-    }
-  };
-
-  $scope.openDialog = function () {
-
-    $simpleDialog.open( {
-      dialogTitle: 'Are you sure?',
-      dialogContentTemplate: 'confirm-content-template',
-      onOk: function () {
-        console.log( 'OK was picked' );
-      },
-      onCancel: function () {
-        console.log( 'This was canceled' );
-      },
-      validator: isValid,
-      size: 'lg', // can be sm or lg
-      scope: $scope
-    } );
-
-  };
-
-
-} );
-
-demoApp.controller( 'ConfirmDialogDemoDataController', function () {
-
-} );
-},{}],23:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -13956,300 +13755,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
   dummyTreeDataGenerator( $scope.treeData, 'Node item ', 5, 3 );
 
 } );
-},{"ngDragDrop":2}],24:[function(require,module,exports){
-/*globals angular*/
-'use strict';
-
-var demoApp = angular.module( 'isis.ui.valueWidgets.demo', [ 'isis.ui.valueWidgets' ] );
-
-demoApp.controller( 'ValueWidgetsDemoController', function ( $scope ) {
-
-  var onValueChange,
-  validators,
-  selectedOption,
-  options;
-
-  selectedOption = {
-    label: 'Should be selected',
-    value: 'option_selected'
-  };
-
-  options = [
-    {
-      label: 'Option 1',
-      value: 'option_1'
-    },
-    {
-      label: 'Option 2',
-      value: 'option_2'
-    },
-    {
-      label: 'Option 3',
-      value: 'option_3'
-    },
-    {
-      label: 'Option 4',
-      value: 'option_4'
-    },
-    {
-      label: 'Option 5',
-      value: 'option_5'
-    }
-  ];
-
-  options.push( selectedOption );
-
-  onValueChange = function ( val ) {
-    console.log( 'Value changed:', val );
-  };
-
-  validators = {
-
-    shorterThanTwenty: {
-      id: 'shorterThanTwenty',
-      errorMessage: 'This is not shorter than 20!',
-      method: function ( modelValue, viewValue ) {
-        var value = modelValue || viewValue;
-
-        return !value || angular.isString( value ) && value.length < 20;
-      }
-    },
-
-    shouldNotBeNo: {
-      id: 'shouldNotBeNo',
-      errorMessage: 'This can not be No!',
-      method: function ( modelValue, viewValue ) {
-        var value = modelValue || viewValue;
-
-        return value !== false;
-      }
-    },
-
-    shouldNotBeUndefinedOrNull: {
-      id: 'shouldNotBeNo',
-      errorMessage: 'This can not be undefined or null!',
-      method: function ( modelValue, viewValue ) {
-        var value = modelValue || viewValue;
-
-        return value !== undefined && value !== null;
-      }
-    }
-
-  };
-
-  $scope.widgets = [
-
-    {
-      model: 'A string',
-      modelConfigEdit: {
-        validators: [ validators.shorterThanTwenty ],
-        placeHolder: 'Enter something shorter than 20',
-        modelChange: onValueChange
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        validators: [ validators.shorterThanTwenty ],
-        placeHolder: 'N/A'
-      },
-      widgetConfigEdit: {
-        label: 'stringWidget (autocomplete)',
-        errorMessagesEmbedded: true,
-        tooltip: 'Enter something here. This value represents a very important something.',
-        autoCompleteItems: ['john', 'bill', 'charlie', 'robert', 'alban',
-          'oscar', 'marie', 'celine', 'brad', 'drew', 'rebecca', 'michel',
-          'francis', 'jean', 'paul', 'pierre', 'nicolas', 'alfred', 'gerard',
-          'louis', 'albert', 'edouard', 'benoit', 'guillaume', 'nicolas', 'joseph']
-
-      },
-      widgetConfigDisplay: {
-        label: 'stringWidget'
-      },
-      inputConfig: {
-        name: 'stringWidget',
-        id: 'stringWidget'
-      }
-    },
-
-    {
-      modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefinedOrNull ],
-        placeHolder: 'Credit card',
-        modelChange: onValueChange
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        validators: [],
-        placeHolder: 'N/A'
-      },
-      widgetConfigEdit: {
-        label: 'stringWidget with mask',
-        errorMessagesEmbedded: true,
-        tooltip: 'Enter credit card number here.',
-        mask: '9999 9999 9999 9999'
-      },
-      widgetConfigDisplay: {
-        label: 'stringWidget'
-      },
-      inputConfig: {
-        name: 'stringWidget',
-        id: 'stringWidget'
-      }
-    },
-
-    {
-      model: 'The letter A stands for apple but can cause your brain melt. This is something you would not want to risk.',
-      modelChange: onValueChange,
-      modelConfigEdit: {
-        validators: [ validators.shorterThanTwenty ],
-        placeHolder: 'Enter something',
-        modelChange: onValueChange
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        validators: [ validators.shorterThanTwenty ],
-        placeHolder: 'N/A'
-      },
-      widgetType: 'string',
-      widgetConfigEdit: {
-        label: 'stringWidget - multiline',
-        errorMessagesEmbedded: true,
-        tooltip: 'Enter something here. This value represents a very important something.',
-        multiLine: true,
-        rows: 6
-      },
-      widgetConfigDisplay: {
-        label: 'stringWidget - multiline'
-      },
-      inputConfig: {
-        name: 'stringWidget',
-        id: 'stringWidget'
-      }
-    },
-
-    {
-      model: true,
-      modelConfigEdit: {
-        validators: [ validators.shouldNotBeNo ],
-        modelChange: onValueChange
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        validators: []
-      },
-
-      widgetConfigEdit: {
-        label: 'checkboxWidget:',
-        errorMessagesEmbedded: true,
-        tooltip: 'Click it'
-      },
-      widgetConfigDisplay: {
-        label: 'checkboxWidget:'
-      },
-      inputConfig: {
-        name: 'checkboxWidget',
-        id: 'checkboxWidget'
-      }
-    },
-
-    {
-      model: undefined,
-      widgetType: 'checkbox',
-      modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefinedOrNull ],
-        modelChange: onValueChange
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        placeHolder: 'No set',
-        validators: []
-      },
-
-      widgetConfigEdit: {
-        label: 'checkboxWidget (no default value):',
-        errorMessagesEmbedded: true,
-        trueLabel: 'Yes',
-        falseLabel: 'No',
-        tooltip: 'Some tooltip text'
-      },
-      widgetConfigDisplay: {
-        label: 'checkboxWidget (no default value):'
-      },
-      inputConfig: {
-        name: 'checkboxWidget',
-        id: 'checkboxWidget'
-      }
-    },
-
-    {
-      model: selectedOption,
-      widgetType: 'select',
-      modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefinedOrNull ],
-        modelChange: onValueChange,
-        placeHolder: '---',
-        options: options
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        placeHolder: 'Not set',
-        validators: []
-      },
-
-      widgetConfigEdit: {
-        label: 'selectWidget (no default value):',
-        errorMessagesEmbedded: true,
-        trueLabel: 'Yes',
-        falseLabel: 'No',
-        tooltip: 'Some tooltip text'
-      },
-      widgetConfigDisplay: {
-        label: 'selectWidget (no default value):'
-      },
-      inputConfig: {
-        name: 'selectWidget',
-        id: 'selectWidget'
-      }
-    },
-
-
-    {
-      model: [selectedOption],
-      widgetType: 'select',
-      modelConfigEdit: {
-        validators: [ validators.shouldNotBeUndefinedOrNull ],
-        modelChange: onValueChange,
-        multiple: true,
-        placeHolder: '---',
-        options: options
-      },
-      modelConfigDisplay: {
-        modelChange: onValueChange,
-        placeHolder: 'Not set',
-        multiple: true,
-        validators: []
-      },
-
-      widgetConfigEdit: {
-        label: 'selectWidget (multiple):',
-        errorMessagesEmbedded: true,
-        trueLabel: 'Yes',
-        falseLabel: 'No',
-        tooltip: 'Some tooltip text'
-      },
-      widgetConfigDisplay: {
-        label: 'selectWidget (multiple):'
-      },
-      inputConfig: {
-        name: 'selectWidget',
-        id: 'selectWidget'
-      }
-    }
-
-
-  ];
-
-} );
-},{}],25:[function(require,module,exports){
+},{"ngDragDrop":2}],21:[function(require,module,exports){
 (function (global){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 //

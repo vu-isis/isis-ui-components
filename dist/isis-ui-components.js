@@ -3,33 +3,25 @@
 
 require( './services/isisUIServices.js' );
 
-require( './simpleDialog/simpleDialog.js' );
 require( './hierarchicalMenu/hierarchicalMenu.js' );
 require( './contextmenu/contextmenu.js' );
 require( './dropdownNavigator/dropdownNavigator.js' );
 require( './treeNavigator/treeNavigator.js' );
 require( './itemList/itemList.js' );
-require( './searchBox/searchBox.js' );
-require( './valueWidgets/valueWidgets.js' );
-require( './decisionTable/decisionTable.js' );
 require( './taxonomyTerms/taxonomyTerms.js' );
 
 angular.module( 'isis.ui.components', [
   'isis.ui.components.templates',
   'isis.ui.services',
 
-  'isis.ui.simpleDialog',
   'isis.ui.hierarchicalMenu',
   'isis.ui.contextmenu',
   'isis.ui.dropdownNavigator',
   'isis.ui.treeNavigator',
-  'isis.ui.itemList',
-  'isis.ui.searchBox',
-  'isis.ui.valueWidgets',
-  'isis.ui.decisionTable'
+  'isis.ui.itemList'
 
 ] );
-},{"./contextmenu/contextmenu.js":5,"./decisionTable/decisionTable.js":8,"./dropdownNavigator/dropdownNavigator.js":9,"./hierarchicalMenu/hierarchicalMenu.js":11,"./itemList/itemList.js":14,"./searchBox/searchBox.js":21,"./services/isisUIServices.js":22,"./simpleDialog/simpleDialog.js":23,"./taxonomyTerms/taxonomyTerms.js":25,"./treeNavigator/treeNavigator.js":27,"./valueWidgets/valueWidgets.js":36}],2:[function(require,module,exports){
+},{"./contextmenu/contextmenu.js":5,"./dropdownNavigator/dropdownNavigator.js":6,"./hierarchicalMenu/hierarchicalMenu.js":8,"./itemList/itemList.js":11,"./services/isisUIServices.js":18,"./taxonomyTerms/taxonomyTerms.js":20,"./treeNavigator/treeNavigator.js":22}],2:[function(require,module,exports){
 !function(){"use strict";function a(a,b){return a.module("angularMoment",[]).constant("angularMomentConfig",{preprocess:null,timezone:"",format:null}).constant("moment",b).constant("amTimeAgoConfig",{withoutSuffix:!1,serverTime:null}).directive("amTimeAgo",["$window","moment","amMoment","amTimeAgoConfig","angularMomentConfig",function(b,c,d,e,f){return function(g,h,i){function j(){var a;if(e.serverTime){var b=(new Date).getTime(),d=b-t+e.serverTime;a=c(d)}else a=c();return a}function k(){q&&(b.clearTimeout(q),q=null)}function l(a){if(h.text(a.from(j(),s)),!w){var c=Math.abs(j().diff(a,"minute")),d=3600;1>c?d=1:60>c?d=30:180>c&&(d=300),q=b.setTimeout(function(){l(a)},1e3*d)}}function m(a){x&&h.attr("datetime",a)}function n(){if(k(),o){var a=d.preprocessDate(o,u,r);l(a),m(a.toISOString())}}var o,p,q=null,r=f.format,s=e.withoutSuffix,t=(new Date).getTime(),u=f.preprocess,v=i.amTimeAgo.replace(/^::/,""),w=0===i.amTimeAgo.indexOf("::"),x="TIME"===h[0].nodeName.toUpperCase();p=g.$watch(v,function(a){return"undefined"==typeof a||null===a||""===a?(k(),void(o&&(h.text(""),m(""),o=null))):(o=a,n(),void(void 0!==a&&w&&p()))}),a.isDefined(i.amWithoutSuffix)&&g.$watch(i.amWithoutSuffix,function(a){"boolean"==typeof a?(s=a,n()):s=e.withoutSuffix}),i.$observe("amFormat",function(a){"undefined"!=typeof a&&(r=a,n())}),i.$observe("amPreprocess",function(a){u=a,n()}),g.$on("$destroy",function(){k()}),g.$on("amMoment:localeChanged",function(){n()})}}]).service("amMoment",["moment","$rootScope","$log","angularMomentConfig",function(b,c,d,e){var f=this;this.preprocessors={utc:b.utc,unix:b.unix},this.changeLocale=function(d){var e=(b.locale||b.lang)(d);return a.isDefined(d)&&(c.$broadcast("amMoment:localeChanged"),c.$broadcast("amMoment:languageChange")),e},this.changeLanguage=function(a){return d.warn("angular-moment: Usage of amMoment.changeLanguage() is deprecated. Please use changeLocale()"),f.changeLocale(a)},this.preprocessDate=function(c,f,g){return a.isUndefined(f)&&(f=e.preprocess),this.preprocessors[f]?this.preprocessors[f](c,g):(f&&d.warn("angular-moment: Ignoring unsupported value for preprocess: "+f),!isNaN(parseFloat(c))&&isFinite(c)?b(parseInt(c,10)):b(c,g))},this.applyTimezone=function(a){var b=e.timezone;return a&&b&&(a.tz?a=a.tz(b):d.warn("angular-moment: timezone specified but moment.tz() is undefined. Did you forget to include moment-timezone.js?")),a}}]).filter("amCalendar",["moment","amMoment",function(a,b){return function(c,d){if("undefined"==typeof c||null===c)return"";c=b.preprocessDate(c,d);var e=a(c);return e.isValid()?b.applyTimezone(e).calendar():""}}]).filter("amDateFormat",["moment","amMoment",function(a,b){return function(c,d,e){if("undefined"==typeof c||null===c)return"";c=b.preprocessDate(c,e);var f=a(c);return f.isValid()?b.applyTimezone(f).format(d):""}}]).filter("amDurationFormat",["moment",function(a){return function(b,c,d){return"undefined"==typeof b||null===b?"":a.duration(b,c).humanize(d)}}])}"function"==typeof define&&define.amd?define("angular-moment",["angular","moment"],a):a(angular,window.moment)}();
 //# sourceMappingURL=angular-moment.min.js.map
 },{}],3:[function(require,module,exports){
@@ -3443,148 +3435,6 @@ angular.module(
     ] );
 },{}],6:[function(require,module,exports){
 /*globals angular*/
-
-'use strict';
-
-var tableRowHeight = 31,
-  tableHeaderHeight = 31,
-  cellTemplate;
-
-cellTemplate = '<div class="ngCellText decisions" ng-class="col.colIndex()"><span ng-cell-text>{{COL_FIELD CUSTOM_FILTERS}}</span></div>';
-
-angular.module(
-'isis.ui.decisionTable.decisions', ['ngGrid']
-
-)
-.controller('DecisionTableDecisionsController', function ($scope) {
-
-  $scope.getDecisionTableGridStyle = function() {
-
-    var height = tableHeaderHeight + 'px';
-
-    if (angular.isArray($scope.decisionsData)) {
-      height = tableHeaderHeight + tableRowHeight * $scope.decisionsData.length + 'px';
-    }
-
-    return {
-      height: height
-    };
-  };
-
-  angular.forEach($scope.decisionsOptions.columnDefs, function() {
-    //columnDef.cellTemplate = cellTemplate;
-  });
-
-
-})
-.directive(
-'decisionTableDecisions',
-function () {
-
-  return {
-    controller: 'DecisionTableDecisionsController',
-    scope: {
-      decisionsData: '=',
-      decisionsOptions: '='
-    },
-    restrict: 'E',
-    replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.decisions.html'
-
-  };
-});
-
-
-},{}],7:[function(require,module,exports){
-/*globals angular*/
-
-'use strict';
-
-var tableRowHeight = 31,
-  tableHeaderHeight = 31;
-
-angular.module(
-'isis.ui.decisionTable.declarations', ['ngGrid']
-
-)
-.controller('DecisionTableDeclarationsController', function ($scope) {
-
-  $scope.getDeclarationTableGridStyle = function() {
-
-    var height = tableHeaderHeight + 'px';
-
-    if (angular.isArray($scope.declarationsData)) {
-      height = tableHeaderHeight + tableRowHeight * $scope.declarationsData.length + 'px';
-    }
-
-    return {
-      height: height
-    };
-  };
-
-})
-.directive(
-'decisionTableDeclarations',
-function () {
-
-  return {
-    controller: 'DecisionTableDeclarationsController',
-    scope: {
-      declarationsData: '=',
-      declarationsOptions: '='
-    },
-    restrict: 'E',
-    replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.declarations.html'
-
-  };
-});
-
-
-},{}],8:[function(require,module,exports){
-/*globals angular*/
-'use strict';
-
-require('./decisionTable.decisions.js');
-require('./decisionTable.declarations.js');
-
-angular.module(
-'isis.ui.decisionTable', ['isis.ui.decisionTable.decisions', 'isis.ui.decisionTable.declarations']
-
-)
-.controller('DecisionTableController', function ($scope) {
-
-  $scope.declarationsOptions = {
-    data: 'declarationsData',
-    columnDefs: $scope.tableData.declarations.columnDefs
-  };
-
-  $scope.decisionsOptions = {
-    data: 'decisionsData',
-    columnDefs: $scope.tableData.decisions.columnDefs
-  };
-
-})
-.directive(
-'decisionTable',
-function () {
-
-  return {
-    scope: {
-      tableData: '=',
-      config: '='
-    },
-    controller: 'DecisionTableController',
-    restrict: 'E',
-    replace: true,
-    templateUrl: '/isis-ui-components/templates/decisionTable.html'
-
-  };
-});
-
-
-},{"./decisionTable.decisions.js":6,"./decisionTable.declarations.js":7}],9:[function(require,module,exports){
-/*globals angular*/
 'use strict';
 
 angular.module(
@@ -3603,7 +3453,7 @@ angular.module(
         templateUrl: '/isis-ui-components/templates/dropdownNavigator.html'
       };
     } );
-},{}],10:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3659,13 +3509,12 @@ angular.module( 'RecursionHelper', [] )
       };
     }
   ] );
-},{}],11:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
 angular.module(
   'isis.ui.hierarchicalMenu', [
-    'ui.bootstrap',
     'isis.ui.components'
   ]
 )
@@ -3741,7 +3590,7 @@ angular.module(
         };
       }
     ] );
-},{}],12:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3792,7 +3641,7 @@ angular.module(
 
 
     } );
-},{}],13:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3814,7 +3663,7 @@ angular.module(
 
 
     } );
-},{}],14:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3889,7 +3738,7 @@ angular.module(
     };
   }
 );
-},{"../contextmenu/contextmenu.js":5,"./itemListFilter.js":15,"./itemListNewItem.js":17,"./listItemGroup.js":20}],15:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":5,"./itemListFilter.js":12,"./itemListNewItem.js":14,"./listItemGroup.js":17}],12:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3908,7 +3757,7 @@ angular.module(
         require: '^itemList'
       };
     } );
-},{}],16:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3936,7 +3785,7 @@ angular.module(
       };
     }
 );
-},{"./itemDetails.js":12,"./itemHeader.js":13,"./itemMenu.js":18,"./itemStats.js":19}],17:[function(require,module,exports){
+},{"./itemDetails.js":9,"./itemHeader.js":10,"./itemMenu.js":15,"./itemStats.js":16}],14:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3967,6 +3816,12 @@ angular.module(
 
                 scope.formConfig = scope.config.newItemForm;
 
+                scope.toggleNewItemFormCollapsed = function() {
+
+                  scope.formConfig.expanded = !scope.formConfig.expanded;
+
+                };
+
               }
             }
 
@@ -3974,7 +3829,7 @@ angular.module(
         }
       };
     } );
-},{}],18:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -3996,7 +3851,7 @@ angular.module(
 
 
     } );
-},{}],19:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /*globals angular, window*/
 'use strict';
 
@@ -4020,7 +3875,7 @@ angular.module(
         require: '^itemList'
       };
     } );
-},{"angular-moment":2,"moment":4}],20:[function(require,module,exports){
+},{"angular-moment":2,"moment":4}],17:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4054,32 +3909,7 @@ angular.module(
         }
       };
     } );
-},{"./itemListItem.js":16,"angular-ui-sortable":3}],21:[function(require,module,exports){
-/*globals angular*/
-
-
-'use strict';
-
-angular.module(
-  'isis.ui.searchBox', []
-
-)
-  .directive(
-    'searchBox',
-    function () {
-
-      return {
-        scope: {
-          handlers: '=',
-          config: '='
-        },
-        restrict: 'E',
-        replace: true,
-        templateUrl: '/isis-ui-components/templates/searchBox.html'
-
-      };
-    } );
-},{}],22:[function(require,module,exports){
+},{"./itemListItem.js":13,"angular-ui-sortable":3}],18:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4137,96 +3967,7 @@ angular.module(
 
   }
 ] );
-},{}],23:[function(require,module,exports){
-/*globals angular*/
-'use strict';
-
-angular.module(
-  'isis.ui.simpleDialog', [
-    'ui.bootstrap',
-    'isis.ui.components'
-  ]
-)
-  .provider( '$simpleDialog', function () {
-
-    var $simpleDialogProvider = {
-      options: {},
-      $get: [ '$modal',
-
-        function ( $modal ) {
-
-          var $simpleDialog = {},
-            ConfirmDialogController;
-
-          ConfirmDialogController = function ( $scope, $modalInstance, dialogTitle,
-            dialogContentTemplate, onOk, onCancel, validator ) {
-
-            $scope.dialogTitle = dialogTitle;
-            $scope.dialogContentTemplate = dialogContentTemplate;
-
-            $scope.ok = function () {
-
-              if ( angular.isFunction( validator ) ? validator( $scope ) : true ) {
-                $modalInstance.close();
-                if ( angular.isFunction( onOk ) ) {
-                  onOk();
-                }
-              }
-            };
-
-
-            $scope.cancel = function () {
-              $modalInstance.dismiss( 'cancel' );
-              if ( angular.isFunction( onCancel ) ) {
-                onCancel();
-              }
-            };
-          };
-
-          $simpleDialog.open = function ( options ) {
-
-            var modalOptions = {
-              templateUrl: '/isis-ui-components/templates/simpleDialog.html',
-              controller: ConfirmDialogController
-            };
-
-            modalOptions = angular.extend( modalOptions, options );
-
-            modalOptions.resolve = angular.extend( modalOptions.resolve || {
-              dialogTitle: function () {
-                return options.dialogTitle;
-              },
-              dialogContentTemplate: function () {
-                return options.dialogContentTemplate;
-              },
-              onOk: function () {
-                return options.onOk;
-              },
-              onCancel: function () {
-                return options.onCancel;
-              },
-              validator: function () {
-                return options.validator;
-              }
-            } );
-
-
-            var simpleDialogInstance = $modal.open( modalOptions );
-
-
-            return simpleDialogInstance;
-
-          };
-
-          return $simpleDialog;
-
-        }
-      ]
-    };
-
-    return $simpleDialogProvider;
-  } );
-},{}],24:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4258,7 +3999,7 @@ function () {
 });
 
 
-},{}],25:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
@@ -4290,7 +4031,7 @@ function () {
 });
 
 
-},{"./taxonomyTerm.js":24}],26:[function(require,module,exports){
+},{"./taxonomyTerm.js":19}],21:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4315,7 +4056,7 @@ angular.module(
       };
     }
 );
-},{"../contextmenu/contextmenu.js":5}],27:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":5}],22:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4405,7 +4146,7 @@ angular.module(
             }
         };
     });
-},{"./treeNavigator.header.js":26,"./treeNavigator.node.label.js":29,"./treeNavigator.nodeList.js":30}],28:[function(require,module,exports){
+},{"./treeNavigator.header.js":21,"./treeNavigator.node.label.js":24,"./treeNavigator.nodeList.js":25}],23:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4428,7 +4169,7 @@ angular.module(
       };
     }
 );
-},{"./treeNavigator.node.label.js":29}],29:[function(require,module,exports){
+},{"./treeNavigator.node.label.js":24}],24:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4451,7 +4192,7 @@ angular.module(
       };
     }
 );
-},{"../contextmenu/contextmenu.js":5}],30:[function(require,module,exports){
+},{"../contextmenu/contextmenu.js":5}],25:[function(require,module,exports){
 /*globals angular*/
 
 'use strict';
@@ -4724,559 +4465,4 @@ angular.module(
   };
 }
 );
-},{"../helpers/angular-recursion.js":10,"./treeNavigator.node.js":28}],31:[function(require,module,exports){
-/*globals angular*/
-'use strict';
-
-require('../contextmenu/contextmenu.js');
-
-angular.module(
-    'isis.ui.validationErrorMarker', [ 'isis.ui.contextmenu' ]
-  )
-  .controller(
-  'ValidationMarkerController',
-  function ($scope) {
-
-    $scope.errorMenuConfig = {
-      triggerEvent: 'click',
-      position: 'right bottom',
-      contentTemplateUrl: '/isis-ui-components/templates/validationErrorMarkerMessages.html',
-      doNotAutoClose: true,
-      menuParentScope: $scope
-    };
-
-    $scope.getValidationErrorMessages = function () {
-
-      var messages = [];
-
-      angular.forEach($scope.validationErrors, function (v, key) {
-        messages.push($scope.errorMessages[key]);
-      });
-
-      return messages;
-    };
-
-  }
-)
-// .controller(
-//  'ValidationErrorMarkerMessagesController',
-//  function () {
-//  }
-//)
-  .directive(
-  'validationErrorMarker',
-  function () {
-
-    return {
-      scope: {
-        errorMessages: '=',
-        embedded: '='
-      },
-      restrict: 'E',
-      replace: true,
-      controller: 'ValidationMarkerController',
-      templateUrl: '/isis-ui-components/templates/validationErrorMarker.html',
-      require: '^ngModel',
-      link: function (scope, element, attributes, ngModel) {
-
-        scope.validationErrors = [];
-        scope.invalid = false;
-
-        scope.$watch(
-          function () {
-            return ngModel.$invalid;
-          },
-          function (newVal) {
-
-            scope.invalid = newVal;
-
-            if (scope.invalid) {
-
-            }
-
-            scope.validationErrors = ngModel.$error;
-
-          }
-        );
-
-      }
-    };
-  });
-},{"../contextmenu/contextmenu.js":5}],32:[function(require,module,exports){
-/*globals angular*/
-
-'use strict';
-
-angular.module(
-'isis.ui.checkboxWidget', [ ]
-
-)
-.controller(
-'CheckboxWidgetController', function ($scope) {
-
-  $scope.trueLabel = $scope.widgetConfig.trueLabel || 'True';
-  $scope.falseLabel = $scope.widgetConfig.falseLabel || 'False';
-
-})
-.directive(
-'checkboxWidget', [ 'valueWidgetsService',
-  function (valueWidgetsService) {
-
-    var defaultTemplateUrl = '/isis-ui-components/templates/checkboxWidget.html';
-
-    return {
-      restrict: 'E',
-      scope: true,
-      replace: true,
-      require: '^ngModel',
-      controller: 'CheckboxWidgetController',
-      link: function ( scope, element, attributes, ngModel ) {
-
-        scope.myValue = {
-
-        };
-
-        valueWidgetsService.getAndCompileWidgetTemplate( element, scope, defaultTemplateUrl );
-
-        ngModel.$formatters.push(function(modelValue) {
-          return modelValue;
-        });
-
-        ngModel.$render = function() {
-          scope.myValue.value = ngModel.$viewValue;
-        };
-
-        ngModel.$parsers.push(function(viewValue) {
-          return viewValue;
-        });
-
-        scope.$watch('myValue.value', function(val) {
-          ngModel.$setViewValue(val);
-        });
-
-        ngModel.$render();
-
-      }
-
-    };
-  }
-] );
-},{}],33:[function(require,module,exports){
-/*globals angular*/
-
-
-'use strict';
-
-angular.module(
-  'isis.ui.compoundWidget', [ 'isis.ui.services' ]
-
-)
-  .directive(
-    'compoundWidget', [ 'isisTemplateService', '$compile',
-      function ( isisTemplateService, $compile ) {
-
-        var defaultTemplateUrl = '/isis-ui-components/templates/compoundWidget.html';
-
-        return {
-          restrict: 'E',
-          replace: true,
-          require: 'ngModel',
-          scope: {
-            config: '='
-          },
-          link: function ( scope, element, attributes, ngModel ) {
-
-            var templateUrl;
-
-            templateUrl = scope.config && scope.config.templateUrl || defaultTemplateUrl;
-
-            isisTemplateService.getTemplate( scope.config.template, templateUrl )
-              .then( function ( template ) {
-                element.replaceWidth( $compile( template, scope ) );
-              } );
-
-            console.log( ngModel.$viewValue );
-
-          }
-
-
-        };
-      }
-    ] );
-},{}],34:[function(require,module,exports){
-/*globals angular*/
-
-'use strict';
-
-angular.module(
-'isis.ui.selectWidget', [ ]
-
-)
-.controller(
-'SelectWidgetController', function ($scope) {
-
-  $scope.getDisplayValue = function () {
-    var displayValue,
-        labelsList;
-
-
-    if ($scope.modelConfig.multiple) {
-
-      displayValue = $scope.modelConfig.placeHolder;
-
-      if ($scope.myValue && angular.isArray($scope.myValue.value)) {
-
-        labelsList = [];
-
-        angular.forEach($scope.myValue.value, function(opt) {
-          labelsList.push(opt.label);
-          displayValue = labelsList.join(', ');
-        });
-      }
-
-    } else {
-      displayValue = ($scope.myValue.value && $scope.myValue.value.label) || $scope.modelConfig.placeHolder || '';
-    }
-
-    return displayValue;
-  };
-
-
-})
-.directive(
-'selectWidget', [ 'valueWidgetsService',
-  function (valueWidgetsService) {
-
-    var defaultTemplateUrl = '/isis-ui-components/templates/selectWidget.html';
-
-    return {
-      restrict: 'E',
-      scope: true,
-      replace: true,
-      require: '^ngModel',
-      controller: 'SelectWidgetController',
-      link: function (scope, element, attributes, ngModel) {
-
-        scope.myValue = {
-
-        };
-
-        scope.optionsList = scope.modelConfig.options;
-
-        valueWidgetsService.getAndCompileWidgetTemplate(element, scope, defaultTemplateUrl);
-
-        ngModel.$formatters.push(function (modelValue) {
-          return modelValue;
-        });
-
-        ngModel.$render = function () {
-          scope.myValue.value = ngModel.$viewValue;
-        };
-
-        ngModel.$parsers.push(function (viewValue) {
-          return viewValue;
-        });
-
-        scope.$watch('myValue.value', function (val) {
-          ngModel.$setViewValue(val);
-        });
-
-        ngModel.$render();
-
-      }
-
-    };
-  }
-]);
-},{}],35:[function(require,module,exports){
-/*globals angular*/
-
-'use strict';
-
-angular.module(
-
-'isis.ui.stringWidget', [ 'isis.ui.services', 'ui.utils' ]
-)
-.controller(
-'StringWidgetController', function ( $scope ) {
-
-
-  $scope.getDisplayValue = function () {
-    var displayValue;
-
-    displayValue = $scope.myValue.value || $scope.modelConfig.placeHolder || '';
-
-    return displayValue;
-  };
-
-  if ( $scope.widgetConfig.mask ) {
-    $scope.placeHolder = undefined;
-  }
-
-
-} )
-.directive(
-'stringWidget', [ 'valueWidgetsService',
-  function ( valueWidgetsService ) {
-
-    var defaultTemplateUrl = '/isis-ui-components/templates/stringWidget.html';
-
-    return {
-      restrict: 'E',
-      scope: true,
-      replace: true,
-      require: '^ngModel',
-      controller: 'StringWidgetController',
-      link: function ( scope, element, attributes, ngModel ) {
-
-        scope.myValue = {
-
-        };
-
-        valueWidgetsService.getAndCompileWidgetTemplate( element, scope, defaultTemplateUrl );
-
-        ngModel.$formatters.push( function ( modelValue ) {
-          return modelValue;
-        } );
-
-        ngModel.$render = function () {
-          scope.myValue.value = ngModel.$viewValue;
-        };
-
-        ngModel.$parsers.push( function ( viewValue ) {
-          return viewValue;
-        } );
-
-        scope.$watch( 'myValue.value', function ( val ) {
-          ngModel.$setViewValue( val );
-        } );
-
-        ngModel.$render();
-
-
-      }
-
-    };
-  }
-] )
-.directive(
-'autoComplete', ['$timeout', function ( $timeout ) {
-  return {
-    scope: {
-      'autoComplete': '=autoComplete'
-    },
-    restrict: 'A',
-    link: function ( scope, element ) {
-
-      var autoCompleteItems = scope.autoComplete;
-      if ( autoCompleteItems ) {
-        element.autocomplete( {
-          source: autoCompleteItems,
-          select: function () {
-            $timeout( function () {
-              element.trigger( 'input' );
-            }, 0 );
-          }
-        } );
-      }
-    }
-  };
-}] );
-},{}],36:[function(require,module,exports){
-/*globals angular*/
-
-'use strict';
-
-require( '../validationErrorMarker/validationErrorMarker.js' );
-
-require( './checkboxWidget.js' );
-require( './compoundWidget.js' );
-require( './selectWidget.js' );
-require( './stringWidget.js' );
-
-//require( 'angular-bindonce');
-
-var availableWidgets = {
-  'string': [ 'stringWidget', 'string-widget' ],
-  'compound': [ 'compoundWidget', 'compound-widget' ],
-  'checkbox': [ 'checkboxWidget', 'checkbox-widget' ],
-  'select': [ 'selectWidget', 'select-widget' ]
-},
-
-widgetModules = [];
-
-angular.forEach( availableWidgets, function ( value ) {
-  this.push( 'isis.ui.' + value[ 0 ] );
-}, widgetModules );
-
-angular.module( 'isis.ui.valueWidgets', [ 'isis.ui.validationErrorMarker' ].concat( widgetModules ) )
-
-.factory( 'valueWidgetsService', function ( isisTemplateService, $compile ) {
-
-  var services = {
-
-    getWidgetElementForType: function ( type ) {
-
-      var result = availableWidgets[ type ] && availableWidgets[ type ][ 1 ];
-
-      if ( !result ) {
-        result = 'string-widget';
-      }
-
-      return result;
-
-    },
-
-    getAndCompileWidgetTemplate: function ( widgetElement, $scope, defaultTemplateUrl ) {
-
-      var templateUrl,
-      templateElement;
-
-      templateUrl = $scope.widgetConfig && $scope.widgetConfig.templateUrl || defaultTemplateUrl;
-
-      isisTemplateService.getTemplate( $scope.widgetConfig.template, templateUrl )
-      .then( function ( template ) {
-        templateElement = angular.element( template );
-        widgetElement.replaceWith( templateElement );
-        $compile( templateElement )( $scope );
-      } );
-    }
-  };
-
-  return services;
-
-} )
-.controller( 'ValueWidgetController', function () {
-
-} )
-.directive( 'valueWidget',
-function () {
-  return {
-    restrict: 'E',
-    replace: true,
-    require: 'ngModel',
-    templateUrl: '/isis-ui-components/templates/valueWidget.html',
-    scope: {
-      model: '=ngModel',
-      modelConfig: '=?',
-
-      inputConfig: '=?',
-
-      widgetType: '=?',
-      widgetMode: '=?',
-      widgetConfig: '=?',
-      widgetDisabled: '=?'
-
-    },
-    priority: 0,
-    controller: 'ValueWidgetController',
-    link: function ( scope, element, attributes, ngModel ) {
-
-      scope.modelConfig = scope.modelConfig || {};
-      scope.widgetConfig = scope.widgetConfig || {};
-      scope.inputConfig = scope.inputConfig || {};
-
-      scope.placeHolder = scope.modelConfig.placeHolder || 'Enter value';
-
-      if ( angular.isObject( scope.modelConfig.validators ) ) {
-
-        ngModel.$validators = ngModel.$validators || {};
-        scope.validatorMessages = scope.validatorMessages || {};
-
-        angular.forEach( scope.modelConfig.validators, function ( validatorDescriptor ) {
-          if ( angular.isFunction( validatorDescriptor.method ) ) {
-            ngModel.$validators[validatorDescriptor.id] = validatorDescriptor.method;
-            scope.validatorMessages[validatorDescriptor.id] = validatorDescriptor.errorMessage;
-          }
-        } );
-
-      }
-
-      if ( angular.isFunction( scope.modelConfig.modelChange ) ) {
-        ngModel.$viewChangeListeners.push( function () {
-          scope.modelConfig.modelChange(ngModel.$modelValue);
-        } );
-
-      }
-    }
-  };
-})
-.
-directive( 'valueWidgetBody', [ '$log', '$compile', 'valueWidgetsService',
-  function ( $log, $compile, valueWidgetsService ) {
-
-    return {
-      restrict: 'E',
-      replace: true,
-      require: ['^ngModel', '^valueWidget'],
-      templateUrl: '/isis-ui-components/templates/valueWidget.body.html',
-      priority: 0,
-
-      compile: function () {
-        return {
-          pre: function ( scope ) {
-
-            if ( !scope.widgetMode ) {
-              scope.widgetMode = 'edit';
-            }
-
-          },
-          post: function ( scope, element ) {
-
-            var
-            widgetTemplateStr,
-            widgetElement,
-            widgetType,
-            widgetDirective,
-            newWidgetDirective,
-            linkIt;
-
-            linkIt = function () {
-
-              if ( scope.widgetType ) {
-                widgetType = scope.widgetType;
-              } else {
-
-                if ( typeof scope.model === 'boolean' ) {
-                  widgetType = 'checkbox';
-                }
-
-              }
-
-              newWidgetDirective = valueWidgetsService.getWidgetElementForType( widgetType );
-
-              if ( widgetDirective !== newWidgetDirective ) {
-
-                widgetDirective = newWidgetDirective;
-
-                widgetTemplateStr = '<' + widgetDirective + '>' +
-                '</' + widgetDirective + '>';
-
-                $log.log( widgetTemplateStr );
-
-                widgetElement = angular.element( widgetTemplateStr );
-
-                element.empty();
-                element.append( widgetElement );
-                $compile( widgetElement )( scope );
-
-              }
-
-            };
-
-            scope.$watch( 'widgetType', function () {
-              linkIt();
-            } );
-
-            scope.$watch( 'widgetMode', function () {
-              linkIt();
-            } );
-
-          }
-        };
-      }
-    };
-
-  }
-] );
-},{"../validationErrorMarker/validationErrorMarker.js":31,"./checkboxWidget.js":32,"./compoundWidget.js":33,"./selectWidget.js":34,"./stringWidget.js":35}]},{},[1]);
+},{"../helpers/angular-recursion.js":7,"./treeNavigator.node.js":23}]},{},[1]);
