@@ -55,7 +55,7 @@ demoApp.controller( 'ListItemDetailsDemoController2', function ( $scope ) {
 
     sortable: true,
     secondaryItemMenu: true,
-    detailsCollapsible: true,
+    detailsCollapsible: false,
     showDetailsLabel: 'Show details',
     hideDetailsLabel: 'Hide details',
 
