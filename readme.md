@@ -25,9 +25,10 @@ Include library CSS:
 
 ## Library-dependencies
 
+- jQuery
 - Angular (1.3.13)
-- jQuery UI (1.11.1)
-- Angular-ui-utils
+- jQuery UI 
+- Bootstrap
 
 
 ## Development
