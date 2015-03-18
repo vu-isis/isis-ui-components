@@ -2,22 +2,22 @@
 'use strict';
 
 var components = [
-  {
-    name: 'itemList',
-    sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
-  },
-  {
-    name: 'hierarchicalMenu',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
-    name: 'contextmenu',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
-    name: 'dropdownNavigator',
-    sources: [ 'demo.html', 'demo.js']
-  },
+  //{
+  //  name: 'itemList',
+  //  sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
+  //},
+  //{
+  //  name: 'hierarchicalMenu',
+  //  sources: [ 'demo.html', 'demo.js']
+  //},
+  //{
+  //  name: 'contextmenu',
+  //  sources: [ 'demo.html', 'demo.js']
+  //},
+  //{
+  //  name: 'dropdownNavigator',
+  //  sources: [ 'demo.html', 'demo.js']
+  //},
   {
     name: 'treeNavigator',
     sources: [ 'demo.html', 'demo.js']
@@ -107,3 +107,36 @@ function ( $scope, $templateCache ) {
   } );
 
 } );
+
+window.countOfSesquatches = function () {
+
+  var root = angular.element(document.getElementsByTagName('body'));
+
+  var watchers = [];
+
+  var f = function (element) {
+    angular.forEach(['$scope', '$isolateScope'], function (scopeProperty) {
+      if (element.data() && element.data().hasOwnProperty(scopeProperty)) {
+        angular.forEach(element.data()[scopeProperty].$$watchers, function (watcher) {
+          watchers.push(watcher);
+        });
+      }
+    });
+
+    angular.forEach(element.children(), function (childElement) {
+      f(angular.element(childElement));
+    });
+  };
+
+  f(root);
+
+  // Remove duplicate watchers
+  var watchersWithoutDuplicates = [];
+  angular.forEach(watchers, function(item) {
+    if(watchersWithoutDuplicates.indexOf(item) < 0) {
+      watchersWithoutDuplicates.push(item);
+    }
+  });
+
+  console.log(watchersWithoutDuplicates.length);
+};

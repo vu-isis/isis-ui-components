@@ -94,9 +94,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
     levels = levels || 0;
 
-    count = Math.round(
-    Math.random() * maxCount
-    ) + 1;
+    count = maxCount;
 
     for ( i = 0; i < count; i += 1 ) {
       id = name + i;
@@ -107,6 +105,9 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
         dummyTreeDataGenerator( childNode, id + '.', maxCount, levels - 1 );
       }
     }
+
+    return treeNode.children;
+
   };
 
   addNode = function ( parentTreeNode, id, i ) {
@@ -144,7 +145,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       parentTreeNode.childrenCount = parentTreeNode.children.length;
 
       if ( newTreeNode.childrenCount === 0 ) {
-        newTreeNode.childrenCount = Math.round( Math.random() );
+        newTreeNode.childrenCount = Math.round( Math.random() ) * 5000;
       }
 
 
@@ -308,13 +309,24 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       console.log( 'Expander was clicked for node:', node, isExpand );
     },
 
-    loadChildren: function ( e, node ) {
+    pagination: {
+      itemsPerPage: 10
+    },
+
+    loadChildren: function ( e, node, count) {
       var deferred = $q.defer();
 
       setTimeout(
       function () {
-        dummyTreeDataGenerator( node, 'Async ' + node.id, 5, 0 );
-        deferred.resolve();
+
+        var dummyParent = {
+              children: []
+            },
+            newChildren;
+
+        debugger;
+        newChildren = dummyTreeDataGenerator( dummyParent, 'Async ' + node.id, count || 20, 0 );
+        deferred.resolve(newChildren);
       },
       2000
       );
@@ -352,6 +364,6 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
 
   addNode( null, 'ROOT' );
-  dummyTreeDataGenerator( $scope.treeData, 'Node item ', 5, 3 );
+  dummyTreeDataGenerator( $scope.treeData, 'Node item ', Math.round(5 * Math.random()), 2 );
 
 } );

@@ -184,4 +184,29 @@
     background-color: #ccffcc;
   }
 
+  .paging {
+
+    text-transform: uppercase;
+    font-size: 80%;
+    text-align: center;
+
+    &.page-up {
+      border-bottom: 1px dotted #8099AB;
+    }
+
+    &.page-down {
+      border-top: 1px dotted #8099AB;
+    }
+
+    a {
+
+      display: block;
+      padding: 1ex 0;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
 }

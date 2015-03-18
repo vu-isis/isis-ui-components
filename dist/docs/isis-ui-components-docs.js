@@ -3,22 +3,22 @@
 'use strict';
 
 var components = [
-  {
-    name: 'itemList',
-    sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
-  },
-  {
-    name: 'hierarchicalMenu',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
-    name: 'contextmenu',
-    sources: [ 'demo.html', 'demo.js']
-  },
-  {
-    name: 'dropdownNavigator',
-    sources: [ 'demo.html', 'demo.js']
-  },
+  //{
+  //  name: 'itemList',
+  //  sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
+  //},
+  //{
+  //  name: 'hierarchicalMenu',
+  //  sources: [ 'demo.html', 'demo.js']
+  //},
+  //{
+  //  name: 'contextmenu',
+  //  sources: [ 'demo.html', 'demo.js']
+  //},
+  //{
+  //  name: 'dropdownNavigator',
+  //  sources: [ 'demo.html', 'demo.js']
+  //},
   {
     name: 'treeNavigator',
     sources: [ 'demo.html', 'demo.js']
@@ -108,6 +108,39 @@ function ( $scope, $templateCache ) {
   } );
 
 } );
+
+window.countOfSesquatches = function () {
+
+  var root = angular.element(document.getElementsByTagName('body'));
+
+  var watchers = [];
+
+  var f = function (element) {
+    angular.forEach(['$scope', '$isolateScope'], function (scopeProperty) {
+      if (element.data() && element.data().hasOwnProperty(scopeProperty)) {
+        angular.forEach(element.data()[scopeProperty].$$watchers, function (watcher) {
+          watchers.push(watcher);
+        });
+      }
+    });
+
+    angular.forEach(element.children(), function (childElement) {
+      f(angular.element(childElement));
+    });
+  };
+
+  f(root);
+
+  // Remove duplicate watchers
+  var watchersWithoutDuplicates = [];
+  angular.forEach(watchers, function(item) {
+    if(watchersWithoutDuplicates.indexOf(item) < 0) {
+      watchersWithoutDuplicates.push(item);
+    }
+  });
+
+  console.log(watchersWithoutDuplicates.length);
+};
 },{"../library/contextmenu/docs/demo.js":13,"../library/dropdownNavigator/docs/demo.js":14,"../library/hierarchicalMenu/docs/demo.js":15,"../library/itemList/docs/demo.js":16,"../library/treeNavigator/docs/demo.js":17,"angular-markdown-directive":5,"angular-sanitize":6,"angular-ui-codemirror":3,"codemirror":7,"codemirror-css":4,"codemirror/mode/htmlmixed/htmlmixed":9,"codemirror/mode/javascript/javascript":10,"codemirror/mode/xml/xml":11,"showdown":18}],2:[function(require,module,exports){
 /**
  * Created with IntelliJ IDEA.
@@ -814,6 +847,11 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     maybeUpdateLineNumberWidth(this);
     for (var i = 0; i < initHooks.length; ++i) initHooks[i](this);
     endOperation(this);
+    // Suppress optimizelegibility in Webkit, since it breaks text
+    // measuring on line wrapping boundaries.
+    if (webkit && options.lineWrapping &&
+        getComputedStyle(display.lineDiv).textRendering == "optimizelegibility")
+      display.lineDiv.style.textRendering = "auto";
   }
 
   // DISPLAY CONSTRUCTOR
@@ -1421,7 +1459,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     // width and height.
     removeChildren(display.cursorDiv);
     removeChildren(display.selectionDiv);
-    display.heightForcer.style.top = display.gutters.style.height = 0;
+    display.gutters.style.height = 0;
 
     if (different) {
       display.lastWrapHeight = update.wrapperHeight;
@@ -1479,9 +1517,9 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
   function setDocumentHeight(cm, measure) {
     cm.display.sizer.style.minHeight = measure.docHeight + "px";
-    var plusGap = measure.docHeight + scrollGap(cm);
-    cm.display.heightForcer.style.top = plusGap + "px";
-    cm.display.gutters.style.height = Math.max(plusGap, measure.clientHeight) + "px";
+    var total = measure.docHeight + cm.display.barHeight;
+    cm.display.heightForcer.style.top = total + "px";
+    cm.display.gutters.style.height = Math.max(total + scrollGap(cm), measure.clientHeight) + "px";
   }
 
   // Read the actual heights of the rendered lines, and update their
@@ -2549,7 +2587,8 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
   // Converts a {top, bottom, left, right} box from line-local
   // coordinates into another coordinate system. Context may be one of
-  // "line", "div" (display.lineDiv), "local"/null (editor), or "page".
+  // "line", "div" (display.lineDiv), "local"/null (editor), "window",
+  // or "page".
   function intoCoordSystem(cm, lineObj, rect, context) {
     if (lineObj.widgets) for (var i = 0; i < lineObj.widgets.length; ++i) if (lineObj.widgets[i].above) {
       var size = widgetHeight(lineObj.widgets[i]);
@@ -3461,7 +3500,9 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
   // Return true when the given mouse event happened in a widget
   function eventInWidget(display, e) {
     for (var n = e_target(e); n != display.wrapper; n = n.parentNode) {
-      if (!n || n.getAttribute("cm-ignore-events") == "true" || n.parentNode == display.sizer && n != display.mover) return true;
+      if (!n || (n.nodeType == 1 && n.getAttribute("cm-ignore-events") == "true") ||
+          (n.parentNode == display.sizer && n != display.mover))
+        return true;
     }
   }
 
@@ -4490,7 +4531,9 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
     var lendiff = change.text.length - (to.line - from.line) - 1;
     // Remember that these lines changed, for updating the display
-    if (from.line == to.line && change.text.length == 1 && !isWholeLineUpdate(cm.doc, change))
+    if (change.full)
+      regChange(cm);
+    else if (from.line == to.line && change.text.length == 1 && !isWholeLineUpdate(cm.doc, change))
       regLineChange(cm, from.line, "text");
     else
       regChange(cm, from.line, to.line + 1, lendiff);
@@ -6272,6 +6315,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
   // spans partially within the change. Returns an array of span
   // arrays with one element for each line in (after) the change.
   function stretchSpansOverChange(doc, change) {
+    if (change.full) return null;
     var oldFirst = isLine(doc, change.from.line) && getLine(doc, change.from.line).markedSpans;
     var oldLast = isLine(doc, change.to.line) && getLine(doc, change.to.line).markedSpans;
     if (!oldFirst && !oldLast) return null;
@@ -6581,7 +6625,9 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     if (!contains(document.body, widget.node)) {
       var parentStyle = "position: relative;";
       if (widget.coverGutter)
-        parentStyle += "margin-left: -" + widget.cm.getGutterElement().offsetWidth + "px;";
+        parentStyle += "margin-left: -" + widget.cm.display.gutters.offsetWidth + "px;";
+      if (widget.noHScroll)
+        parentStyle += "width: " + widget.cm.display.wrapper.clientWidth + "px;";
       removeChildrenAndAdd(widget.cm.display.measure, elt("div", [widget.node], null, parentStyle));
     }
     return widget.height = widget.node.offsetHeight;
@@ -7044,17 +7090,24 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
       updateLine(line, text, spans, estimateHeight);
       signalLater(line, "change", line, change);
     }
+    function linesFor(start, end) {
+      for (var i = start, result = []; i < end; ++i)
+        result.push(new Line(text[i], spansFor(i), estimateHeight));
+      return result;
+    }
 
     var from = change.from, to = change.to, text = change.text;
     var firstLine = getLine(doc, from.line), lastLine = getLine(doc, to.line);
     var lastText = lst(text), lastSpans = spansFor(text.length - 1), nlines = to.line - from.line;
 
     // Adjust the line structure
-    if (isWholeLineUpdate(doc, change)) {
+    if (change.full) {
+      doc.insert(0, linesFor(0, text.length));
+      doc.remove(text.length, doc.size - text.length);
+    } else if (isWholeLineUpdate(doc, change)) {
       // This is a whole-line replace. Treated specially to make
       // sure line objects move the way they are supposed to.
-      for (var i = 0, added = []; i < text.length - 1; ++i)
-        added.push(new Line(text[i], spansFor(i), estimateHeight));
+      var added = linesFor(0, text.length - 1);
       update(lastLine, lastLine.text, lastSpans);
       if (nlines) doc.remove(from.line, nlines);
       if (added.length) doc.insert(from.line, added);
@@ -7062,8 +7115,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
       if (text.length == 1) {
         update(firstLine, firstLine.text.slice(0, from.ch) + lastText + firstLine.text.slice(to.ch), lastSpans);
       } else {
-        for (var added = [], i = 1; i < text.length - 1; ++i)
-          added.push(new Line(text[i], spansFor(i), estimateHeight));
+        var added = linesFor(1, text.length - 1);
         added.push(new Line(lastText + firstLine.text.slice(to.ch), lastSpans, estimateHeight));
         update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
         doc.insert(from.line + 1, added);
@@ -7074,8 +7126,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     } else {
       update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
       update(lastLine, lastText + lastLine.text.slice(to.ch), lastSpans);
-      for (var i = 1, added = []; i < text.length - 1; ++i)
-        added.push(new Line(text[i], spansFor(i), estimateHeight));
+      var added = linesFor(1, text.length - 1);
       if (nlines > 1) doc.remove(from.line + 1, nlines - 1);
       doc.insert(from.line + 1, added);
     }
@@ -7286,7 +7337,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     setValue: docMethodOp(function(code) {
       var top = Pos(this.first, 0), last = this.first + this.size - 1;
       makeChange(this, {from: top, to: Pos(last, getLine(this, last).text.length),
-                        text: splitLines(code), origin: "setValue"}, true);
+                        text: splitLines(code), origin: "setValue", full: true}, true);
       setSelection(this, simpleSelection(top));
     }),
     replaceRange: function(code, from, to, origin) {
@@ -8166,13 +8217,11 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
       if (array[i] == elt) return i;
     return -1;
   }
-  if ([].indexOf) indexOf = function(array, elt) { return array.indexOf(elt); };
   function map(array, f) {
     var out = [];
     for (var i = 0; i < array.length; i++) out[i] = f(array[i], i);
     return out;
   }
-  if ([].map) map = function(array, f) { return array.map(f); };
 
   function createObj(base, props) {
     var inst;
@@ -8725,7 +8774,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
   // THE END
 
-  CodeMirror.version = "4.10.0";
+  CodeMirror.version = "4.12.0";
 
   return CodeMirror;
 });
@@ -9258,14 +9307,14 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
     "ethiopic-halehame-sid-et", "ethiopic-halehame-so-et",
     "ethiopic-halehame-ti-er", "ethiopic-halehame-ti-et",
     "ethiopic-halehame-tig", "ew-resize", "expanded", "extra-condensed",
-    "extra-expanded", "fantasy", "fast", "fill", "fixed", "flat", "footnotes",
+    "extra-expanded", "fantasy", "fast", "fill", "fixed", "flat", "flex", "footnotes",
     "forwards", "from", "geometricPrecision", "georgian", "graytext", "groove",
     "gujarati", "gurmukhi", "hand", "hangul", "hangul-consonant", "hebrew",
     "help", "hidden", "hide", "higher", "highlight", "highlighttext",
     "hiragana", "hiragana-iroha", "horizontal", "hsl", "hsla", "icon", "ignore",
     "inactiveborder", "inactivecaption", "inactivecaptiontext", "infinite",
     "infobackground", "infotext", "inherit", "initial", "inline", "inline-axis",
-    "inline-block", "inline-table", "inset", "inside", "intrinsic", "invert",
+    "inline-block", "inline-flex", "inline-table", "inset", "inside", "intrinsic", "invert",
     "italic", "justify", "kannada", "katakana", "katakana-iroha", "keep-all", "khmer",
     "landscape", "lao", "large", "larger", "left", "level", "lighter",
     "line-through", "linear", "lines", "list-item", "listbox", "listitem",
@@ -10175,6 +10224,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "if") return cont(expression, comprehension);
   }
 
+  function isContinuedStatement(state, textAfter) {
+    return state.lastType == "operator" || state.lastType == "," ||
+      isOperatorChar.test(textAfter.charAt(0)) ||
+      /[,.]/.test(textAfter.charAt(0));
+  }
+
   // Interface
 
   return {
@@ -10226,7 +10281,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       else if (type == "form" && firstChar == "{") return lexical.indented;
       else if (type == "form") return lexical.indented + indentUnit;
       else if (type == "stat")
-        return lexical.indented + (state.lastType == "operator" || state.lastType == "," ? statementIndent || indentUnit : 0);
+        return lexical.indented + (isContinuedStatement(state, textAfter) ? statementIndent || indentUnit : 0);
       else if (lexical.info == "switch" && !closing && parserConfig.doubleIndentSwitch != false)
         return lexical.indented + (/^(?:case|default)\b/.test(textAfter) ? indentUnit : 2 * indentUnit);
       else if (lexical.align) return lexical.column + (closing ? 0 : 1);
@@ -11464,9 +11519,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
     levels = levels || 0;
 
-    count = Math.round(
-    Math.random() * maxCount
-    ) + 1;
+    count = maxCount;
 
     for ( i = 0; i < count; i += 1 ) {
       id = name + i;
@@ -11477,6 +11530,9 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
         dummyTreeDataGenerator( childNode, id + '.', maxCount, levels - 1 );
       }
     }
+
+    return treeNode.children;
+
   };
 
   addNode = function ( parentTreeNode, id, i ) {
@@ -11514,7 +11570,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       parentTreeNode.childrenCount = parentTreeNode.children.length;
 
       if ( newTreeNode.childrenCount === 0 ) {
-        newTreeNode.childrenCount = Math.round( Math.random() );
+        newTreeNode.childrenCount = Math.round( Math.random() ) * 5000;
       }
 
 
@@ -11678,13 +11734,24 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       console.log( 'Expander was clicked for node:', node, isExpand );
     },
 
-    loadChildren: function ( e, node ) {
+    pagination: {
+      itemsPerPage: 10
+    },
+
+    loadChildren: function ( e, node, count) {
       var deferred = $q.defer();
 
       setTimeout(
       function () {
-        dummyTreeDataGenerator( node, 'Async ' + node.id, 5, 0 );
-        deferred.resolve();
+
+        var dummyParent = {
+              children: []
+            },
+            newChildren;
+
+        debugger;
+        newChildren = dummyTreeDataGenerator( dummyParent, 'Async ' + node.id, count || 20, 0 );
+        deferred.resolve(newChildren);
       },
       2000
       );
@@ -11722,7 +11789,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
 
   addNode( null, 'ROOT' );
-  dummyTreeDataGenerator( $scope.treeData, 'Node item ', 5, 3 );
+  dummyTreeDataGenerator( $scope.treeData, 'Node item ', Math.round(5 * Math.random()), 2 );
 
 } );
 },{"ngDragDrop":2}],18:[function(require,module,exports){
