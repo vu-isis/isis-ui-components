@@ -13,31 +13,98 @@ angular.module(
         'isis.ui.treeNavigator.node.label'
     ])
 
-    .controller('TreeNavigatorController', function ($scope) {
-
-        $scope.scopeMenuConfig = {
-            triggerEvent: 'click',
-            position: 'left bottom'
-        };
-
-        $scope.preferencesMenuConfig = {
-            triggerEvent: 'click',
-            position: 'right bottom'
-        };
-
-
-        $scope.config = $scope.config || {};
-
-        $scope.config.collapsedIconClass = $scope.config.collapsedIconClass || 'icon-arrow-right';
-        $scope.config.expandedIconClass = $scope.config.expandedIconClass || 'icon-arrow-down';
-
-        $scope.config.extraInfoTemplateUrl = $scope.config.extraInfoTemplateUrl ||
-        '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
-
-    })
-
     .directive(
     'treeNavigator', function () {
+
+        function TreeNavigatorController($log) {
+
+            var self,
+                defaultTreeState;
+
+            self = this;
+
+            self.updateSelection = function ($event, node) {
+                var index;
+
+                if (node) {
+
+                    if ($event) {
+                        if ($event.shiftKey) {
+                            // TODO: properly update selected nodes
+                            // start node is active node
+                            // end node is theNode
+                            // select all opened tree elements between the two nodes
+                            self.config.state.selectedNodes = [node.id];
+                            $log.warn('Range selection is not implemented properly yet.');
+
+
+                        } else if ($event.ctrlKey || $event.metaKey) {
+                            index = self.config.state.selectedNodes.indexOf(node.id);
+
+                            if (index > -1) {
+                                // already selected, remove this node
+                                self.config.state.selectedNodes.splice(index, 1);
+                            } else {
+                                // select it
+                                self.config.state.selectedNodes.push(node.id);
+                            }
+
+                        } else {
+                            self.config.state.selectedNodes = [node.id];
+
+                        }
+
+                    } else {
+                        // event is not given
+                        self.config.state.selectedNodes = [node.id];
+                    }
+
+                    // active node is the clicked node
+                    self.config.state.activeNode = node.id;
+
+                } else {
+                    self.config.state.selectedNodes = [];
+                    self.config.state.activeNode = null;
+                }
+            };
+
+
+            self.scopeMenuConfig = {
+                triggerEvent: 'click',
+                position: 'left bottom'
+            };
+
+            self.preferencesMenuConfig = {
+                triggerEvent: 'click',
+                position: 'right bottom'
+            };
+
+
+            defaultTreeState = {
+
+                activeNode: null,
+                selectedNodes: [],
+                expandedNodes: [],
+                loadingNodes: [],
+
+                activeScope: null
+
+            };
+
+            self.config = self.config || {};
+
+            self.config.state = angular.extend(defaultTreeState, self.config.state || {});
+
+
+            self.config.collapsedIconClass = self.config.collapsedIconClass || 'icon-arrow-right';
+            self.config.expandedIconClass = self.config.expandedIconClass || 'icon-arrow-down';
+
+            self.config.extraInfoTemplateUrl = self.config.extraInfoTemplateUrl ||
+                '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
+
+        }
+
+
         return {
             scope: {
                 treeData: '=',
@@ -47,7 +114,9 @@ angular.module(
             restrict: 'E',
             replace: true,
             templateUrl: '/isis-ui-components/templates/treeNavigator.html',
-            controller: 'TreeNavigatorController'
+            controller: TreeNavigatorController,
+            controllerAs: 'ctrl',
+            bindToController: true
 
         };
     }

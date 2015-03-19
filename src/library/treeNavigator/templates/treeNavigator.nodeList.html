@@ -2,8 +2,10 @@
     <li ng-if="pageable() && showPageUp()" class="paging page-up" ng-click="pageUp($event, currentNode)">
         <a href="#">Load more <i class="glyphicon glyphicon-chevron-up"></i></a>
     </li>
+
     <tree-navigator-node
-        data-ng-repeat="node in nodes"
+        data-ng-repeat="node in ctrl.nodes"
+        node="node"
             ></tree-navigator-node>
     <li ng-if="pageable() && showPageDown()" class="paging page-down" ng-click="pageDown($event, currentNode)">
         <a href="#">Load more <i class="glyphicon glyphicon-chevron-down"></i></a>

@@ -8,7 +8,7 @@ var demoApp = angular.module( 'isis.ui.treeNavigator.demo', [
   'ang-drag-drop'
 ] );
 
-demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q ) {
+demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, $timeout ) {
 
   var config,
   treeNodes = {},
@@ -145,7 +145,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
       parentTreeNode.childrenCount = parentTreeNode.children.length;
 
       if ( newTreeNode.childrenCount === 0 ) {
-        newTreeNode.childrenCount = Math.round( Math.random() ) * 5000;
+        newTreeNode.childrenCount = 5000;
       }
 
 
@@ -316,15 +316,15 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
     loadChildren: function ( e, node, count) {
       var deferred = $q.defer();
 
-      setTimeout(
-      function () {
+      console.log('--loading children');
+
+      $timeout (function(){
 
         var dummyParent = {
               children: []
             },
             newChildren;
 
-        debugger;
         newChildren = dummyTreeDataGenerator( dummyParent, 'Async ' + node.id, count || 20, 0 );
         deferred.resolve(newChildren);
       },
@@ -364,6 +364,6 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q )
 
 
   addNode( null, 'ROOT' );
-  dummyTreeDataGenerator( $scope.treeData, 'Node item ', Math.round(5 * Math.random()), 2 );
+  dummyTreeDataGenerator( $scope.treeData, 'Node item ', 1, 1 );
 
 } );

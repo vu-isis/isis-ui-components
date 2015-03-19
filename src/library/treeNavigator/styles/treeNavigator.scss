@@ -16,7 +16,12 @@
     height: 2em;
 
     .scope-selector {
+      float: left;
       padding-right: .5x;
+    }
+
+    .preferences-menu {
+      float: right;
     }
 
     a {
