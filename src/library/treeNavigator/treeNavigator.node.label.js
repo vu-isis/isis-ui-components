@@ -34,58 +34,6 @@ angular.module(
 
             self.loading = false;
 
-            self.loadSomeChildren = function ($event, isBackpaging) {
-
-                var count;
-
-                if (angular.isFunction(self.treeCtrl.config.loadChildren)) {
-
-                    if (self.treeCtrl.config.pagination && self.treeCtrl.config.pagination.itemsPerPage) {
-                        count = self.treeCtrl.config.pagination.itemsPerPage;
-                    }
-
-                    self.loading = true;
-
-                    self.treeCtrl.config.loadChildren($event, self.node, count)
-                        .then(function (children) {
-
-                            if (Array.isArray(children)) {
-
-                                self.node.children = children;
-
-
-                                if (!self.node.firstLoadedChild) {
-                                    self.node.firstLoadedChild = -1;
-                                }
-
-                                if (!self.node.lastLoadedChild) {
-                                    self.node.lastLoadedChild = -1;
-                                }
-
-                                if (isBackpaging === true) {
-
-                                    self.node.lastLoadedChild = self.node.firstLoadedChild - 1;
-                                    self.node.firstLoadedChild -= self.node.children.length;
-
-
-                                } else {
-
-                                    self.node.firstLoadedChild += self.node.lastLoadedChild + 1;
-                                    self.node.lastLoadedChild += self.node.children.length;
-
-                                }
-
-                            }
-
-                            self.loading = false;
-
-                            self.markExpanded($event);
-                        });
-                }
-
-            }
-            ;
-
             self.isExpanded = function () {
                 return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
             };
@@ -127,14 +75,6 @@ angular.module(
 
             };
 
-            self.markExpanded = function ($event) {
-                self.treeCtrl.config.state.expandedNodes.push(self.node.id);
-
-                if (angular.isFunction(self.treeCtrl.config.nodeExpanderClick)) {
-                    self.treeCtrl.config.nodeExpanderClick($event, self.node, true);
-                }
-            };
-
             self.nodeExpanderClick = function ($event) {
 
                 if (!self.loading) {
@@ -153,11 +93,11 @@ angular.module(
 
                                 // Need to load children
 
-                                self.loadSomeChildren($event);
+                                self.treeCtrl.loadSomeChildrenForNode($event, self.node);
 
                             } else {
                                 // No need to load just mark it expanded
-                                self.markExpanded($event);
+                                self.treeCtrl.markNodeExpanded($event, self.node);
 
                             }
                         }

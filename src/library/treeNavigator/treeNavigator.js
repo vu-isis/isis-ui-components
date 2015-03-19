@@ -79,6 +79,81 @@ angular.module(
                 position: 'right bottom'
             };
 
+            self.markNodeExpanded = function ($event, node) {
+                self.config.state.expandedNodes.push(node.id);
+
+                if (angular.isFunction(self.config.nodeExpanderClick)) {
+                    self.config.nodeExpanderClick($event, node, true);
+                }
+            };
+
+            self.loadSomeChildrenForNode = function ($event, node, isBackPaging) {
+
+                var count;
+
+                if (angular.isFunction(self.config.loadChildren)) {
+
+                    if (self.config.pagination && self.config.pagination.itemsPerPage) {
+                        count = self.config.pagination.itemsPerPage;
+                    }
+
+                    node.loading = true;
+
+                    self.config.loadChildren($event, node, count)
+                        .then(function (children) {
+
+                            var wasEmptyBefore;
+
+                            if (Array.isArray(children) && children.length) {
+
+                                wasEmptyBefore = node.children.length === 0;
+
+                                node.children = children;
+
+                                debugger;
+
+                                if (isBackPaging === true && !wasEmptyBefore) {
+
+                                    node.lastLoadedChildPosition = node.firstLoadedChildPosition - 1;
+                                    node.firstLoadedChildPosition = node.lastLoadedChildPosition - node.children.length;
+
+                                } else {
+
+                                    if (wasEmptyBefore) {
+
+                                        node.firstLoadedChildPosition = 0;
+                                        node.lastLoadedChildPosition = node.children.length - 1;
+
+                                    } else {
+
+                                        node.firstLoadedChildPosition += node.lastLoadedChildPosition + 1;
+                                        node.lastLoadedChildPosition = node.firstLoadedChildPosition + node.children.length;
+
+                                    }
+
+                                }
+
+                            } else {
+
+                                node.children = [];
+                            }
+
+                            node.loading = false;
+
+                            self.markNodeExpanded($event, node);
+                        }).
+                        catch(function (e) {
+
+                            node.loading = false;
+                            node.children = [];
+
+                            $log.error('Error while loading children for ', node, e);
+
+                        });
+                }
+
+            };
+
 
             defaultTreeState = {
 
@@ -100,7 +175,7 @@ angular.module(
             self.config.expandedIconClass = self.config.expandedIconClass || 'icon-arrow-down';
 
             self.config.extraInfoTemplateUrl = self.config.extraInfoTemplateUrl ||
-                '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
+            '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
 
         }
 

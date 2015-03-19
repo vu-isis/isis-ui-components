@@ -17,6 +17,8 @@ angular.module(
             var self;
 
             self = this;
+
+
             self.isExpanded = function () {
                 return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
             };

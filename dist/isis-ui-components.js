@@ -1089,6 +1089,81 @@ angular.module(
                 position: 'right bottom'
             };
 
+            self.markNodeExpanded = function ($event, node) {
+                self.config.state.expandedNodes.push(node.id);
+
+                if (angular.isFunction(self.config.nodeExpanderClick)) {
+                    self.config.nodeExpanderClick($event, node, true);
+                }
+            };
+
+            self.loadSomeChildrenForNode = function ($event, node, isBackPaging) {
+
+                var count;
+
+                if (angular.isFunction(self.config.loadChildren)) {
+
+                    if (self.config.pagination && self.config.pagination.itemsPerPage) {
+                        count = self.config.pagination.itemsPerPage;
+                    }
+
+                    node.loading = true;
+
+                    self.config.loadChildren($event, node, count)
+                        .then(function (children) {
+
+                            var wasEmptyBefore;
+
+                            if (Array.isArray(children) && children.length) {
+
+                                wasEmptyBefore = node.children.length === 0;
+
+                                node.children = children;
+
+                                debugger;
+
+                                if (isBackPaging === true && !wasEmptyBefore) {
+
+                                    node.lastLoadedChildPosition = node.firstLoadedChildPosition - 1;
+                                    node.firstLoadedChildPosition = node.lastLoadedChildPosition - node.children.length;
+
+                                } else {
+
+                                    if (wasEmptyBefore) {
+
+                                        node.firstLoadedChildPosition = 0;
+                                        node.lastLoadedChildPosition = node.children.length - 1;
+
+                                    } else {
+
+                                        node.firstLoadedChildPosition += node.lastLoadedChildPosition + 1;
+                                        node.lastLoadedChildPosition = node.firstLoadedChildPosition + node.children.length;
+
+                                    }
+
+                                }
+
+                            } else {
+
+                                node.children = [];
+                            }
+
+                            node.loading = false;
+
+                            self.markNodeExpanded($event, node);
+                        }).
+                        catch(function (e) {
+
+                            node.loading = false;
+                            node.children = [];
+
+                            $log.error('Error while loading children for ', node, e);
+
+                        });
+                }
+
+            };
+
 
             defaultTreeState = {
 
@@ -1110,7 +1185,7 @@ angular.module(
             self.config.expandedIconClass = self.config.expandedIconClass || 'icon-arrow-down';
 
             self.config.extraInfoTemplateUrl = self.config.extraInfoTemplateUrl ||
-                '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
+            '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
 
         }
 
@@ -1186,6 +1261,8 @@ angular.module(
             var self;
 
             self = this;
+
+
             self.isExpanded = function () {
                 return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
             };
@@ -1285,58 +1362,6 @@ angular.module(
 
             self.loading = false;
 
-            self.loadSomeChildren = function ($event, isBackpaging) {
-
-                var count;
-
-                if (angular.isFunction(self.treeCtrl.config.loadChildren)) {
-
-                    if (self.treeCtrl.config.pagination && self.treeCtrl.config.pagination.itemsPerPage) {
-                        count = self.treeCtrl.config.pagination.itemsPerPage;
-                    }
-
-                    self.loading = true;
-
-                    self.treeCtrl.config.loadChildren($event, self.node, count)
-                        .then(function (children) {
-
-                            if (Array.isArray(children)) {
-
-                                self.node.children = children;
-
-
-                                if (!self.node.firstLoadedChild) {
-                                    self.node.firstLoadedChild = -1;
-                                }
-
-                                if (!self.node.lastLoadedChild) {
-                                    self.node.lastLoadedChild = -1;
-                                }
-
-                                if (isBackpaging === true) {
-
-                                    self.node.lastLoadedChild = self.node.firstLoadedChild - 1;
-                                    self.node.firstLoadedChild -= self.node.children.length;
-
-
-                                } else {
-
-                                    self.node.firstLoadedChild += self.node.lastLoadedChild + 1;
-                                    self.node.lastLoadedChild += self.node.children.length;
-
-                                }
-
-                            }
-
-                            self.loading = false;
-
-                            self.markExpanded($event);
-                        });
-                }
-
-            }
-            ;
-
             self.isExpanded = function () {
                 return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
             };
@@ -1378,14 +1403,6 @@ angular.module(
 
             };
 
-            self.markExpanded = function ($event) {
-                self.treeCtrl.config.state.expandedNodes.push(self.node.id);
-
-                if (angular.isFunction(self.treeCtrl.config.nodeExpanderClick)) {
-                    self.treeCtrl.config.nodeExpanderClick($event, self.node, true);
-                }
-            };
-
             self.nodeExpanderClick = function ($event) {
 
                 if (!self.loading) {
@@ -1404,11 +1421,11 @@ angular.module(
 
                                 // Need to load children
 
-                                self.loadSomeChildren($event);
+                                self.treeCtrl.loadSomeChildrenForNode($event, self.node);
 
                             } else {
                                 // No need to load just mark it expanded
-                                self.markExpanded($event);
+                                self.treeCtrl.markNodeExpanded($event, self.node);
 
                             }
                         }
@@ -1498,37 +1515,37 @@ angular.module(
                             // start node is active node
                             // end node is theNode
                             // select all opened tree elements between the two nodes
-                            self.config.state.selectedNodes = [node.id];
+                            self.treeCtrl.config.state.selectedNodes = [node.id];
                             $log.warn('Range selection is not implemented properly yet.');
 
 
                         } else if ($event.ctrlKey || $event.metaKey) {
-                            index = self.config.state.selectedNodes.indexOf(node.id);
+                            index = self.treeCtrl.config.state.selectedNodes.indexOf(node.id);
 
                             if (index > -1) {
                                 // already selected, remove this node
-                                self.config.state.selectedNodes.splice(index, 1);
+                                self.treeCtrl.config.state.selectedNodes.splice(index, 1);
                             } else {
                                 // select it
-                                self.config.state.selectedNodes.push(node.id);
+                                self.treeCtrl.config.state.selectedNodes.push(node.id);
                             }
 
                         } else {
-                            self.config.state.selectedNodes = [node.id];
+                            self.treeCtrl.config.state.selectedNodes = [node.id];
 
                         }
 
                     } else {
                         // event is not given
-                        self.config.state.selectedNodes = [node.id];
+                        self.treeCtrl.config.state.selectedNodes = [node.id];
                     }
 
                     // active node is the clicked node
-                    self.config.state.activeNode = node.id;
+                    self.treeCtrl.config.state.activeNode = node.id;
 
                 } else {
-                    self.config.state.selectedNodes = [];
-                    self.config.state.activeNode = null;
+                    self.treeCtrl.config.state.selectedNodes = [];
+                    self.treeCtrl.config.state.activeNode = null;
                 }
             };
 
@@ -1540,7 +1557,7 @@ angular.module(
 
                 result = !!(Array.isArray(self.parentNode.children) &&
                 ( self.parentNode.childrenCount > self.parentNode.children.length ) &&
-                ( self.config.pagination && !isNaN(self.config.pagination.itemsPerPage) ));
+                ( self.treeCtrl.config.pagination && !isNaN(self.treeCtrl.config.pagination.itemsPerPage) ));
 
 
                 console.log('Pageable ' + self.parentNode.label, result);
@@ -1550,21 +1567,29 @@ angular.module(
 
 
             self.showPageUp = function () {
-                console.log('First loaded child ' + self.parentNode.label, self.parentNode.firstLoadedChild );
-                console.log('showPageUp', !(self.parentNode.firstLoadedChild > 0) );
-                return (!!self.parentNode.firstLoadedChild > 0);
+                console.log('First loaded child ' + self.parentNode.label, self.parentNode.firstLoadedChildPosition);
+                console.log('showPageUp', !(self.parentNode.firstLoadedChildPosition > 0));
+                return (!!self.parentNode.firstLoadedChildPosition > 0);
             };
+
 
             self.showPageDown = function () {
 
-                var result = !!(self.parentNode.childrenCount > self.parentNode.lastLoadedChild + 1);
+                var result = !!(self.parentNode.childrenCount > self.parentNode.lastLoadedChildPosition + 1);
 
-                console.log('Last loaded child ' + self.parentNode.label, self.parentNode.lastLoadedChild );
-                console.log('showPageDown', result );
+                console.log('Last loaded child ' + self.parentNode.label, self.parentNode.lastLoadedChildPosition);
+                console.log('showPageDown', result);
 
                 return result;
             };
 
+            self.pageUp = function($event) {
+                self.treeCtrl.loadSomeChildrenForNode($event, self.parentNode, true);
+            };
+
+            self.pageDown = function($event) {
+                self.treeCtrl.loadSomeChildrenForNode($event, self.parentNode);
+            };
 
         }
 
