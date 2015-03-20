@@ -86,7 +86,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, 
 
   };
 
-  dummyTreeDataGenerator = function ( treeNode, name, maxCount, levels ) {
+  dummyTreeDataGenerator = function ( treeNode, name, maxCount, levels, idOffset ) {
     var i,
     id,
     count,
@@ -97,7 +97,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, 
     count = maxCount;
 
     for ( i = 0; i < count; i += 1 ) {
-      id = name + i;
+      id = name + ( i + (idOffset || 0) );
 
       childNode = addNode( treeNode, id, i );
 
@@ -224,6 +224,8 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, 
 
   config = {
 
+    //folderIconClass: 'glyphicon glyphicon-folder-close',
+
     scopeMenu: [
       {
         items: [
@@ -313,7 +315,7 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, 
       itemsPerPage: 10
     },
 
-    loadChildren: function ( e, node, count) {
+    loadChildren: function ( e, node, count, isBackpaging) {
       var deferred = $q.defer();
 
       console.log('--loading children');
@@ -323,12 +325,27 @@ demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, 
         var dummyParent = {
               children: []
             },
-            newChildren;
+            newChildren,
+            offset;
 
-        newChildren = dummyTreeDataGenerator( dummyParent, 'Async ' + node.id, count || 20, 0 );
+        if (!isBackpaging) {
+
+          if (!isNaN(node.lastLoadedChildPosition) ) {
+            offset = node.lastLoadedChildPosition + 1;
+          } else {
+            offset = 0;
+          }
+
+        } else {
+
+          offset = node.firstLoadedChildPosition - count;
+
+        }
+
+        newChildren = dummyTreeDataGenerator( dummyParent, 'Async ' + node.id, count || 20, 0, offset );
         deferred.resolve(newChildren);
       },
-      2000
+      500
       );
 
       return deferred.promise;

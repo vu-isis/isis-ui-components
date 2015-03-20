@@ -1026,58 +1026,26 @@ angular.module(
     .directive(
     'treeNavigator', function () {
 
+        var defaultTreeState;
+
+        defaultTreeState = {
+
+            activeNode: null,
+            selectedNodes: [],
+            expandedNodes: [],
+            loadingNodes: [],
+
+            activeScope: null
+
+        };
+
         function TreeNavigatorController($log) {
 
-            var self,
-                defaultTreeState;
+            var self;
 
             self = this;
 
-            self.updateSelection = function ($event, node) {
-                var index;
-
-                if (node) {
-
-                    if ($event) {
-                        if ($event.shiftKey) {
-                            // TODO: properly update selected nodes
-                            // start node is active node
-                            // end node is theNode
-                            // select all opened tree elements between the two nodes
-                            self.config.state.selectedNodes = [node.id];
-                            $log.warn('Range selection is not implemented properly yet.');
-
-
-                        } else if ($event.ctrlKey || $event.metaKey) {
-                            index = self.config.state.selectedNodes.indexOf(node.id);
-
-                            if (index > -1) {
-                                // already selected, remove this node
-                                self.config.state.selectedNodes.splice(index, 1);
-                            } else {
-                                // select it
-                                self.config.state.selectedNodes.push(node.id);
-                            }
-
-                        } else {
-                            self.config.state.selectedNodes = [node.id];
-
-                        }
-
-                    } else {
-                        // event is not given
-                        self.config.state.selectedNodes = [node.id];
-                    }
-
-                    // active node is the clicked node
-                    self.config.state.activeNode = node.id;
-
-                } else {
-                    self.config.state.selectedNodes = [];
-                    self.config.state.activeNode = null;
-                }
-            };
-
+            self.$log = $log;
 
             self.scopeMenuConfig = {
                 triggerEvent: 'click',
@@ -1087,93 +1055,6 @@ angular.module(
             self.preferencesMenuConfig = {
                 triggerEvent: 'click',
                 position: 'right bottom'
-            };
-
-            self.markNodeExpanded = function ($event, node) {
-                self.config.state.expandedNodes.push(node.id);
-
-                if (angular.isFunction(self.config.nodeExpanderClick)) {
-                    self.config.nodeExpanderClick($event, node, true);
-                }
-            };
-
-            self.loadSomeChildrenForNode = function ($event, node, isBackPaging) {
-
-                var count;
-
-                if (angular.isFunction(self.config.loadChildren)) {
-
-                    if (self.config.pagination && self.config.pagination.itemsPerPage) {
-                        count = self.config.pagination.itemsPerPage;
-                    }
-
-                    node.loading = true;
-
-                    self.config.loadChildren($event, node, count)
-                        .then(function (children) {
-
-                            var wasEmptyBefore;
-
-                            if (Array.isArray(children) && children.length) {
-
-                                wasEmptyBefore = node.children.length === 0;
-
-                                node.children = children;
-
-                                debugger;
-
-                                if (isBackPaging === true && !wasEmptyBefore) {
-
-                                    node.lastLoadedChildPosition = node.firstLoadedChildPosition - 1;
-                                    node.firstLoadedChildPosition = node.lastLoadedChildPosition - node.children.length;
-
-                                } else {
-
-                                    if (wasEmptyBefore) {
-
-                                        node.firstLoadedChildPosition = 0;
-                                        node.lastLoadedChildPosition = node.children.length - 1;
-
-                                    } else {
-
-                                        node.firstLoadedChildPosition += node.lastLoadedChildPosition + 1;
-                                        node.lastLoadedChildPosition = node.firstLoadedChildPosition + node.children.length;
-
-                                    }
-
-                                }
-
-                            } else {
-
-                                node.children = [];
-                            }
-
-                            node.loading = false;
-
-                            self.markNodeExpanded($event, node);
-                        }).
-                        catch(function (e) {
-
-                            node.loading = false;
-                            node.children = [];
-
-                            $log.error('Error while loading children for ', node, e);
-
-                        });
-                }
-
-            };
-
-
-            defaultTreeState = {
-
-                activeNode: null,
-                selectedNodes: [],
-                expandedNodes: [],
-                loadingNodes: [],
-
-                activeScope: null
-
             };
 
             self.config = self.config || {};
@@ -1188,6 +1069,137 @@ angular.module(
             '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
 
         }
+
+
+        TreeNavigatorController.prototype.updateSelection = function ($event, node) {
+            var index,
+                self;
+
+
+            self = this;
+
+
+            if (node) {
+
+                if ($event) {
+                    if ($event.shiftKey) {
+                        // TODO: properly update selected nodes
+                        // start node is active node
+                        // end node is theNode
+                        // select all opened tree elements between the two nodes
+                        self.config.state.selectedNodes = [node.id];
+                        self.$log.warn('Range selection is not implemented properly yet.');
+
+
+                    } else if ($event.ctrlKey || $event.metaKey) {
+                        index = self.config.state.selectedNodes.indexOf(node.id);
+
+                        if (index > -1) {
+                            // already selected, remove this node
+                            self.config.state.selectedNodes.splice(index, 1);
+                        } else {
+                            // select it
+                            self.config.state.selectedNodes.push(node.id);
+                        }
+
+                    } else {
+                        self.config.state.selectedNodes = [node.id];
+
+                    }
+
+                } else {
+                    // event is not given
+                    self.config.state.selectedNodes = [node.id];
+                }
+
+                // active node is the clicked node
+                self.config.state.activeNode = node.id;
+
+            } else {
+                self.config.state.selectedNodes = [];
+                self.config.state.activeNode = null;
+            }
+        };
+
+
+        TreeNavigatorController.prototype.markNodeExpanded = function ($event, node) {
+
+            var self = this;
+
+            self.config.state.expandedNodes.push(node.id);
+
+            if (angular.isFunction(self.config.nodeExpanderClick)) {
+                self.config.nodeExpanderClick($event, node, true);
+            }
+        };
+
+        TreeNavigatorController.prototype.loadSomeChildrenForNode = function ($event, node, isBackPaging) {
+
+            var self = this,
+                count;
+
+            if (angular.isFunction(self.config.loadChildren)) {
+
+                if (self.config.pagination && self.config.pagination.itemsPerPage) {
+                    count = self.config.pagination.itemsPerPage;
+                }
+
+                node.loading = true;
+
+                self.config.loadChildren($event, node, count, isBackPaging)
+                    .then(function (children) {
+
+                        var wasEmptyBefore;
+
+                        if (Array.isArray(children) && children.length) {
+
+                            wasEmptyBefore = node.children.length === 0;
+
+                            node.children = children;
+
+                            if (isBackPaging === true && !wasEmptyBefore) {
+
+                                node.lastLoadedChildPosition = node.firstLoadedChildPosition - 1;
+                                node.firstLoadedChildPosition = node.lastLoadedChildPosition - node.children.length + 1;
+
+                            } else {
+
+                                if (wasEmptyBefore) {
+
+                                    node.firstLoadedChildPosition = 0;
+                                    node.lastLoadedChildPosition = node.children.length - 1;
+
+                                } else {
+
+                                    node.firstLoadedChildPosition = node.lastLoadedChildPosition + 1;
+                                    node.lastLoadedChildPosition = node.firstLoadedChildPosition + node.children.length -1;
+
+                                }
+
+                            }
+
+                        } else {
+
+                            node.children = [];
+                        }
+
+                        console.log(node.firstLoadedChildPosition, node.lastLoadedChildPosition);
+
+                        node.loading = false;
+
+                        self.markNodeExpanded($event, node);
+                    }).
+                    catch(function (e) {
+
+                        node.loading = false;
+                        node.children = [];
+
+                        self.$log.error('Error while loading children for ', node, e);
+
+                    });
+            }
+
+        };
 
 
         return {
@@ -1206,9 +1218,10 @@ angular.module(
         };
     }
 )
-    // Based on: http://stackoverflow.com/questions/20444409/handling-ng-click-and-ng-dblclick-on-the-same-element-with-angularjs
+// Based on: http://stackoverflow.com/questions/20444409/handling-ng-click-and-ng-dblclick-on-the-same-element-with-angularjs
 
-    .directive('isisSglclick', ['$parse', function ($parse) {
+    .
+    directive('isisSglclick', ['$parse', function ($parse) {
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
@@ -1340,120 +1353,151 @@ angular.module(
     .directive(
     'treeNavigatorNodeLabel', function () {
 
+        function removeNodeFromList(list, node) {
+            var index;
+
+            if (angular.isArray(list) && angular.isObject(node)) {
+
+                index = list.indexOf(node.id);
+
+                if (index > -1) {
+                    list.splice(index, 1);
+                }
+
+            }
+        }
+
+
         function NodeLabelController() {
 
             var self;
 
             self = this;
 
-            function removeNodeFromList(list, node) {
-                var index;
-
-                if (angular.isArray(list) && angular.isObject(node)) {
-
-                    index = list.indexOf(node.id);
-
-                    if (index > -1) {
-                        list.splice(index, 1);
-                    }
-
-                }
-            }
-
             self.loading = false;
 
-            self.isExpanded = function () {
-                return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
-            };
+        }
 
-            self.isSelected = function () {
-                return ( self.treeCtrl.config.state.selectedNodes.indexOf(self.node.id) > -1 );
-            };
+        NodeLabelController.prototype.isExpanded = function () {
+
+            var self=this;
+
+            return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
+        };
+
+        NodeLabelController.prototype.isSelected = function () {
+
+            var self=this;
+
+            return ( self.treeCtrl.config.state.selectedNodes.indexOf(self.node.id) > -1 );
+        };
 
 
-            // Node event handlers
+        // Node event handlers
 
-            self.nodeClick = function ($event) {
+        NodeLabelController.prototype.nodeClick = function ($event) {
 
-                if (angular.isFunction(self.treeCtrl.config.nodeClick)) {
-                    self.treeCtrl.config.nodeClick($event, self.node);
-                }
+            var self=this;
 
-                if (!self.treeCtrl.config.disableManualSelection) {
-                    self.treeCtrl.updateSelection($event, self.node);
-                }
+            if (angular.isFunction(self.treeCtrl.config.nodeClick)) {
+                self.treeCtrl.config.nodeClick($event, self.node);
+            }
 
-            };
+            if (!self.treeCtrl.config.disableManualSelection) {
+                self.treeCtrl.updateSelection($event, self.node);
+            }
 
-            self.nodeContextmenu = function ($event) {
+        };
 
-                if (angular.isFunction(self.treeCtrl.config.nodeContextmenuRenderer)) {
-                    self.nodeContextMenuData = self.treeCtrl.config.nodeContextmenuRenderer($event, self.node);
-                }
+        NodeLabelController.prototype.nodeContextmenu = function ($event) {
 
-            };
+            var self=this;
 
-            self.nodeDblclick = function ($event) {
+            if (angular.isFunction(self.treeCtrl.config.nodeContextmenuRenderer)) {
+                self.nodeContextMenuData = self.treeCtrl.config.nodeContextmenuRenderer($event, self.node);
+            }
 
-                if (angular.isFunction(self.treeCtrl.config.nodeDblclick)) {
-                    self.treeCtrl.config.nodeDblclick($event, self.node);
-                }
+        };
 
-                self.nodeExpanderClick($event);
+        NodeLabelController.prototype.nodeDblclick = function ($event) {
 
-            };
+            var self=this;
 
-            self.nodeExpanderClick = function ($event) {
+            if (angular.isFunction(self.treeCtrl.config.nodeDblclick)) {
+                self.treeCtrl.config.nodeDblclick($event, self.node);
+            }
 
-                if (!self.loading) {
-                    if (self.isExpanded()) {
-                        if (self.canCollapse()) {
+            self.nodeExpanderClick($event);
 
-                            removeNodeFromList(self.treeCtrl.config.state.expandedNodes, self.node);
+        };
 
-                            if (angular.isFunction(self.treeCtrl.config.nodeExpanderClick)) {
-                                self.treeCtrl.config.nodeExpanderClick($event, self.node, false);
-                            }
+        NodeLabelController.prototype.nodeExpanderClick = function ($event) {
+
+            var self=this;
+
+            if (!self.loading) {
+                if (self.isExpanded()) {
+                    if (self.canCollapse()) {
+
+                        removeNodeFromList(self.treeCtrl.config.state.expandedNodes, self.node);
+
+                        if (angular.isFunction(self.treeCtrl.config.nodeExpanderClick)) {
+                            self.treeCtrl.config.nodeExpanderClick($event, self.node, false);
                         }
-                    } else {
-                        if (self.canExpand()) {
-                            if (self.node.children.length === 0) {
+                    }
+                } else {
+                    if (self.canExpand()) {
+                        if (self.node.children.length === 0) {
 
-                                // Need to load children
+                            // Need to load children
 
-                                self.treeCtrl.loadSomeChildrenForNode($event, self.node);
+                            self.treeCtrl.loadSomeChildrenForNode($event, self.node);
 
-                            } else {
-                                // No need to load just mark it expanded
-                                self.treeCtrl.markNodeExpanded($event, self.node);
+                        } else {
+                            // No need to load just mark it expanded
+                            self.treeCtrl.markNodeExpanded($event, self.node);
 
-                            }
                         }
                     }
                 }
-            };
+            }
+        };
 
-            self.canExpand = function () {
-                return self.node.childrenCount > 0;
-            };
+        NodeLabelController.prototype.canExpand = function () {
 
-            self.canCollapse = function () {
-                return self.node.unCollapsible !== true;
-            };
+            var self=this;
 
-            self.nodeDrop = function ($event, $data) {
-                console.log($data, 'Dropped on ', self.node);
-            };
+            return self.node.childrenCount > 0;
+        };
 
-            self.getCollapsedIconClass = function() {
-                return (self.node.collapsedIconClass || self.treeCtrl.config.collapsedIconClass);
-            };
+        NodeLabelController.prototype.canCollapse = function () {
 
-            self.getExpandedIconClass = function() {
-                return (self.node.expandedIconClass || self.treeCtrl.config.expandedIconClass);
-            };
+            var self=this;
 
-        }
+            return self.node.unCollapsible !== true;
+        };
+
+        NodeLabelController.prototype.nodeDrop = function ($event, $data) {
+
+            var self=this;
+
+            console.log($data, 'Dropped on ', self.node);
+        };
+
+        NodeLabelController.prototype.getCollapsedIconClass = function() {
+
+            var self=this;
+
+            return (self.node.collapsedIconClass || self.treeCtrl.config.collapsedIconClass);
+        };
+
+        NodeLabelController.prototype.getExpandedIconClass = function() {
+
+            var self=this;
+
+            return (self.node.expandedIconClass || self.treeCtrl.config.expandedIconClass);
+        };
+
 
         return {
             scope: {
@@ -1462,11 +1506,11 @@ angular.module(
             controller: NodeLabelController,
             controllerAs: 'ctrl',
             bindToController: true,
-            require: [ '^treeNavigator', 'treeNavigatorNodeLabel' ],
+            require: ['^treeNavigator', 'treeNavigatorNodeLabel'],
             restrict: 'E',
             replace: true,
             templateUrl: '/isis-ui-components/templates/treeNavigator.node.label.html',
-            link: function(scope, element, attribures, controllers) {
+            link: function (scope, element, attribures, controllers) {
 
                 var treeCtrl,
                     labelCtrl;

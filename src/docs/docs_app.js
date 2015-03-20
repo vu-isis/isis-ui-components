@@ -108,7 +108,7 @@ function ( $scope, $templateCache ) {
 
 } );
 
-window.countOfSesquatches = function () {
+window.countOfSesquatches = function (printWatchers) {
 
   var root = angular.element(document.getElementsByTagName('body'));
 
@@ -135,8 +135,12 @@ window.countOfSesquatches = function () {
   angular.forEach(watchers, function(item) {
     if(watchersWithoutDuplicates.indexOf(item) < 0) {
       watchersWithoutDuplicates.push(item);
+      if (printWatchers === true) {
+        console.log(item);
+      }
     }
   });
 
   console.log(watchersWithoutDuplicates.length);
+
 };
