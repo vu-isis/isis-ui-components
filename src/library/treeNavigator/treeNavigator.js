@@ -143,7 +143,7 @@ angular.module(
 
             var self = this;
 
-            if (self.config.state.expandedNodes.indexOf(node.id) > -1) {
+            if (self.config.state.expandedNodes.indexOf(node.id) === -1) {
 
                 self.config.state.expandedNodes.push(node.id);
 
