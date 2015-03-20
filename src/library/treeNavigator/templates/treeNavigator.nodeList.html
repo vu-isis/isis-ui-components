@@ -1,4 +1,7 @@
 <ul class="node-list">
+
+    <li class="loading-cover"></li>
+
     <li ng-if="ctrl.isPageable() && ctrl.showPageUp()" class="paging page-up" ng-click="ctrl.pageUp($event)">
         <a href="#">{{::ctrl.getLoadMoreText()}}<i class="glyphicon glyphicon-chevron-up"></i></a>
     </li>

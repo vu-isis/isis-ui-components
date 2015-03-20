@@ -43,6 +43,10 @@ angular.module(
                         cssClassStr += ' selected-node';
                     }
 
+                    if (self.node.loading) {
+                        cssClassStr += ' loading';
+                    }
+
                     if (angular.isFunction(self.treeCtrl.config.nodeClassGetter)) {
                         cssClassStr += ' ' + self.treeCtrl.config.nodeClassGetter(self.node);
                     }

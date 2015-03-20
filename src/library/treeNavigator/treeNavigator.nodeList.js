@@ -73,9 +73,8 @@ angular.module(
 
                     var result;
 
-
-                    result = !! (Array.isArray(self.parentNode.children) &&
-                        (self.parentNode.childrenCount > self.parentNode.children.length) &&
+                    result = !! (Array.isArray(self.nodes) &&
+                        (self.parentNode.childrenCount > self.nodes.length) &&
                         (self.treeCtrl.config.pagination && !isNaN(self.treeCtrl.config.pagination
                             .itemsPerPage)));
 
@@ -95,8 +94,7 @@ angular.module(
 
                 self.showPageDown = function () {
 
-                    var result = !! (self.parentNode.childrenCount > self.parentNode.lastLoadedChildPosition +
-                        1);
+                    var result = !! (self.parentNode.childrenCount > self.parentNode.lastLoadedChildPosition + 1);
 
                     console.log('Last loaded child ' + self.parentNode.label, self.parentNode.lastLoadedChildPosition);
                     console.log('showPageDown', result);
@@ -116,11 +114,24 @@ angular.module(
                     return (this.config && this.config.loadMoreText) || '';
                 };
 
+
+                self.init = function() {
+
+                    if (self.nodes.length === 0) {
+                        self.treeCtrl.loadSomeChildrenForNode(null, self.parentNode);
+                    }
+                    
+                };
+                
             }
 
             function link(scope, element, attr, controllers) {
 
-                controllers[1].treeCtrl = controllers[0];
+                var nodeListCtrl = controllers[1];
+
+                nodeListCtrl.treeCtrl = controllers[0];
+
+                nodeListCtrl.init();
 
             }
 

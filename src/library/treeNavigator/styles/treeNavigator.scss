@@ -37,6 +37,18 @@
   ul.node-list {
     list-style-type: none;
     padding: 0;
+    position: relative;
+
+    .loading-cover {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 0;
+      background-color: #fff;
+      transition: height 200ms, opacity 200ms;
+    }
+
+
   }
 
   ul.node-list > li {
@@ -77,10 +89,22 @@
     background-color: #eee;
   }
 
-  .node-label.loading:after {
-    display: block;
-    content: 'Loading...';
-    padding-left: 2ex;
+
+  .loading {
+    > .node-label:after {
+
+      display: block;
+      content: 'Loading...';
+      padding-left: 2ex;
+      color: #aaa;
+      font-style: italic;
+      font-size: 85%;
+    }
+
+    > .node-list > .loading-cover {
+      opacity: .5;
+      height: 100%;
+    }
   }
 
   .node-extra-info {

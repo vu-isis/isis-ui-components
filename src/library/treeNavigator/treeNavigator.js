@@ -162,7 +162,7 @@ angular.module(
             var self = this,
                 count;
 
-            if (angular.isFunction(self.config.loadChildren)) {
+            if (!node.loading && angular.isFunction(self.config.loadChildren)) {
 
                 if (self.config.pagination && self.config.pagination.itemsPerPage) {
                     count = self.config.pagination.itemsPerPage;

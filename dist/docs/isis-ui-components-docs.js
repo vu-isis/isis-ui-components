@@ -11699,7 +11699,7 @@ demoApp.controller('TreeNavigatorDemoController', function ($scope, $log, $q, $t
                         count || 20, 0, offset);
                     deferred.resolve(newChildren);
                 },
-                500
+                5000
             );
 
             return deferred.promise;
