@@ -3,22 +3,22 @@
 'use strict';
 
 var components = [
-    //{
-    //  name: 'itemList',
-    //  sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
-    //},
-    //{
-    //  name: 'hierarchicalMenu',
-    //  sources: [ 'demo.html', 'demo.js']
-    //},
-    //{
-    //  name: 'contextmenu',
-    //  sources: [ 'demo.html', 'demo.js']
-    //},
-    //{
-    //  name: 'dropdownNavigator',
-    //  sources: [ 'demo.html', 'demo.js']
-    //},
+    {
+      name: 'itemList',
+      sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
+    },
+    {
+      name: 'hierarchicalMenu',
+      sources: [ 'demo.html', 'demo.js']
+    },
+    {
+      name: 'contextmenu',
+      sources: [ 'demo.html', 'demo.js']
+    },
+    {
+      name: 'dropdownNavigator',
+      sources: [ 'demo.html', 'demo.js']
+    },
     {
         name: 'treeNavigator',
         sources: ['demo.html', 'demo.js']
@@ -11699,7 +11699,7 @@ demoApp.controller('TreeNavigatorDemoController', function ($scope, $log, $q, $t
                         count || 20, 0, offset);
                     deferred.resolve(newChildren);
                 },
-                5000
+                500
             );
 
             return deferred.promise;

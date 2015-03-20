@@ -126,7 +126,7 @@ angular.module(
 
                 var self = this;
 
-                console.log($data, 'Dropped on ', self.node);
+                //console.log($data, 'Dropped on ', self.node);
             };
 
             NodeLabelController.prototype.getCollapsedIconClass = function () {

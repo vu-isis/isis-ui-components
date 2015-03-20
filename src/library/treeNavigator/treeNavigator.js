@@ -183,7 +183,7 @@ angular.module(
 
                                 self.markNodeCollapsed($event, children[i]);
 
-                                index = self.config.state.selectedNodes.indexOf(node.id);
+                                index = self.config.state.selectedNodes.indexOf(children[i].id);
 
                                 if (index > -1) {
                                     self.config.state.selectedNodes.splice(index, 1);
@@ -223,7 +223,7 @@ angular.module(
                             node.children = [];
                         }
 
-                        console.log(node.firstLoadedChildPosition, node.lastLoadedChildPosition);
+                        //console.log(node.firstLoadedChildPosition, node.lastLoadedChildPosition);
 
                         node.loading = false;
 

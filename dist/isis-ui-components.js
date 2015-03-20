@@ -1193,7 +1193,7 @@ angular.module(
 
                                 self.markNodeCollapsed($event, children[i]);
 
-                                index = self.config.state.selectedNodes.indexOf(node.id);
+                                index = self.config.state.selectedNodes.indexOf(children[i].id);
 
                                 if (index > -1) {
                                     self.config.state.selectedNodes.splice(index, 1);
@@ -1233,7 +1233,7 @@ angular.module(
                             node.children = [];
                         }
 
-                        console.log(node.firstLoadedChildPosition, node.lastLoadedChildPosition);
+                        //console.log(node.firstLoadedChildPosition, node.lastLoadedChildPosition);
 
                         node.loading = false;
 
@@ -1528,7 +1528,7 @@ angular.module(
 
                 var self = this;
 
-                console.log($data, 'Dropped on ', self.node);
+                //console.log($data, 'Dropped on ', self.node);
             };
 
             NodeLabelController.prototype.getCollapsedIconClass = function () {
@@ -1590,57 +1590,7 @@ angular.module(
 
             function NodeListController($log) {
 
-                var self,
-                    updateSelection;
-
-
-                self = this;
-
-                updateSelection = function ($event, node) {
-                    var index;
-
-                    if (node) {
-
-                        if ($event) {
-                            if ($event.shiftKey) {
-                                // TODO: properly update selected nodes
-                                // start node is active node
-                                // end node is theNode
-                                // select all opened tree elements between the two nodes
-                                self.treeCtrl.config.state.selectedNodes = [node.id];
-                                $log.warn('Range selection is not implemented properly yet.');
-
-
-                            } else if ($event.ctrlKey || $event.metaKey) {
-                                index = self.treeCtrl.config.state.selectedNodes.indexOf(node.id);
-
-                                if (index > -1) {
-                                    // already selected, remove this node
-                                    self.treeCtrl.config.state.selectedNodes.splice(index, 1);
-                                } else {
-                                    // select it
-                                    self.treeCtrl.config.state.selectedNodes.push(node.id);
-                                }
-
-                            } else {
-                                self.treeCtrl.config.state.selectedNodes = [node.id];
-
-                            }
-
-                        } else {
-                            // event is not given
-                            self.treeCtrl.config.state.selectedNodes = [node.id];
-                        }
-
-                        // active node is the clicked node
-                        self.treeCtrl.config.state.activeNode = node.id;
-
-                    } else {
-                        self.treeCtrl.config.state.selectedNodes = [];
-                        self.treeCtrl.config.state.activeNode = null;
-                    }
-                };
-
+                var self = this;
 
                 self.isPageable = function () {
 
@@ -1652,15 +1602,15 @@ angular.module(
                             .itemsPerPage)));
 
 
-                    console.log('Pageable ' + self.parentNode.label, result);
+                    //console.log('Pageable ' + self.parentNode.label, result);
 
                     return result;
                 };
 
 
                 self.showPageUp = function () {
-                    console.log('First loaded child ' + self.parentNode.label, self.parentNode.firstLoadedChildPosition);
-                    console.log('showPageUp', !(self.parentNode.firstLoadedChildPosition > 0));
+                    //console.log('First loaded child ' + self.parentNode.label, self.parentNode.firstLoadedChildPosition);
+                    //console.log('showPageUp', !(self.parentNode.firstLoadedChildPosition > 0));
                     return ( !! self.parentNode.firstLoadedChildPosition > 0);
                 };
 
@@ -1669,8 +1619,8 @@ angular.module(
 
                     var result = !! (self.parentNode.childrenCount > self.parentNode.lastLoadedChildPosition + 1);
 
-                    console.log('Last loaded child ' + self.parentNode.label, self.parentNode.lastLoadedChildPosition);
-                    console.log('showPageDown', result);
+                    //console.log('Last loaded child ' + self.parentNode.label, self.parentNode.lastLoadedChildPosition);
+                    //console.log('showPageDown', result);
 
                     return result;
                 };
