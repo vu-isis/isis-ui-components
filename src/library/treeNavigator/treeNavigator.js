@@ -13,7 +13,7 @@ angular.module(
         'isis.ui.treeNavigator.node.label'
     ])
 
-    .directive(
+.directive(
     'treeNavigator', function () {
 
         var defaultTreeState;
@@ -28,6 +28,21 @@ angular.module(
             activeScope: null
 
         };
+
+
+        function removeNodeFromList(list, node) {
+            var index;
+
+            if (angular.isArray(list) && angular.isObject(node)) {
+
+                index = list.indexOf(node.id);
+
+                if (index > -1) {
+                    list.splice(index, 1);
+                }
+
+            }
+        }
 
         function TreeNavigatorController($log) {
 
@@ -56,10 +71,23 @@ angular.module(
             self.config.expandedIconClass = self.config.expandedIconClass || 'icon-arrow-down';
 
             self.config.extraInfoTemplateUrl = self.config.extraInfoTemplateUrl ||
-            '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
+                '/isis-ui-components/templates/treeNavigator.node.extraInfo.html';
 
         }
 
+        TreeNavigatorController.prototype.isExpanded = function (node) {
+
+            var self = this;
+
+            return (self.config.state.expandedNodes.indexOf(node.id) > -1);
+        };
+
+        TreeNavigatorController.prototype.isSelected = function (node) {
+
+            var self = this;
+
+            return (self.config.state.selectedNodes.indexOf(node.id) > -1);
+        };
 
         TreeNavigatorController.prototype.updateSelection = function ($event, node) {
             var index,
@@ -67,7 +95,6 @@ angular.module(
 
 
             self = this;
-
 
             if (node) {
 
@@ -123,7 +150,14 @@ angular.module(
             }
         };
 
-        TreeNavigatorController.prototype.loadSomeChildrenForNode = function ($event, node, isBackPaging) {
+        TreeNavigatorController.prototype.markNodeCollapsed = function ($event, node) {
+
+            removeNodeFromList(this.config.state.expandedNodes, node);
+
+        };
+
+        TreeNavigatorController.prototype.loadSomeChildrenForNode = function ($event, node,
+            isBackPaging) {
 
             var self = this,
                 count;
@@ -139,9 +173,24 @@ angular.module(
                 self.config.loadChildren($event, node, count, isBackPaging)
                     .then(function (children) {
 
-                        var wasEmptyBefore;
+                        var wasEmptyBefore,
+                            index,
+                            i;
 
                         if (Array.isArray(children) && children.length) {
+
+                            for (i = 0; i < children.length; i++) {
+
+                                self.markNodeCollapsed($event, children[i]);
+
+                                index = self.config.state.selectedNodes.indexOf(node.id);
+
+                                if (index > -1) {
+                                    self.config.state.selectedNodes.splice(index, 1);
+                                }
+
+
+                            }
 
                             wasEmptyBefore = node.children.length === 0;
 
@@ -150,7 +199,8 @@ angular.module(
                             if (isBackPaging === true && !wasEmptyBefore) {
 
                                 node.lastLoadedChildPosition = node.firstLoadedChildPosition - 1;
-                                node.firstLoadedChildPosition = node.lastLoadedChildPosition - node.children.length + 1;
+                                node.firstLoadedChildPosition = node.lastLoadedChildPosition -
+                                    node.children.length + 1;
 
                             } else {
 
@@ -162,14 +212,14 @@ angular.module(
                                 } else {
 
                                     node.firstLoadedChildPosition = node.lastLoadedChildPosition + 1;
-                                    node.lastLoadedChildPosition = node.firstLoadedChildPosition + node.children.length -1;
+                                    node.lastLoadedChildPosition = node.firstLoadedChildPosition +
+                                        node.children.length - 1;
 
                                 }
 
                             }
 
                         } else {
-
                             node.children = [];
                         }
 
@@ -178,15 +228,16 @@ angular.module(
                         node.loading = false;
 
                         self.markNodeExpanded($event, node);
-                    }).
-                    catch(function (e) {
+                    })
+                    .
+                catch (function (e) {
 
-                        node.loading = false;
-                        node.children = [];
+                    node.loading = false;
+                    node.children = [];
 
-                        self.$log.error('Error while loading children for ', node, e);
+                    self.$log.error('Error while loading children for ', node, e);
 
-                    });
+                });
             }
 
         };
@@ -210,30 +261,36 @@ angular.module(
 )
 // Based on: http://stackoverflow.com/questions/20444409/handling-ng-click-and-ng-dblclick-on-the-same-element-with-angularjs
 
-    .
-    directive('isisSglclick', ['$parse', function ($parse) {
+.
+directive('isisSglclick', ['$parse',
+    function ($parse) {
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
                 var fn = $parse(attr.isisSglclick);
-                var delay = 300, clicks = 0, timer = null;
+                var delay = 300,
+                    clicks = 0,
+                    timer = null;
                 element.on('click', function (event) {
-                    clicks++;  //count clicks
+                    clicks++; //count clicks
                     if (clicks === 1) {
                         timer = setTimeout(function () {
                             scope.$apply(function () {
-                                fn(scope, {$event: event});
+                                fn(scope, {
+                                    $event: event
+                                });
                             });
-                            clicks = 0;             //after action performed, reset counter
+                            clicks = 0; //after action performed, reset counter
                         }, delay);
                     } else {
-                        clearTimeout(timer);    //prevent single-click action
-                        clicks = 0;             //after action performed, reset counter
+                        clearTimeout(timer); //prevent single-click action
+                        clicks = 0; //after action performed, reset counter
                     }
                 });
             }
         };
-    }])
+    }
+])
     .directive('isisStopEvent', function () {
         return {
             restrict: 'A',

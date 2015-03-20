@@ -10,175 +10,161 @@ angular.module(
     ]
 )
     .directive(
-    'treeNavigatorNodeLabel', function () {
+        'treeNavigatorNodeLabel', function () {
 
-        function removeNodeFromList(list, node) {
-            var index;
+            function NodeLabelController() {
 
-            if (angular.isArray(list) && angular.isObject(node)) {
+                var self;
 
-                index = list.indexOf(node.id);
+                self = this;
 
-                if (index > -1) {
-                    list.splice(index, 1);
+                self.loading = false;
+
+            }
+
+            NodeLabelController.prototype.isExpanded = function () {
+
+                var self = this;
+
+                return (self.treeCtrl.isExpanded(this.node));
+            };
+
+            NodeLabelController.prototype.isSelected = function () {
+
+                var self = this;
+
+                return (self.treeCtrl.isSelected(this.node));
+            };
+
+
+            // Node event handlers
+
+            NodeLabelController.prototype.nodeClick = function ($event) {
+
+                var self = this;
+
+                if (angular.isFunction(self.treeCtrl.config.nodeClick)) {
+                    self.treeCtrl.config.nodeClick($event, self.node);
                 }
 
-            }
-        }
+                if (!self.treeCtrl.config.disableManualSelection) {
+                    self.treeCtrl.updateSelection($event, self.node);
+                }
 
+            };
 
-        function NodeLabelController() {
+            NodeLabelController.prototype.nodeContextmenu = function ($event) {
 
-            var self;
+                var self = this;
 
-            self = this;
+                if (angular.isFunction(self.treeCtrl.config.nodeContextmenuRenderer)) {
+                    self.nodeContextMenuData = self.treeCtrl.config.nodeContextmenuRenderer($event,
+                        self.node);
+                }
 
-            self.loading = false;
+            };
 
-        }
+            NodeLabelController.prototype.nodeDblclick = function ($event) {
 
-        NodeLabelController.prototype.isExpanded = function () {
+                var self = this;
 
-            var self=this;
+                if (angular.isFunction(self.treeCtrl.config.nodeDblclick)) {
+                    self.treeCtrl.config.nodeDblclick($event, self.node);
+                }
 
-            return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
-        };
+                self.nodeExpanderClick($event);
 
-        NodeLabelController.prototype.isSelected = function () {
+            };
 
-            var self=this;
+            NodeLabelController.prototype.nodeExpanderClick = function ($event) {
 
-            return ( self.treeCtrl.config.state.selectedNodes.indexOf(self.node.id) > -1 );
-        };
+                var self = this;
 
+                if (!self.loading) {
+                    if (self.isExpanded()) {
+                        if (self.canCollapse()) {
 
-        // Node event handlers
+                            self.treeCtrl.markNodeCollapsed($event, self.node);
 
-        NodeLabelController.prototype.nodeClick = function ($event) {
-
-            var self=this;
-
-            if (angular.isFunction(self.treeCtrl.config.nodeClick)) {
-                self.treeCtrl.config.nodeClick($event, self.node);
-            }
-
-            if (!self.treeCtrl.config.disableManualSelection) {
-                self.treeCtrl.updateSelection($event, self.node);
-            }
-
-        };
-
-        NodeLabelController.prototype.nodeContextmenu = function ($event) {
-
-            var self=this;
-
-            if (angular.isFunction(self.treeCtrl.config.nodeContextmenuRenderer)) {
-                self.nodeContextMenuData = self.treeCtrl.config.nodeContextmenuRenderer($event, self.node);
-            }
-
-        };
-
-        NodeLabelController.prototype.nodeDblclick = function ($event) {
-
-            var self=this;
-
-            if (angular.isFunction(self.treeCtrl.config.nodeDblclick)) {
-                self.treeCtrl.config.nodeDblclick($event, self.node);
-            }
-
-            self.nodeExpanderClick($event);
-
-        };
-
-        NodeLabelController.prototype.nodeExpanderClick = function ($event) {
-
-            var self=this;
-
-            if (!self.loading) {
-                if (self.isExpanded()) {
-                    if (self.canCollapse()) {
-
-                        removeNodeFromList(self.treeCtrl.config.state.expandedNodes, self.node);
-
-                        if (angular.isFunction(self.treeCtrl.config.nodeExpanderClick)) {
-                            self.treeCtrl.config.nodeExpanderClick($event, self.node, false);
+                            if (angular.isFunction(self.treeCtrl.config.nodeExpanderClick)) {
+                                self.treeCtrl.config.nodeExpanderClick($event, self.node, false);
+                            }
                         }
-                    }
-                } else {
-                    if (self.canExpand()) {
-                        if (self.node.children.length === 0) {
+                    } else {
+                        if (self.canExpand()) {
+                            if (self.node.children.length === 0) {
 
-                            // Need to load children
+                                // Need to load children
 
-                            self.treeCtrl.loadSomeChildrenForNode($event, self.node);
+                                self.treeCtrl.loadSomeChildrenForNode($event, self.node);
 
-                        } else {
-                            // No need to load just mark it expanded
-                            self.treeCtrl.markNodeExpanded($event, self.node);
+                            } else {
+                                // No need to load just mark it expanded
+                                self.treeCtrl.markNodeExpanded($event, self.node);
 
+                            }
                         }
                     }
                 }
-            }
-        };
+            };
 
-        NodeLabelController.prototype.canExpand = function () {
+            NodeLabelController.prototype.canExpand = function () {
 
-            var self=this;
+                var self = this;
 
-            return self.node.childrenCount > 0;
-        };
+                return self.node.childrenCount > 0;
+            };
 
-        NodeLabelController.prototype.canCollapse = function () {
+            NodeLabelController.prototype.canCollapse = function () {
 
-            var self=this;
+                var self = this;
 
-            return self.node.unCollapsible !== true;
-        };
+                return self.node.unCollapsible !== true;
+            };
 
-        NodeLabelController.prototype.nodeDrop = function ($event, $data) {
+            NodeLabelController.prototype.nodeDrop = function ($event, $data) {
 
-            var self=this;
+                var self = this;
 
-            console.log($data, 'Dropped on ', self.node);
-        };
+                console.log($data, 'Dropped on ', self.node);
+            };
 
-        NodeLabelController.prototype.getCollapsedIconClass = function() {
+            NodeLabelController.prototype.getCollapsedIconClass = function () {
 
-            var self=this;
+                var self = this;
 
-            return (self.node.collapsedIconClass || self.treeCtrl.config.collapsedIconClass);
-        };
+                return (self.node.collapsedIconClass || self.treeCtrl.config.collapsedIconClass);
+            };
 
-        NodeLabelController.prototype.getExpandedIconClass = function() {
+            NodeLabelController.prototype.getExpandedIconClass = function () {
 
-            var self=this;
+                var self = this;
 
-            return (self.node.expandedIconClass || self.treeCtrl.config.expandedIconClass);
-        };
+                return (self.node.expandedIconClass || self.treeCtrl.config.expandedIconClass);
+            };
 
 
-        return {
-            scope: {
-                node: '='
-            },
-            controller: NodeLabelController,
-            controllerAs: 'ctrl',
-            bindToController: true,
-            require: ['^treeNavigator', 'treeNavigatorNodeLabel'],
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/isis-ui-components/templates/treeNavigator.node.label.html',
-            link: function (scope, element, attribures, controllers) {
+            return {
+                scope: {
+                    node: '='
+                },
+                controller: NodeLabelController,
+                controllerAs: 'ctrl',
+                bindToController: true,
+                require: ['^treeNavigator', 'treeNavigatorNodeLabel'],
+                restrict: 'E',
+                replace: true,
+                templateUrl: '/isis-ui-components/templates/treeNavigator.node.label.html',
+                link: function (scope, element, attribures, controllers) {
 
-                var treeCtrl,
-                    labelCtrl;
+                    var treeCtrl,
+                        labelCtrl;
 
-                treeCtrl = controllers[0];
-                labelCtrl = controllers[1];
+                    treeCtrl = controllers[0];
+                    labelCtrl = controllers[1];
 
-                labelCtrl.treeCtrl = treeCtrl;
-            }
-        };
-    }
+                    labelCtrl.treeCtrl = treeCtrl;
+                }
+            };
+        }
 );

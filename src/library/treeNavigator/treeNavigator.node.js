@@ -10,74 +10,74 @@ angular.module(
     ]
 )
     .directive(
-    'treeNavigatorNode', function () {
+        'treeNavigatorNode', function () {
 
-        function NodeController() {
+            function NodeController() {
 
-            var self;
+                var self;
 
-            self = this;
-
-
-            self.isExpanded = function () {
-                return ( self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1 );
-            };
-
-            self.isSelected = function () {
-                return ( self.treeCtrl.config.state.selectedNodes.indexOf(self.node.id) > -1 );
-            };
+                self = this;
 
 
-            this.getClass = function () {
-                var cssClassStr = '';
+                self.isExpanded = function () {
+                    return (self.treeCtrl.config.state.expandedNodes.indexOf(self.node.id) > -1);
+                };
 
-                if (self.isExpanded()) {
-                    cssClassStr += 'expanded';
-                }
-
-                if (self.treeCtrl.config.state.activeNode === self.node.id) {
-                    cssClassStr += ' active-node';
-                }
-
-                if (self.isSelected()) {
-                    cssClassStr += ' selected-node';
-                }
-
-                if (angular.isFunction(self.treeCtrl.config.nodeClassGetter)) {
-                    cssClassStr += ' ' + self.treeCtrl.config.nodeClassGetter(self.node);
-                }
-
-                return cssClassStr;
-            };
-
-        }
-
-        return {
-            scope: {
-                node: '='
-            },
-            controller: NodeController,
-            controllerAs: 'ctrl',
-            bindToController: true,
-            require: ['^treeNavigatorNodeList', '^treeNavigator', 'treeNavigatorNode'],
-            restrict: 'E',
-            replace: true,
-            templateUrl: '/isis-ui-components/templates/treeNavigator.node.html',
-            link: function (scope, element, attributes, controllers) {
-
-                var nodeCtrl,
-                    nodeListCtrl,
-                    treeCtrl;
+                self.isSelected = function () {
+                    return (self.treeCtrl.config.state.selectedNodes.indexOf(self.node.id) > -1);
+                };
 
 
-                treeCtrl = controllers[1];
-                nodeListCtrl = controllers[0];
-                nodeCtrl = controllers[2];
+                this.getClass = function () {
+                    var cssClassStr = '';
 
-                nodeCtrl.parentListCtrl = nodeListCtrl;
-                nodeCtrl.treeCtrl = treeCtrl;
+                    if (self.isExpanded()) {
+                        cssClassStr += 'expanded';
+                    }
+
+                    if (self.treeCtrl.config.state.activeNode === self.node.id) {
+                        cssClassStr += ' active-node';
+                    }
+
+                    if (self.isSelected()) {
+                        cssClassStr += ' selected-node';
+                    }
+
+                    if (angular.isFunction(self.treeCtrl.config.nodeClassGetter)) {
+                        cssClassStr += ' ' + self.treeCtrl.config.nodeClassGetter(self.node);
+                    }
+
+                    return cssClassStr;
+                };
 
             }
-        };
-    }
+
+            return {
+                scope: {
+                    node: '='
+                },
+                controller: NodeController,
+                controllerAs: 'ctrl',
+                bindToController: true,
+                require: ['^treeNavigatorNodeList', '^treeNavigator', 'treeNavigatorNode'],
+                restrict: 'E',
+                replace: true,
+                templateUrl: '/isis-ui-components/templates/treeNavigator.node.html',
+                link: function (scope, element, attributes, controllers) {
+
+                    var nodeCtrl,
+                        nodeListCtrl,
+                        treeCtrl;
+
+
+                    treeCtrl = controllers[1];
+                    nodeListCtrl = controllers[0];
+                    nodeCtrl = controllers[2];
+
+                    nodeCtrl.parentListCtrl = nodeListCtrl;
+                    nodeCtrl.treeCtrl = treeCtrl;
+
+                }
+            };
+        }
 );

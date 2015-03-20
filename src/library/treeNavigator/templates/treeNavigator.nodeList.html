@@ -1,6 +1,6 @@
 <ul class="node-list">
     <li ng-if="ctrl.isPageable() && ctrl.showPageUp()" class="paging page-up" ng-click="ctrl.pageUp($event)">
-        <a href="#">Load more <i class="glyphicon glyphicon-chevron-up"></i></a>
+        <a href="#">{{::ctrl.getLoadMoreText()}}<i class="glyphicon glyphicon-chevron-up"></i></a>
     </li>
 
     <tree-navigator-node
@@ -8,6 +8,6 @@
         node="node"
             ></tree-navigator-node>
     <li ng-if="ctrl.isPageable() && ctrl.showPageDown()" class="paging page-down" ng-click="ctrl.pageDown($event)">
-        <a href="#">Load more <i class="glyphicon glyphicon-chevron-down"></i></a>
+        <a href="#">{{::ctrl.getLoadMoreText()}}<i class="glyphicon glyphicon-chevron-down"></i></a>
     </li>
 </ul>

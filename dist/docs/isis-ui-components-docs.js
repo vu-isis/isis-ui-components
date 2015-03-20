@@ -3,146 +3,148 @@
 'use strict';
 
 var components = [
-  //{
-  //  name: 'itemList',
-  //  sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
-  //},
-  //{
-  //  name: 'hierarchicalMenu',
-  //  sources: [ 'demo.html', 'demo.js']
-  //},
-  //{
-  //  name: 'contextmenu',
-  //  sources: [ 'demo.html', 'demo.js']
-  //},
-  //{
-  //  name: 'dropdownNavigator',
-  //  sources: [ 'demo.html', 'demo.js']
-  //},
-  {
-    name: 'treeNavigator',
-    sources: [ 'demo.html', 'demo.js']
-  }
+    //{
+    //  name: 'itemList',
+    //  sources: [ 'demo.html', 'newItemTemplate.html', 'demo.js']
+    //},
+    //{
+    //  name: 'hierarchicalMenu',
+    //  sources: [ 'demo.html', 'demo.js']
+    //},
+    //{
+    //  name: 'contextmenu',
+    //  sources: [ 'demo.html', 'demo.js']
+    //},
+    //{
+    //  name: 'dropdownNavigator',
+    //  sources: [ 'demo.html', 'demo.js']
+    //},
+    {
+        name: 'treeNavigator',
+        sources: ['demo.html', 'demo.js']
+    }
 ];
 
-require( '../library/hierarchicalMenu/docs/demo.js' );
-require( '../library/contextmenu/docs/demo.js' );
-require( '../library/dropdownNavigator/docs/demo.js' );
-require( '../library/treeNavigator/docs/demo.js' );
-require( '../library/itemList/docs/demo.js' );
+require('../library/hierarchicalMenu/docs/demo.js');
+require('../library/contextmenu/docs/demo.js');
+require('../library/dropdownNavigator/docs/demo.js');
+require('../library/treeNavigator/docs/demo.js');
+require('../library/itemList/docs/demo.js');
 
-require( 'angular-sanitize' );
-window.Showdown = require( 'showdown' );
-require( 'angular-markdown-directive' );
+require('angular-sanitize');
+window.Showdown = require('showdown');
+require('angular-markdown-directive');
 
-require( 'codemirror-css' );
-window.CodeMirror = require( 'codemirror' );
+require('codemirror-css');
+window.CodeMirror = require('codemirror');
 
-require( 'codemirror/mode/htmlmixed/htmlmixed' );
-require( 'codemirror/mode/xml/xml' );
-require( 'codemirror/mode/javascript/javascript' );
+require('codemirror/mode/htmlmixed/htmlmixed');
+require('codemirror/mode/xml/xml');
+require('codemirror/mode/javascript/javascript');
 
-require( 'angular-ui-codemirror' );
+require('angular-ui-codemirror');
 
 
 var demoApp = angular.module(
-'isis.ui.demoApp', [
-  'isis.ui.demoApp.templates',
-  'btford.markdown',
-  'ui.codemirror'
-].concat( components.map( function ( e ) {
-  return 'isis.ui.' + e.name + '.demo';
-} ) )
+    'isis.ui.demoApp', [
+        'isis.ui.demoApp.templates',
+        'btford.markdown',
+        'ui.codemirror'
+    ].concat(components.map(function (e) {
+        return 'isis.ui.' + e.name + '.demo';
+    }))
 );
 
-demoApp.run( function () {
-  console.log( 'DemoApp run...' );
-} );
+demoApp.run(function () {
+    console.log('DemoApp run...');
+});
 
 demoApp.controller(
-'UIComponentsDemoController',
-function ( $scope, $templateCache ) {
+    'UIComponentsDemoController',
+    function ($scope, $templateCache) {
 
-  var fileExtensionRE,
-    codeMirrorModes;
+        var fileExtensionRE,
+            codeMirrorModes;
 
-  fileExtensionRE = /(?:\.([^.]+))?$/;
+        fileExtensionRE = /(?:\.([^.]+))?$/;
 
-  codeMirrorModes = {
-    'js': 'javascript',
-    'html': 'htmlmixed'
-  };
-
-  $scope.components = components.map( function ( component ) {
-    var sources,
-    viewerOptions,
-    fileExtension;
-
-    if ( angular.isArray( component.sources ) ) {
-      sources = component.sources.map( function ( sourceFile ) {
-
-        fileExtension = fileExtensionRE.exec( sourceFile );
-
-        viewerOptions = {
-          lineWrapping: true,
-          lineNumbers: true,
-          readOnly: true,
-          mode: codeMirrorModes[fileExtension[1]] || 'xml'
+        codeMirrorModes = {
+            'js': 'javascript',
+            'html': 'htmlmixed'
         };
 
-        return {
-          fileName: sourceFile,
-          code: $templateCache.get( '/library/' + component.name + '/docs/' + sourceFile ),
-          viewerOptions: viewerOptions
-        };
-      } );
-    }
+        $scope.components = components.map(function (component) {
+            var sources,
+                viewerOptions,
+                fileExtension;
 
-    return {
-      name: component.name,
-      template: '/library/' + component.name + '/docs/demo.html',
-      docs: '/library/' + component.name + '/docs/readme.md',
-      sources: sources,
-      selectedSourceFile: sources[0]
-    };
-  } );
+            if (angular.isArray(component.sources)) {
+                sources = component.sources.map(function (sourceFile) {
 
-} );
+                    fileExtension = fileExtensionRE.exec(sourceFile);
+
+                    viewerOptions = {
+                        lineWrapping: true,
+                        lineNumbers: true,
+                        readOnly: true,
+                        mode: codeMirrorModes[fileExtension[1]] || 'xml'
+                    };
+
+                    return {
+                        fileName: sourceFile,
+                        code: $templateCache.get('/library/' + component.name + '/docs/' +
+                            sourceFile),
+                        viewerOptions: viewerOptions
+                    };
+                });
+            }
+
+            return {
+                name: component.name,
+                template: '/library/' + component.name + '/docs/demo.html',
+                docs: '/library/' + component.name + '/docs/readme.md',
+                sources: sources,
+                selectedSourceFile: sources[0]
+            };
+        });
+
+    });
 
 window.countOfSesquatches = function (printWatchers) {
 
-  var root = angular.element(document.getElementsByTagName('body'));
+    var root = angular.element(document.getElementsByTagName('body'));
 
-  var watchers = [];
+    var watchers = [];
 
-  var f = function (element) {
-    angular.forEach(['$scope', '$isolateScope'], function (scopeProperty) {
-      if (element.data() && element.data().hasOwnProperty(scopeProperty)) {
-        angular.forEach(element.data()[scopeProperty].$$watchers, function (watcher) {
-          watchers.push(watcher);
+    var f = function (element) {
+        angular.forEach(['$scope', '$isolateScope'], function (scopeProperty) {
+            if (element.data() && element.data()
+                .hasOwnProperty(scopeProperty)) {
+                angular.forEach(element.data()[scopeProperty].$$watchers, function (watcher) {
+                    watchers.push(watcher);
+                });
+            }
         });
-      }
+
+        angular.forEach(element.children(), function (childElement) {
+            f(angular.element(childElement));
+        });
+    };
+
+    f(root);
+
+    // Remove duplicate watchers
+    var watchersWithoutDuplicates = [];
+    angular.forEach(watchers, function (item) {
+        if (watchersWithoutDuplicates.indexOf(item) < 0) {
+            watchersWithoutDuplicates.push(item);
+            if (printWatchers === true) {
+                console.log(item);
+            }
+        }
     });
 
-    angular.forEach(element.children(), function (childElement) {
-      f(angular.element(childElement));
-    });
-  };
-
-  f(root);
-
-  // Remove duplicate watchers
-  var watchersWithoutDuplicates = [];
-  angular.forEach(watchers, function(item) {
-    if(watchersWithoutDuplicates.indexOf(item) < 0) {
-      watchersWithoutDuplicates.push(item);
-      if (printWatchers === true) {
-        console.log(item);
-      }
-    }
-  });
-
-  console.log(watchersWithoutDuplicates.length);
+    console.log(watchersWithoutDuplicates.length);
 
 };
 },{"../library/contextmenu/docs/demo.js":13,"../library/dropdownNavigator/docs/demo.js":14,"../library/hierarchicalMenu/docs/demo.js":15,"../library/itemList/docs/demo.js":16,"../library/treeNavigator/docs/demo.js":17,"angular-markdown-directive":5,"angular-sanitize":6,"angular-ui-codemirror":3,"codemirror":7,"codemirror-css":4,"codemirror/mode/htmlmixed/htmlmixed":9,"codemirror/mode/javascript/javascript":10,"codemirror/mode/xml/xml":11,"showdown":18}],2:[function(require,module,exports){
@@ -851,11 +853,6 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     maybeUpdateLineNumberWidth(this);
     for (var i = 0; i < initHooks.length; ++i) initHooks[i](this);
     endOperation(this);
-    // Suppress optimizelegibility in Webkit, since it breaks text
-    // measuring on line wrapping boundaries.
-    if (webkit && options.lineWrapping &&
-        getComputedStyle(display.lineDiv).textRendering == "optimizelegibility")
-      display.lineDiv.style.textRendering = "auto";
   }
 
   // DISPLAY CONSTRUCTOR
@@ -1463,7 +1460,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     // width and height.
     removeChildren(display.cursorDiv);
     removeChildren(display.selectionDiv);
-    display.gutters.style.height = 0;
+    display.heightForcer.style.top = display.gutters.style.height = 0;
 
     if (different) {
       display.lastWrapHeight = update.wrapperHeight;
@@ -1521,9 +1518,9 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
   function setDocumentHeight(cm, measure) {
     cm.display.sizer.style.minHeight = measure.docHeight + "px";
-    var total = measure.docHeight + cm.display.barHeight;
-    cm.display.heightForcer.style.top = total + "px";
-    cm.display.gutters.style.height = Math.max(total + scrollGap(cm), measure.clientHeight) + "px";
+    var plusGap = measure.docHeight + scrollGap(cm);
+    cm.display.heightForcer.style.top = plusGap + "px";
+    cm.display.gutters.style.height = Math.max(plusGap, measure.clientHeight) + "px";
   }
 
   // Read the actual heights of the rendered lines, and update their
@@ -2591,8 +2588,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
   // Converts a {top, bottom, left, right} box from line-local
   // coordinates into another coordinate system. Context may be one of
-  // "line", "div" (display.lineDiv), "local"/null (editor), "window",
-  // or "page".
+  // "line", "div" (display.lineDiv), "local"/null (editor), or "page".
   function intoCoordSystem(cm, lineObj, rect, context) {
     if (lineObj.widgets) for (var i = 0; i < lineObj.widgets.length; ++i) if (lineObj.widgets[i].above) {
       var size = widgetHeight(lineObj.widgets[i]);
@@ -3504,9 +3500,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
   // Return true when the given mouse event happened in a widget
   function eventInWidget(display, e) {
     for (var n = e_target(e); n != display.wrapper; n = n.parentNode) {
-      if (!n || (n.nodeType == 1 && n.getAttribute("cm-ignore-events") == "true") ||
-          (n.parentNode == display.sizer && n != display.mover))
-        return true;
+      if (!n || n.getAttribute("cm-ignore-events") == "true" || n.parentNode == display.sizer && n != display.mover) return true;
     }
   }
 
@@ -4535,9 +4529,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
     var lendiff = change.text.length - (to.line - from.line) - 1;
     // Remember that these lines changed, for updating the display
-    if (change.full)
-      regChange(cm);
-    else if (from.line == to.line && change.text.length == 1 && !isWholeLineUpdate(cm.doc, change))
+    if (from.line == to.line && change.text.length == 1 && !isWholeLineUpdate(cm.doc, change))
       regLineChange(cm, from.line, "text");
     else
       regChange(cm, from.line, to.line + 1, lendiff);
@@ -6319,7 +6311,6 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
   // spans partially within the change. Returns an array of span
   // arrays with one element for each line in (after) the change.
   function stretchSpansOverChange(doc, change) {
-    if (change.full) return null;
     var oldFirst = isLine(doc, change.from.line) && getLine(doc, change.from.line).markedSpans;
     var oldLast = isLine(doc, change.to.line) && getLine(doc, change.to.line).markedSpans;
     if (!oldFirst && !oldLast) return null;
@@ -6629,9 +6620,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     if (!contains(document.body, widget.node)) {
       var parentStyle = "position: relative;";
       if (widget.coverGutter)
-        parentStyle += "margin-left: -" + widget.cm.display.gutters.offsetWidth + "px;";
-      if (widget.noHScroll)
-        parentStyle += "width: " + widget.cm.display.wrapper.clientWidth + "px;";
+        parentStyle += "margin-left: -" + widget.cm.getGutterElement().offsetWidth + "px;";
       removeChildrenAndAdd(widget.cm.display.measure, elt("div", [widget.node], null, parentStyle));
     }
     return widget.height = widget.node.offsetHeight;
@@ -7094,24 +7083,17 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
       updateLine(line, text, spans, estimateHeight);
       signalLater(line, "change", line, change);
     }
-    function linesFor(start, end) {
-      for (var i = start, result = []; i < end; ++i)
-        result.push(new Line(text[i], spansFor(i), estimateHeight));
-      return result;
-    }
 
     var from = change.from, to = change.to, text = change.text;
     var firstLine = getLine(doc, from.line), lastLine = getLine(doc, to.line);
     var lastText = lst(text), lastSpans = spansFor(text.length - 1), nlines = to.line - from.line;
 
     // Adjust the line structure
-    if (change.full) {
-      doc.insert(0, linesFor(0, text.length));
-      doc.remove(text.length, doc.size - text.length);
-    } else if (isWholeLineUpdate(doc, change)) {
+    if (isWholeLineUpdate(doc, change)) {
       // This is a whole-line replace. Treated specially to make
       // sure line objects move the way they are supposed to.
-      var added = linesFor(0, text.length - 1);
+      for (var i = 0, added = []; i < text.length - 1; ++i)
+        added.push(new Line(text[i], spansFor(i), estimateHeight));
       update(lastLine, lastLine.text, lastSpans);
       if (nlines) doc.remove(from.line, nlines);
       if (added.length) doc.insert(from.line, added);
@@ -7119,7 +7101,8 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
       if (text.length == 1) {
         update(firstLine, firstLine.text.slice(0, from.ch) + lastText + firstLine.text.slice(to.ch), lastSpans);
       } else {
-        var added = linesFor(1, text.length - 1);
+        for (var added = [], i = 1; i < text.length - 1; ++i)
+          added.push(new Line(text[i], spansFor(i), estimateHeight));
         added.push(new Line(lastText + firstLine.text.slice(to.ch), lastSpans, estimateHeight));
         update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
         doc.insert(from.line + 1, added);
@@ -7130,7 +7113,8 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     } else {
       update(firstLine, firstLine.text.slice(0, from.ch) + text[0], spansFor(0));
       update(lastLine, lastText + lastLine.text.slice(to.ch), lastSpans);
-      var added = linesFor(1, text.length - 1);
+      for (var i = 1, added = []; i < text.length - 1; ++i)
+        added.push(new Line(text[i], spansFor(i), estimateHeight));
       if (nlines > 1) doc.remove(from.line + 1, nlines - 1);
       doc.insert(from.line + 1, added);
     }
@@ -7341,7 +7325,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
     setValue: docMethodOp(function(code) {
       var top = Pos(this.first, 0), last = this.first + this.size - 1;
       makeChange(this, {from: top, to: Pos(last, getLine(this, last).text.length),
-                        text: splitLines(code), origin: "setValue", full: true}, true);
+                        text: splitLines(code), origin: "setValue"}, true);
       setSelection(this, simpleSelection(top));
     }),
     replaceRange: function(code, from, to, origin) {
@@ -8221,11 +8205,13 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
       if (array[i] == elt) return i;
     return -1;
   }
+  if ([].indexOf) indexOf = function(array, elt) { return array.indexOf(elt); };
   function map(array, f) {
     var out = [];
     for (var i = 0; i < array.length; i++) out[i] = f(array[i], i);
     return out;
   }
+  if ([].map) map = function(array, f) { return array.map(f); };
 
   function createObj(base, props) {
     var inst;
@@ -8778,7 +8764,7 @@ n=document.createElement("pre"),M=/^(\s*)([\s\S]*?)(\s*)$/;h.module("ngSanitize"
 
   // THE END
 
-  CodeMirror.version = "4.12.0";
+  CodeMirror.version = "4.10.0";
 
   return CodeMirror;
 });
@@ -9311,14 +9297,14 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
     "ethiopic-halehame-sid-et", "ethiopic-halehame-so-et",
     "ethiopic-halehame-ti-er", "ethiopic-halehame-ti-et",
     "ethiopic-halehame-tig", "ew-resize", "expanded", "extra-condensed",
-    "extra-expanded", "fantasy", "fast", "fill", "fixed", "flat", "flex", "footnotes",
+    "extra-expanded", "fantasy", "fast", "fill", "fixed", "flat", "footnotes",
     "forwards", "from", "geometricPrecision", "georgian", "graytext", "groove",
     "gujarati", "gurmukhi", "hand", "hangul", "hangul-consonant", "hebrew",
     "help", "hidden", "hide", "higher", "highlight", "highlighttext",
     "hiragana", "hiragana-iroha", "horizontal", "hsl", "hsla", "icon", "ignore",
     "inactiveborder", "inactivecaption", "inactivecaptiontext", "infinite",
     "infobackground", "infotext", "inherit", "initial", "inline", "inline-axis",
-    "inline-block", "inline-flex", "inline-table", "inset", "inside", "intrinsic", "invert",
+    "inline-block", "inline-table", "inset", "inside", "intrinsic", "invert",
     "italic", "justify", "kannada", "katakana", "katakana-iroha", "keep-all", "khmer",
     "landscape", "lao", "large", "larger", "left", "level", "lighter",
     "line-through", "linear", "lines", "list-item", "listbox", "listitem",
@@ -10228,12 +10214,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "if") return cont(expression, comprehension);
   }
 
-  function isContinuedStatement(state, textAfter) {
-    return state.lastType == "operator" || state.lastType == "," ||
-      isOperatorChar.test(textAfter.charAt(0)) ||
-      /[,.]/.test(textAfter.charAt(0));
-  }
-
   // Interface
 
   return {
@@ -10285,7 +10265,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       else if (type == "form" && firstChar == "{") return lexical.indented;
       else if (type == "form") return lexical.indented + indentUnit;
       else if (type == "stat")
-        return lexical.indented + (isContinuedStatement(state, textAfter) ? statementIndent || indentUnit : 0);
+        return lexical.indented + (state.lastType == "operator" || state.lastType == "," ? statementIndent || indentUnit : 0);
       else if (lexical.info == "switch" && !closing && parserConfig.doubleIndentSwitch != false)
         return lexical.indented + (/^(?:case|default)\b/.test(textAfter) ? indentUnit : 2 * indentUnit);
       else if (lexical.align) return lexical.column + (closing ? 0 : 1);
@@ -10749,1070 +10729,1015 @@ module.exports.byUrl = function(url) {
 
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.contextmenu.demo', [ 'isis.ui.contextmenu' ] );
+var demoApp = angular.module('isis.ui.contextmenu.demo', ['isis.ui.contextmenu']);
 
-demoApp.controller( 'ContextmenuCustomTemplateController', function ( $scope, contextmenuService ) {
-  $scope.parameter = {};
+demoApp.controller('ContextmenuCustomTemplateController', function ($scope, contextmenuService) {
+    $scope.parameter = {};
 
-  $scope.closeClick = function () {
-    console.log( 'closing this manually' );
-    contextmenuService.close();
-  };
+    $scope.closeClick = function () {
+        console.log('closing this manually');
+        contextmenuService.close();
+    };
 
-  $scope.isValid = function ( num ) {
-    console.log( 'Who knows if is valid?', num );
+    $scope.isValid = function (num) {
+        console.log('Who knows if is valid?', num);
 
-    if ( parseInt( num, 10 ) === 4 ) {
-      $scope.parameter.invalid = false;
-    } else {
-      $scope.parameter.invalid = true;
-    }
-  };
+        if (parseInt(num, 10) === 4) {
+            $scope.parameter.invalid = false;
+        } else {
+            $scope.parameter.invalid = true;
+        }
+    };
 
-} );
+});
 
-demoApp.controller( 'ContextmenuDemoController', function ( $scope ) {
+demoApp.controller('ContextmenuDemoController', function ($scope) {
 
-  var menuData = [ {
-    id: 'top',
-    items: [ {
-      id: 'newProject',
-      label: 'New project ...',
-      iconClass: 'glyphicon glyphicon-plus',
-      action: function () {
-        console.log( 'New project clicked' );
-      },
-      actionData: {}
+    var menuData = [{
+        id: 'top',
+        items: [{
+            id: 'newProject',
+            label: 'New project ...',
+            iconClass: 'glyphicon glyphicon-plus',
+            action: function () {
+                console.log('New project clicked');
+            },
+            actionData: {}
+        }, {
+            id: 'importProject',
+            label: 'Import project ...',
+            iconClass: 'glyphicon glyphicon-import',
+            action: function () {
+                console.log('Import project clicked');
+            },
+            actionData: {}
+        }]
     }, {
-      id: 'importProject',
-      label: 'Import project ...',
-      iconClass: 'glyphicon glyphicon-import',
-      action: function () {
-        console.log( 'Import project clicked' );
-      },
-      actionData: {}
-    } ]
-  }, {
-    id: 'projects',
-    label: 'Recent projects',
-    totalItems: 20,
-    items: [],
-    showAllItems: function () {
-      console.log( 'Recent projects clicked' );
-    }
-  }, {
-    id: 'preferences',
-    label: 'preferences',
-    items: [ {
-      id: 'showPreferences',
-      label: 'Show preferences',
-      action: function () {
-        console.log( 'Show preferences' );
-      },
-      menu: [ {
-        items: [ {
-          id: 'preferences 1',
-          label: 'Preferences 1'
-        }, {
-          id: 'preferences 2',
-          label: 'Preferences 2'
-        }, {
-          id: 'preferences 3',
-          label: 'Preferences 3',
-          menu: [ {
-            items: [ {
-              id: 'sub_preferences 1',
-              label: 'Sub preferences 1'
-            }, {
-              id: 'sub_preferences 2',
-              label: 'Sub preferences 2'
-            } ]
-          } ]
-        } ]
-      } ]
-    } ]
-  } ];
+        id: 'projects',
+        label: 'Recent projects',
+        totalItems: 20,
+        items: [],
+        showAllItems: function () {
+            console.log('Recent projects clicked');
+        }
+    }, {
+        id: 'preferences',
+        label: 'preferences',
+        items: [{
+            id: 'showPreferences',
+            label: 'Show preferences',
+            action: function () {
+                console.log('Show preferences');
+            },
+            menu: [{
+                items: [{
+                    id: 'preferences 1',
+                    label: 'Preferences 1'
+                }, {
+                    id: 'preferences 2',
+                    label: 'Preferences 2'
+                }, {
+                    id: 'preferences 3',
+                    label: 'Preferences 3',
+                    menu: [{
+                        items: [{
+                            id: 'sub_preferences 1',
+                            label: 'Sub preferences 1'
+                        }, {
+                            id: 'sub_preferences 2',
+                            label: 'Sub preferences 2'
+                        }]
+                    }]
+                }]
+            }]
+        }]
+    }];
 
-  $scope.menuConfig1 = {
-    triggerEvent: 'click',
-    position: 'right bottom'
-  };
+    $scope.menuConfig1 = {
+        triggerEvent: 'click',
+        position: 'right bottom'
+    };
 
-  $scope.menuConfig2 = {
-    triggerEvent: 'mouseover',
-    position: 'left bottom',
-    contentTemplateUrl: 'contextmenu-custom-content.html',
-    doNotAutoClose: true,
-    menuCssClass: 'green-shadow'
-  };
+    $scope.menuConfig2 = {
+        triggerEvent: 'mouseover',
+        position: 'left bottom',
+        contentTemplateUrl: 'contextmenu-custom-content.html',
+        doNotAutoClose: true,
+        menuCssClass: 'green-shadow'
+    };
 
-  $scope.menuData = menuData;
+    $scope.menuData = menuData;
 
-  $scope.preContextMenu = function ( e ) {
-    console.log( 'In preContextMenu ', e );
-  };
+    $scope.preContextMenu = function (e) {
+        console.log('In preContextMenu ', e);
+    };
 
 
-} );
+});
 },{}],14:[function(require,module,exports){
 /*globals console, angular*/
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.dropdownNavigator.demo', [ 'isis.ui.dropdownNavigator' ] );
+var demoApp = angular.module('isis.ui.dropdownNavigator.demo', ['isis.ui.dropdownNavigator']);
 
-demoApp.controller( 'DropdownDemoController', function ( $scope ) {
-  var firstMenu,
-    secondMenu;
+demoApp.controller('DropdownDemoController', function ($scope) {
+    var firstMenu,
+        secondMenu;
 
-  firstMenu = {
-    id: 'root',
-    label: 'GME',
-    //            isSelected: true,
-    itemClass: 'gme-root',
-    menu: []
-  };
+    firstMenu = {
+        id: 'root',
+        label: 'GME',
+        //            isSelected: true,
+        itemClass: 'gme-root',
+        menu: []
+    };
 
-  secondMenu = {
-    id: 'secondItem',
-    label: 'Projects',
-    menu: []
-  };
+    secondMenu = {
+        id: 'secondItem',
+        label: 'Projects',
+        menu: []
+    };
 
-  firstMenu.menu = [ {
-    id: 'top',
-    items: [ {
-      id: 'newProject',
-      label: 'New project ...',
-      iconClass: 'glyphicon glyphicon-plus',
-      action: function () {
-        console.log( 'New project clicked' );
-      },
-      actionData: {}
+    firstMenu.menu = [{
+        id: 'top',
+        items: [{
+            id: 'newProject',
+            label: 'New project ...',
+            iconClass: 'glyphicon glyphicon-plus',
+            action: function () {
+                console.log('New project clicked');
+            },
+            actionData: {}
+        }, {
+            id: 'importProject',
+            label: 'Import project ...',
+            iconClass: 'glyphicon glyphicon-import',
+            action: function () {
+                console.log('Import project clicked');
+            },
+            actionData: {}
+        }]
     }, {
-      id: 'importProject',
-      label: 'Import project ...',
-      iconClass: 'glyphicon glyphicon-import',
-      action: function () {
-        console.log( 'Import project clicked' );
-      },
-      actionData: {}
-    } ]
-  }, {
-    id: 'projects',
-    label: 'Recent projects',
-    totalItems: 20,
-    items: [],
-    showAllItems: function () {
-      console.log( 'Recent projects clicked' );
-    }
-  }, {
-    id: 'preferences',
-    label: 'preferences',
-    items: [ {
-      id: 'showPreferences',
-      label: 'Show preferences',
-      action: function () {
-        console.log( 'Show preferences' );
-      },
-      menu: [ {
-        items: [ {
-          id: 'preferences 1',
-          label: 'Preferences 1'
-        }, {
-          id: 'preferences 2',
-          label: 'Preferences 2'
-        }, {
-          id: 'preferences 3',
-          label: 'Preferences 3',
-          menu: [ {
-            items: [ {
-              id: 'sub_preferences 1',
-              label: 'Sub preferences 1'
-            }, {
-              id: 'sub_preferences 2',
-              label: 'Sub preferences 2'
-            } ]
-          } ]
-        } ]
-      } ]
-    } ]
-  } ];
+        id: 'projects',
+        label: 'Recent projects',
+        totalItems: 20,
+        items: [],
+        showAllItems: function () {
+            console.log('Recent projects clicked');
+        }
+    }, {
+        id: 'preferences',
+        label: 'preferences',
+        items: [{
+            id: 'showPreferences',
+            label: 'Show preferences',
+            action: function () {
+                console.log('Show preferences');
+            },
+            menu: [{
+                items: [{
+                    id: 'preferences 1',
+                    label: 'Preferences 1'
+                }, {
+                    id: 'preferences 2',
+                    label: 'Preferences 2'
+                }, {
+                    id: 'preferences 3',
+                    label: 'Preferences 3',
+                    menu: [{
+                        items: [{
+                            id: 'sub_preferences 1',
+                            label: 'Sub preferences 1'
+                        }, {
+                            id: 'sub_preferences 2',
+                            label: 'Sub preferences 2'
+                        }]
+                    }]
+                }]
+            }]
+        }]
+    }];
 
 
-  secondMenu = {
-    id: 'secondItem',
-    label: 'Projects',
-    menu: []
-  };
+    secondMenu = {
+        id: 'secondItem',
+        label: 'Projects',
+        menu: []
+    };
 
-  secondMenu.menu = [ {
-    id: 'secondMenuMenu',
-    items: [
+    secondMenu.menu = [{
+        id: 'secondMenuMenu',
+        items: [
 
-      {
-        id: 'showPreferences',
-        label: 'Show preferences',
-        action: function () {
-          console.log( 'Show preferences' );
-        },
-        menu: [ {
-          items: [ {
-            id: 'preferences 1',
-            label: 'Preferences 1'
-          }, {
-            id: 'preferences 2',
-            label: 'Preferences 2'
-          }, {
-            id: 'preferences 3',
-            label: 'Preferences 3',
-            menu: [ {
-              items: [ {
-                id: 'sub_preferences 1',
-                label: 'Sub preferences 1'
-              }, {
-                id: 'sub_preferences 2',
-                label: 'Sub preferences 2'
-              } ]
-            } ]
-          } ]
-        } ]
-      }
-    ]
-  } ];
+            {
+                id: 'showPreferences',
+                label: 'Show preferences',
+                action: function () {
+                    console.log('Show preferences');
+                },
+                menu: [{
+                    items: [{
+                        id: 'preferences 1',
+                        label: 'Preferences 1'
+                    }, {
+                        id: 'preferences 2',
+                        label: 'Preferences 2'
+                    }, {
+                        id: 'preferences 3',
+                        label: 'Preferences 3',
+                        menu: [{
+                            items: [{
+                                id: 'sub_preferences 1',
+                                label: 'Sub preferences 1'
+                            }, {
+                                id: 'sub_preferences 2',
+                                label: 'Sub preferences 2'
+                            }]
+                        }]
+                    }]
+                }]
+            }
+        ]
+    }];
 
-  $scope.navigator = {
-    items: [
-      firstMenu,
-      secondMenu
-    ],
-    separator: true
-  };
+    $scope.navigator = {
+        items: [
+            firstMenu,
+            secondMenu
+        ],
+        separator: true
+    };
 
 
-} );
+});
 },{}],15:[function(require,module,exports){
 /*globals console, angular*/
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.hierarchicalMenu.demo', [
-  'isis.ui.hierarchicalMenu'
-] );
+var demoApp = angular.module('isis.ui.hierarchicalMenu.demo', [
+    'isis.ui.hierarchicalMenu'
+]);
 
-demoApp.controller( 'HierarchicalMenuDemoController', function ( $scope ) {
+demoApp.controller('HierarchicalMenuDemoController', function ($scope) {
 
-  var menu;
+    var menu;
 
-  menu = [
-    {
-      id: 'top',
-      items: [
-        {
-          id: 'newProject',
-          label: 'New project ...',
-          iconClass: 'glyphicon glyphicon-plus',
-          action: function () {
-            console.log( 'New project clicked' );
-          },
-          actionData: {}
-        },
-        {
-          id: 'importProject',
-          label: 'Import project ...',
-          iconClass: 'glyphicon glyphicon-import',
-          action: function () {
-            console.log( 'Import project clicked' );
-          },
-          actionData: {}
-        },
-        {
-          id: 'importProject_disabled',
-          disabled: true,
-          label: 'Import project (disabled)...',
-          iconClass: 'glyphicon glyphicon-import',
-          action: function () {
-            console.log( 'Import project disabled clicked' );
-          },
-          actionData: {}
+    menu = [{
+        id: 'top',
+        items: [{
+            id: 'newProject',
+            label: 'New project ...',
+            iconClass: 'glyphicon glyphicon-plus',
+            action: function () {
+                console.log('New project clicked');
+            },
+            actionData: {}
+        }, {
+            id: 'importProject',
+            label: 'Import project ...',
+            iconClass: 'glyphicon glyphicon-import',
+            action: function () {
+                console.log('Import project clicked');
+            },
+            actionData: {}
+        }, {
+            id: 'importProject_disabled',
+            disabled: true,
+            label: 'Import project (disabled)...',
+            iconClass: 'glyphicon glyphicon-import',
+            action: function () {
+                console.log('Import project disabled clicked');
+            },
+            actionData: {}
+        }]
+    }, {
+        id: 'projects',
+        label: 'Recent projects',
+        totalItems: 20,
+        items: [],
+        showAllItems: function () {
+            console.log('Recent projects clicked');
         }
-      ]
-    },
-    {
-      id: 'projects',
-      label: 'Recent projects',
-      totalItems: 20,
-      items: [],
-      showAllItems: function () {
-        console.log( 'Recent projects clicked' );
-      }
-    },
-    {
-      id: 'preferences',
-      label: 'preferences',
-      items: [
-        {
-          id: 'showPreferences',
-          label: 'Show preferences',
-          action: function () {
-            console.log( 'Show preferences' );
-          },
-          menu: [
-            {
-              items: [
-                {
-                  id: 'preferences 1',
-                  label: 'Preferences 1'
-                },
-                {
-                  id: 'preferences 2',
-                  label: 'Preferences 2'
-                },
-                {
-                  id: 'preferences 3',
-                  label: 'Preferences 3',
-                  menu: [
-                    {
-                      items: [
-                        {
-                          id: 'sub_preferences 1',
-                          label: 'Sub preferences 1',
-                          action: function () {
-                            console.log( 'This should work' );
-                          }
-                        },
-                        {
-                          id: 'sub_preferences 2',
-                          label: 'Sub preferences 2',
-                          action: function () {
-                            console.log( 'This should work' );
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  id: 'preferences 3 (disabled)',
-                  label: 'Preferences 3 (disabled)',
-                  disabled: true,
-                  menu: [
-                    {
-                      items: [
-                        {
-                          id: 'sub_preferences 1 (disabled)',
-                          label: 'Sub preferences 1 (disabled)',
-                          action: function () {
-                            console.log( 'This should not work' );
-                          }
-                        },
-                        {
-                          id: 'sub_preferences 2 (disabled)',
-                          label: 'Sub preferences 2 (disabled)',
-                          action: function () {
-                            console.log( 'This should not work' );
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ];
+    }, {
+        id: 'preferences',
+        label: 'preferences',
+        items: [{
+            id: 'showPreferences',
+            label: 'Show preferences',
+            action: function () {
+                console.log('Show preferences');
+            },
+            menu: [{
+                items: [{
+                    id: 'preferences 1',
+                    label: 'Preferences 1'
+                }, {
+                    id: 'preferences 2',
+                    label: 'Preferences 2'
+                }, {
+                    id: 'preferences 3',
+                    label: 'Preferences 3',
+                    menu: [{
+                        items: [{
+                            id: 'sub_preferences 1',
+                            label: 'Sub preferences 1',
+                            action: function () {
+                                console.log('This should work');
+                            }
+                        }, {
+                            id: 'sub_preferences 2',
+                            label: 'Sub preferences 2',
+                            action: function () {
+                                console.log('This should work');
+                            }
+                        }]
+                    }]
+                }, {
+                    id: 'preferences 3 (disabled)',
+                    label: 'Preferences 3 (disabled)',
+                    disabled: true,
+                    menu: [{
+                        items: [{
+                            id: 'sub_preferences 1 (disabled)',
+                            label: 'Sub preferences 1 (disabled)',
+                            action: function () {
+                                console.log('This should not work');
+                            }
+                        }, {
+                            id: 'sub_preferences 2 (disabled)',
+                            label: 'Sub preferences 2 (disabled)',
+                            action: function () {
+                                console.log('This should not work');
+                            }
+                        }]
+                    }]
+                }]
+            }]
+        }]
+    }];
 
-  $scope.menu = menu;
+    $scope.menu = menu;
 
-} );
+});
 },{}],16:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
-var demoApp = angular.module( 'isis.ui.itemList.demo', [ 'isis.ui.itemList' ] );
+var demoApp = angular.module('isis.ui.itemList.demo', ['isis.ui.itemList']);
 
-demoApp.controller( 'ListItemDetailsDemoController', function ( $scope ) {
-  $scope.parameter = {};
+demoApp.controller('ListItemDetailsDemoController', function ($scope) {
+    $scope.parameter = {};
 
-  $scope.isValid = function ( num ) {
-    console.log( 'Who knows if is valid?', num );
+    $scope.isValid = function (num) {
+        console.log('Who knows if is valid?', num);
 
-    if ( parseInt( num, 10 ) === 4 ) {
-      $scope.parameter.invalid = false;
-    } else {
-      $scope.parameter.invalid = true;
-    }
-  };
-
-
-} );
-
-demoApp.controller( 'ListItemDetailsDemoController2', function ( $scope ) {
-  var i,
-    items2 = [],
-    itemGenerator2,
-    config;
-
-  itemGenerator2 = function ( id ) {
-
-    return {
-      id: id,
-      title: 'List sub-item ' + id,
-      toolTip: 'Open item',
-      description: 'This is description here',
-      lastUpdated: {
-        time: Date.now(),
-        user: 'N/A'
-
-      },
-      stats: [ {
-        value: id,
-        tooltip: 'Orders',
-        iconClass: 'fa fa-cubes'
-      } ],
-      details: 'Some detailed text. Lorem ipsum ama fea rin the poc ketofmyja cket.'
+        if (parseInt(num, 10) === 4) {
+            $scope.parameter.invalid = false;
+        } else {
+            $scope.parameter.invalid = true;
+        }
     };
-  };
 
 
-  for ( i = 0; i < 20; i++ ) {
-    items2.push( itemGenerator2( i ) );
-  }
+});
 
-  config = {
+demoApp.controller('ListItemDetailsDemoController2', function ($scope) {
+    var i,
+        items2 = [],
+        itemGenerator2,
+        config;
 
-    sortable: true,
-    secondaryItemMenu: true,
-    detailsCollapsible: false,
-    showDetailsLabel: 'Show details',
-    hideDetailsLabel: 'Hide details',
+    itemGenerator2 = function (id) {
 
-    // Event handlers
+        return {
+            id: id,
+            title: 'List sub-item ' + id,
+            toolTip: 'Open item',
+            description: 'This is description here',
+            lastUpdated: {
+                time: Date.now(),
+                user: 'N/A'
 
-    itemSort: function ( jQEvent, ui ) {
-      console.log( 'Sort happened', jQEvent, ui );
-    },
-
-    itemClick: function ( event, item ) {
-      console.log( 'Clicked: ' + item );
-    },
-
-    itemContextmenuRenderer: function ( e, item ) {
-      console.log( 'Contextmenu was triggered for node:', item );
-
-      return [ {
-        items: [
-
-          {
-            id: 'create',
-            label: 'Create new',
-            disabled: true,
-            iconClass: 'fa fa-plus'
-          }
-        ]
-      } ];
-    },
-
-    detailsRenderer: function ( item ) {
-      item.details = 'My details are here now!';
-    },
-
-    newItemForm: {
-      title: 'Create new item',
-      itemTemplateUrl: '/library/itemList/docs/newItemTemplate.html',
-      expanded: false,
-      controller: function ( $scope ) {
-        $scope.createItem = function ( newItem ) {
-
-          newItem.url = 'something';
-          newItem.toolTip = newItem.title;
-
-          items2.push( newItem );
-
-          $scope.newItem = {};
-
-          config.newItemForm.expanded = false; // this is how you close the form itself
-
+            },
+            stats: [{
+                value: id,
+                tooltip: 'Orders',
+                iconClass: 'fa fa-cubes'
+            }],
+            details: 'Some detailed text. Lorem ipsum ama fea rin the poc ketofmyja cket.'
         };
-      }
+    };
+
+
+    for (i = 0; i < 20; i++) {
+        items2.push(itemGenerator2(i));
     }
 
-  };
+    config = {
 
-  $scope.listData2 = {
-    items: items2
-  };
+        sortable: true,
+        secondaryItemMenu: true,
+        detailsCollapsible: false,
+        showDetailsLabel: 'Show details',
+        hideDetailsLabel: 'Hide details',
 
-  $scope.config2 = config;
+        // Event handlers
 
-} );
-
-demoApp.directive( 'demoSubList', function () {
-  return {
-    restrict: 'E',
-    replace: false,
-    scope: {
-      listData: '=',
-      config: '='
-    },
-    template: '<item-list list-data="listData" config="config" class="col-md-12"></item-list>'
-  };
-} );
-
-demoApp.controller( 'ItemListDemoController', function ( $scope ) {
-
-
-  var
-  i,
-
-    items = [],
-
-    itemGenerator,
-    getItemContextmenu,
-    config;
-
-  itemGenerator = function ( id ) {
-
-    var lastUpdated;
-
-    if (Math.random() > 0.5) {
-      lastUpdated = {
-        time: Date.now(),
-        user: 'N/A'
-
-      };
-    }
-
-    return {
-      id: id,
-      title: 'List item ' + id,
-      cssClass: 'my-item',
-      toolTip: 'Open item',
-      description: 'This is description here',
-      headerTemplateUrl: Math.random() > 0.5 ? '/library/itemList/docs/headerTemplate.html' : undefined,
-      taxonomyTerms: [
-        {
-          id: 'tag1',
-          name: 'Tag A',
-          url: 'http://vanderbilt.edu'
+        itemSort: function (jQEvent, ui) {
+            console.log('Sort happened', jQEvent, ui);
         },
-        {
-          id: 'tag2',
-          name: 'Tag B',
-          url: 'http://vanderbilt.edu'
-        }
-      ],
-      lastUpdated: lastUpdated,
-      stats: [
-        {
-          value: id,
-          toolTip: 'Orders',
-          iconClass: 'fa fa-cubes'
-        }
-      ],
-      details: 'Some detailed text. Lorem ipsum ama fea rin the poc ketofmyja cket.',
-      detailsTemplateUrl: Math.random() < 0.5 ? 'list-item-details.html' : 'list-item-details2.html'
-    };
-  };
 
+        itemClick: function (event, item) {
+            console.log('Clicked: ' + item);
+        },
 
-  for ( i = 0; i < 20; i++ ) {
-    items.push( itemGenerator( i ) );
-  }
+        itemContextmenuRenderer: function (e, item) {
+            console.log('Contextmenu was triggered for node:', item);
 
-  getItemContextmenu = function ( item ) {
+            return [{
+                items: [
 
-    var defaultItemContextmenu = [ {
-      items: [ {
-        id: 'create',
-        label: 'Create new',
-        disabled: true,
-        iconClass: 'fa fa-plus'
-      }, {
-        id: 'dummy',
-        label: 'Just for test ' + item.id,
+                    {
+                        id: 'create',
+                        label: 'Create new',
+                        disabled: true,
+                        iconClass: 'fa fa-plus'
+                    }
+                ]
+            }];
+        },
 
-        actionData: item,
+        detailsRenderer: function (item) {
+            item.details = 'My details are here now!';
+        },
 
-        action: function ( data ) {
-          console.log( 'testing ', data );
-        }
+        newItemForm: {
+            title: 'Create new item',
+            itemTemplateUrl: '/library/itemList/docs/newItemTemplate.html',
+            expanded: false,
+            controller: function ($scope) {
+                $scope.createItem = function (newItem) {
 
-      }, {
-        id: 'rename',
-        label: 'Rename'
-      }, {
-        id: 'preferences 3',
-        label: 'Preferences 3',
-        menu: [ {
-          items: [ {
-            id: 'sub_preferences 1',
-            label: 'Sub preferences 1'
-          }, {
-            id: 'sub_preferences 2',
-            label: 'Sub preferences 2',
-            action: function ( data ) {
-              console.log( 'testing2 ', data );
+                    newItem.url = 'something';
+                    newItem.toolTip = newItem.title;
+
+                    items2.push(newItem);
+
+                    $scope.newItem = {};
+
+                    config.newItemForm.expanded = false; // this is how you close the form itself
+
+                };
             }
-          } ]
-        } ]
-      } ]
-    } ];
+        }
 
-    return defaultItemContextmenu;
+    };
 
-  };
+    $scope.listData2 = {
+        items: items2
+    };
 
-  config = {
+    $scope.config2 = config;
 
-    sortable: true,
-    secondaryItemMenu: true,
-    detailsCollapsible: true,
-    showDetailsLabel: 'Show details',
-    hideDetailsLabel: 'Hide details',
+});
 
-    noItemsMessage: 'List is empty.',
+demoApp.directive('demoSubList', function () {
+    return {
+        restrict: 'E',
+        replace: false,
+        scope: {
+            listData: '=',
+            config: '='
+        },
+        template: '<item-list list-data="listData" config="config" class="col-md-12"></item-list>'
+    };
+});
 
-    // Event handlers
+demoApp.controller('ItemListDemoController', function ($scope) {
 
-    itemSort: function ( jQEvent, ui ) {
-      console.log( 'Sort happened', jQEvent, ui );
-    },
 
-    itemClick: function ( event, item ) {
-      console.log( 'Clicked: ' + item );
-    },
+    var
+    i,
 
-    itemContextmenuRenderer: function ( e, item ) {
-      console.log( 'Contextmenu was triggered for node:', item );
+        items = [],
 
-      return getItemContextmenu( item );
-    },
+        itemGenerator,
+        getItemContextmenu,
+        config;
 
-    detailsRenderer: function ( item ) {
-      item.details = 'My details are here now!';
-    },
+    itemGenerator = function (id) {
 
-    newItemForm: {
-      title: 'Create new item',
-      itemTemplateUrl: '/library/itemList/docs/newItemTemplate.html',
-      expanded: false,
-      controller: function ( $scope ) {
-        $scope.createItem = function ( newItem ) {
+        var lastUpdated;
 
-          newItem.url = 'something';
-          newItem.toolTip = newItem.title;
+        if (Math.random() > 0.5) {
+            lastUpdated = {
+                time: Date.now(),
+                user: 'N/A'
 
-          items.push( newItem );
+            };
+        }
 
-          $scope.newItem = {};
-
-          config.newItemForm.expanded = false; // this is how you close the form itself
-
+        return {
+            id: id,
+            title: 'List item ' + id,
+            cssClass: 'my-item',
+            toolTip: 'Open item',
+            description: 'This is description here',
+            headerTemplateUrl: Math.random() > 0.5 ?
+                '/library/itemList/docs/headerTemplate.html' : undefined,
+            taxonomyTerms: [{
+                id: 'tag1',
+                name: 'Tag A',
+                url: 'http://vanderbilt.edu'
+            }, {
+                id: 'tag2',
+                name: 'Tag B',
+                url: 'http://vanderbilt.edu'
+            }],
+            lastUpdated: lastUpdated,
+            stats: [{
+                value: id,
+                toolTip: 'Orders',
+                iconClass: 'fa fa-cubes'
+            }],
+            details: 'Some detailed text. Lorem ipsum ama fea rin the poc ketofmyja cket.',
+            detailsTemplateUrl: Math.random() < 0.5 ? 'list-item-details.html' : 'list-item-details2.html'
         };
-      }
-    },
+    };
 
-    filter: {}
 
-  };
+    for (i = 0; i < 20; i++) {
+        items.push(itemGenerator(i));
+    }
 
-  $scope.listData = {
-    items: items
-  };
+    getItemContextmenu = function (item) {
 
-  $scope.config = config;
+        var defaultItemContextmenu = [{
+            items: [{
+                id: 'create',
+                label: 'Create new',
+                disabled: true,
+                iconClass: 'fa fa-plus'
+            }, {
+                id: 'dummy',
+                label: 'Just for test ' + item.id,
 
-} );
+                actionData: item,
 
+                action: function (data) {
+                    console.log('testing ', data);
+                }
+
+            }, {
+                id: 'rename',
+                label: 'Rename'
+            }, {
+                id: 'preferences 3',
+                label: 'Preferences 3',
+                menu: [{
+                    items: [{
+                        id: 'sub_preferences 1',
+                        label: 'Sub preferences 1'
+                    }, {
+                        id: 'sub_preferences 2',
+                        label: 'Sub preferences 2',
+                        action: function (data) {
+                            console.log('testing2 ', data);
+                        }
+                    }]
+                }]
+            }]
+        }];
+
+        return defaultItemContextmenu;
+
+    };
+
+    config = {
+
+        sortable: true,
+        secondaryItemMenu: true,
+        detailsCollapsible: true,
+        showDetailsLabel: 'Show details',
+        hideDetailsLabel: 'Hide details',
+
+        noItemsMessage: 'List is empty.',
+
+        // Event handlers
+
+        itemSort: function (jQEvent, ui) {
+            console.log('Sort happened', jQEvent, ui);
+        },
+
+        itemClick: function (event, item) {
+            console.log('Clicked: ' + item);
+        },
+
+        itemContextmenuRenderer: function (e, item) {
+            console.log('Contextmenu was triggered for node:', item);
+
+            return getItemContextmenu(item);
+        },
+
+        detailsRenderer: function (item) {
+            item.details = 'My details are here now!';
+        },
+
+        newItemForm: {
+            title: 'Create new item',
+            itemTemplateUrl: '/library/itemList/docs/newItemTemplate.html',
+            expanded: false,
+            controller: function ($scope) {
+                $scope.createItem = function (newItem) {
+
+                    newItem.url = 'something';
+                    newItem.toolTip = newItem.title;
+
+                    items.push(newItem);
+
+                    $scope.newItem = {};
+
+                    config.newItemForm.expanded = false; // this is how you close the form itself
+
+                };
+            }
+        },
+
+        filter: {}
+
+    };
+
+    $scope.listData = {
+        items: items
+    };
+
+    $scope.config = config;
+
+});
 },{}],17:[function(require,module,exports){
 /*globals angular*/
 'use strict';
 
-require( 'ngDragDrop' );
+require('ngDragDrop');
 
-var demoApp = angular.module( 'isis.ui.treeNavigator.demo', [
-  'isis.ui.treeNavigator',
-  'ang-drag-drop'
-] );
+var demoApp = angular.module('isis.ui.treeNavigator.demo', [
+    'isis.ui.treeNavigator',
+    'ang-drag-drop'
+]);
 
-demoApp.controller( 'TreeNavigatorDemoController', function ( $scope, $log, $q, $timeout ) {
+demoApp.controller('TreeNavigatorDemoController', function ($scope, $log, $q, $timeout) {
 
-  var config,
-  treeNodes = {},
+    var config,
+        treeNodes = {},
 
-  addNode,
-  removeNode,
-  getNodeContextmenu,
-  dummyTreeDataGenerator,
-  sortChildren;
+        addNode,
+        removeNode,
+        getNodeContextmenu,
+        dummyTreeDataGenerator,
+        sortChildren;
 
-  getNodeContextmenu = function ( node ) {
+    getNodeContextmenu = function (node) {
 
-    var defaultNodeContextmenu = [
-      {
-        items: [
-          {
-            id: 'create',
-            label: 'Create new',
-            disabled: true,
-            iconClass: 'fa fa-plus',
-            menu: []
-          },
-          {
-            id: 'dummy',
-            label: 'Just for test ' + node.id,
+        var defaultNodeContextmenu = [{
+            items: [{
+                id: 'create',
+                label: 'Create new',
+                disabled: true,
+                iconClass: 'fa fa-plus',
+                menu: []
+            }, {
+                id: 'dummy',
+                label: 'Just for test ' + node.id,
 
-            actionData: node,
+                actionData: node,
 
-            action: function ( data ) {
-              $log.log( 'testing ', data );
-            }
+                action: function (data) {
+                    $log.log('testing ', data);
+                }
 
-          },
-          {
-            id: 'rename',
-            label: 'Rename'
-          },
-          {
-            id: 'delete',
-            label: 'Delete',
-            iconClass: 'fa fa-minus',
-            actionData: {
-              id: node.id
-            },
-            action: function ( data ) {
-              removeNode( data.id );
-            }
-          },
-          {
-            id: 'preferences 3',
-            label: 'Preferences 3',
-            menu: [
-              {
-                items: [
-                  {
-                    id: 'sub_preferences 1',
-                    label: 'Sub preferences 1'
-                  },
-                  {
-                    id: 'sub_preferences 2',
-                    label: 'Sub preferences 2',
-                    action: function ( data ) {
-                      $log.log( 'testing2 ', data );
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ];
+            }, {
+                id: 'rename',
+                label: 'Rename'
+            }, {
+                id: 'delete',
+                label: 'Delete',
+                iconClass: 'fa fa-minus',
+                actionData: {
+                    id: node.id
+                },
+                action: function (data) {
+                    removeNode(data.id);
+                }
+            }, {
+                id: 'preferences 3',
+                label: 'Preferences 3',
+                menu: [{
+                    items: [{
+                        id: 'sub_preferences 1',
+                        label: 'Sub preferences 1'
+                    }, {
+                        id: 'sub_preferences 2',
+                        label: 'Sub preferences 2',
+                        action: function (data) {
+                            $log.log('testing2 ', data);
+                        }
+                    }]
+                }]
+            }]
+        }];
 
-    return defaultNodeContextmenu;
+        return defaultNodeContextmenu;
 
-  };
-
-  dummyTreeDataGenerator = function ( treeNode, name, maxCount, levels, idOffset ) {
-    var i,
-    id,
-    count,
-    childNode;
-
-    levels = levels || 0;
-
-    count = maxCount;
-
-    for ( i = 0; i < count; i += 1 ) {
-      id = name + ( i + (idOffset || 0) );
-
-      childNode = addNode( treeNode, id, i );
-
-      if ( levels > 0 ) {
-        dummyTreeDataGenerator( childNode, id + '.', maxCount, levels - 1 );
-      }
-    }
-
-    return treeNode.children;
-
-  };
-
-  addNode = function ( parentTreeNode, id, i ) {
-    var newTreeNode,
-    children = [];
-
-
-    // node structure
-    newTreeNode = {
-      label: id,
-      extraInfo: 'Extra info',
-      children: children,
-      childrenCount: 0,
-      nodeData: {},
-      iconClass: 'fa fa-file-o',
-
-      draggable: true,
-      dragChannel: 'a',
-      dropChannel: ( Math.random() > 0.5 ) ? 'a' : 'b',
-      order: i
     };
 
-    newTreeNode.id = id;
+    dummyTreeDataGenerator = function (treeNode, name, maxCount, levels, idOffset) {
+        var i,
+            id,
+            count,
+            childNode;
 
-    // add the new node to the map
-    treeNodes[ newTreeNode.id ] = newTreeNode;
+        levels = levels || 0;
 
+        count = maxCount;
 
-    if ( parentTreeNode ) {
-      // if a parent was given add the new node as a child node
-      parentTreeNode.iconClass = undefined;
-      parentTreeNode.children.push( newTreeNode );
+        for (i = 0; i < count; i += 1) {
+            id = name + (i + (idOffset || 0));
 
+            childNode = addNode(treeNode, id, i);
 
-      parentTreeNode.childrenCount = parentTreeNode.children.length;
-
-      if ( newTreeNode.childrenCount === 0 ) {
-        newTreeNode.childrenCount = 5000;
-      }
-
-
-      if ( newTreeNode.childrenCount ) {
-        newTreeNode.iconClass = undefined;
-      }
-
-      sortChildren( parentTreeNode.children );
-
-      newTreeNode.parentId = parentTreeNode.id;
-    } else {
-
-      // if no parent is given replace the current root node with this node
-      $scope.treeData = newTreeNode;
-      $scope.treeData.unCollapsible = true;
-      newTreeNode.parentId = null;
-    }
-
-    return newTreeNode;
-  };
-
-  removeNode = function ( id ) {
-    var
-    parentNode,
-    nodeToDelete = treeNodes[ id ];
-
-    $log.debug( 'Removing a node ' + id );
-
-    if ( nodeToDelete ) {
-      if ( nodeToDelete.parentId !== null && treeNodes[ nodeToDelete.parentId ] !== undefined ) {
-        // find parent node
-        parentNode = treeNodes[ nodeToDelete.parentId ];
-
-        // remove nodeToDelete from parent node's children
-        parentNode.children = parentNode.children.filter( function ( el ) {
-          return el.id !== id;
-        } );
-
-        parentNode.childrenCount = parentNode.children.length;
-
-        if ( parentNode.childrenCount === 0 ) {
-          parentNode.iconClass = 'fa fa-file-o';
-        }
-      }
-
-      delete treeNodes[ id ];
-    }
-
-  };
-
-  sortChildren = function ( values ) {
-    var orderBy = [ 'label', 'id' ];
-
-    values.sort( function ( a, b ) {
-      var i,
-      key,
-      result;
-
-      for ( i = 0; i < orderBy.length; i += 1 ) {
-        key = orderBy[ i ];
-        if ( a.hasOwnProperty( key ) && b.hasOwnProperty( key ) ) {
-          result = a[ key ].toLowerCase()
-          .localeCompare( b[ key ].toLowerCase() );
-          if ( result !== 0 ) {
-            return result;
-          }
-        }
-      }
-
-      // a must be equal to b
-      return 0;
-    } );
-
-    return values;
-  };
-
-  config = {
-
-    //folderIconClass: 'glyphicon glyphicon-folder-close',
-
-    scopeMenu: [
-      {
-        items: [
-          {
-            id: 'project',
-            label: 'Project Hierarchy',
-            action: function () {
-              $scope.config.state.activeScope = 'project';
-              $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 0 ];
+            if (levels > 0) {
+                dummyTreeDataGenerator(childNode, id + '.', maxCount, levels - 1);
             }
-          },
-          {
-            id: 'composition',
-            label: 'Composition',
-            action: function () {
-              $scope.config.state.activeScope = 'composition';
-              $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 1 ];
+        }
+
+        return treeNode.children;
+
+    };
+
+    addNode = function (parentTreeNode, id, i) {
+        var newTreeNode,
+            children = [];
+
+
+        // node structure
+        newTreeNode = {
+            label: id,
+            extraInfo: 'Extra info',
+            children: children,
+            childrenCount: 0,
+            nodeData: {},
+            iconClass: 'fa fa-file-o',
+
+            draggable: true,
+            dragChannel: 'a',
+            dropChannel: (Math.random() > 0.5) ? 'a' : 'b',
+            order: i
+        };
+
+        newTreeNode.id = id;
+
+        // add the new node to the map
+        treeNodes[newTreeNode.id] = newTreeNode;
+
+
+        if (parentTreeNode) {
+            // if a parent was given add the new node as a child node
+            parentTreeNode.iconClass = undefined;
+            parentTreeNode.children.push(newTreeNode);
+
+
+            parentTreeNode.childrenCount = parentTreeNode.children.length;
+
+            if (newTreeNode.childrenCount === 0) {
+                newTreeNode.childrenCount = 5000;
             }
-          }
-        ]
-      }
 
-    ],
 
-    preferencesMenu: [
-      {
-        items: [
-          {
-            id: 'preferences 1',
-            label: 'Preferences 1'
-          },
+            if (newTreeNode.childrenCount) {
+                newTreeNode.iconClass = undefined;
+            }
 
-          {
-            id: 'preferences 2',
-            label: 'Preferences 2'
-          },
+            sortChildren(parentTreeNode.children);
 
-          {
-            id: 'preferences 3',
-            label: 'Preferences 3',
-            menu: [
-              {
-                items: [
-                  {
-                    id: 'sub_preferences 1',
-                    label: 'Sub preferences 1'
-                  },
-                  {
-                    id: 'sub_preferences 2',
-                    label: 'Sub preferences 2',
-                    action: function ( data ) {
-                      $log.log( data );
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ],
-
-    showRootLabel: true,
-
-    // Tree Event callbacks
-
-    nodeClick: function ( e, node ) {
-      console.log( 'Node was clicked:', node );
-    },
-
-    nodeDblclick: function ( e, node ) {
-      console.log( 'Node was double-clicked:', node );
-    },
-
-    nodeContextmenuRenderer: function ( e, node ) {
-      console.log( 'Contextmenu was triggered for node:', node );
-
-      return getNodeContextmenu( node );
-
-    },
-
-    nodeExpanderClick: function ( e, node, isExpand ) {
-      console.log( 'Expander was clicked for node:', node, isExpand );
-    },
-
-    pagination: {
-      itemsPerPage: 10
-    },
-
-    loadChildren: function ( e, node, count, isBackpaging) {
-      var deferred = $q.defer();
-
-      console.log('--loading children');
-
-      $timeout (function(){
-
-        var dummyParent = {
-              children: []
-            },
-            newChildren,
-            offset;
-
-        if (!isBackpaging) {
-
-          if (!isNaN(node.lastLoadedChildPosition) ) {
-            offset = node.lastLoadedChildPosition + 1;
-          } else {
-            offset = 0;
-          }
-
+            newTreeNode.parentId = parentTreeNode.id;
         } else {
 
-          offset = node.firstLoadedChildPosition - count;
-
+            // if no parent is given replace the current root node with this node
+            $scope.treeData = newTreeNode;
+            $scope.treeData.unCollapsible = true;
+            newTreeNode.parentId = null;
         }
 
-        newChildren = dummyTreeDataGenerator( dummyParent, 'Async ' + node.id, count || 20, 0, offset );
-        deferred.resolve(newChildren);
-      },
-      500
-      );
+        return newTreeNode;
+    };
 
-      return deferred.promise;
-    }
+    removeNode = function (id) {
+        var
+        parentNode,
+            nodeToDelete = treeNodes[id];
 
-  };
+        $log.debug('Removing a node ' + id);
 
-  $scope.config = config;
-  //$scope.config.disableManualSelection = true;
-  $scope.config.selectedScope = $scope.config.scopeMenu[ 0 ].items[ 0 ];
-  $scope.config.nodeClassGetter = function(node) {
-    var nodeCssClass = '';
+        if (nodeToDelete) {
+            if (nodeToDelete.parentId !== null && treeNodes[nodeToDelete.parentId] !==
+                undefined) {
+                // find parent node
+                parentNode = treeNodes[nodeToDelete.parentId];
 
-    if (node.order % 2 === 0) {
-      nodeCssClass = 'even';
-    }
+                // remove nodeToDelete from parent node's children
+                parentNode.children = parentNode.children.filter(function (el) {
+                    return el.id !== id;
+                });
 
-    return nodeCssClass;
-  };
-  $scope.treeData = {};
-  $scope.config.state = {
-    // id of activeNode
-    activeNode: 'Node item 0.0',
+                parentNode.childrenCount = parentNode.children.length;
 
-    // ids of selected nodes
-    selectedNodes: [ 'Node item 0.0' ],
+                if (parentNode.childrenCount === 0) {
+                    parentNode.iconClass = 'fa fa-file-o';
+                }
+            }
 
-    expandedNodes: [ 'Node item 0', 'Node item 0.1' ],
+            delete treeNodes[id];
+        }
 
-    // id of active scope
-    activeScope: 'project'
-  };
+    };
+
+    sortChildren = function (values) {
+        var orderBy = ['label', 'id'];
+
+        values.sort(function (a, b) {
+            var i,
+                key,
+                result;
+
+            for (i = 0; i < orderBy.length; i += 1) {
+                key = orderBy[i];
+                if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {
+                    result = a[key].toLowerCase()
+                        .localeCompare(b[key].toLowerCase());
+                    if (result !== 0) {
+                        return result;
+                    }
+                }
+            }
+
+            // a must be equal to b
+            return 0;
+        });
+
+        return values;
+    };
+
+    config = {
+
+        //folderIconClass: 'glyphicon glyphicon-folder-close',
+
+        scopeMenu: [{
+                items: [{
+                    id: 'project',
+                    label: 'Project Hierarchy',
+                    action: function () {
+                        $scope.config.state.activeScope = 'project';
+                        $scope.config.selectedScope = $scope.config.scopeMenu[0].items[0];
+                    }
+                }, {
+                    id: 'composition',
+                    label: 'Composition',
+                    action: function () {
+                        $scope.config.state.activeScope = 'composition';
+                        $scope.config.selectedScope = $scope.config.scopeMenu[0].items[1];
+                    }
+                }]
+            }
+
+        ],
+
+        preferencesMenu: [{
+            items: [{
+                    id: 'preferences 1',
+                    label: 'Preferences 1'
+                },
+
+                {
+                    id: 'preferences 2',
+                    label: 'Preferences 2'
+                },
+
+                {
+                    id: 'preferences 3',
+                    label: 'Preferences 3',
+                    menu: [{
+                        items: [{
+                            id: 'sub_preferences 1',
+                            label: 'Sub preferences 1'
+                        }, {
+                            id: 'sub_preferences 2',
+                            label: 'Sub preferences 2',
+                            action: function (data) {
+                                $log.log(data);
+                            }
+                        }]
+                    }]
+                }
+            ]
+        }],
+
+        showRootLabel: true,
+
+        // Tree Event callbacks
+
+        nodeClick: function (e, node) {
+            console.log('Node was clicked:', node);
+        },
+
+        nodeDblclick: function (e, node) {
+            console.log('Node was double-clicked:', node);
+        },
+
+        nodeContextmenuRenderer: function (e, node) {
+            console.log('Contextmenu was triggered for node:', node);
+
+            return getNodeContextmenu(node);
+
+        },
+
+        nodeExpanderClick: function (e, node, isExpand) {
+            console.log('Expander was clicked for node:', node, isExpand);
+        },
+
+        pagination: {
+            itemsPerPage: 10
+        },
+
+        loadChildren: function (e, node, count, isBackpaging) {
+            var deferred = $q.defer();
+
+            console.log('--loading children');
+
+            $timeout(function () {
+
+                    var dummyParent = {
+                        children: []
+                    },
+                        newChildren,
+                        offset;
+
+                    if (!isBackpaging) {
+
+                        if (!isNaN(node.lastLoadedChildPosition)) {
+                            offset = node.lastLoadedChildPosition + 1;
+                        } else {
+                            offset = 0;
+                        }
+
+                    } else {
+
+                        offset = node.firstLoadedChildPosition - count;
+
+                    }
+
+                    newChildren = dummyTreeDataGenerator(dummyParent, 'Async ' + node.id,
+                        count || 20, 0, offset);
+                    deferred.resolve(newChildren);
+                },
+                500
+            );
+
+            return deferred.promise;
+        }
+
+    };
+
+    $scope.config = config;
+    //$scope.config.disableManualSelection = true;
+    $scope.config.selectedScope = $scope.config.scopeMenu[0].items[0];
+    $scope.config.nodeClassGetter = function (node) {
+        var nodeCssClass = '';
+
+        if (node.order % 2 === 0) {
+            nodeCssClass = 'even';
+        }
+
+        return nodeCssClass;
+    };
+    $scope.treeData = {};
+    $scope.config.state = {
+        // id of activeNode
+        activeNode: 'Node item 0.0',
+
+        // ids of selected nodes
+        selectedNodes: ['Node item 0.0'],
+
+        expandedNodes: ['Node item 0', 'Node item 0.0'],
+
+        // id of active scope
+        activeScope: 'project'
+    };
 
 
-  addNode( null, 'ROOT' );
-  dummyTreeDataGenerator( $scope.treeData, 'Node item ', 1, 1 );
+    addNode(null, 'ROOT');
+    dummyTreeDataGenerator($scope.treeData, 'Node item ', 1, 1);
 
-} );
+});
 },{"ngDragDrop":2}],18:[function(require,module,exports){
 (function (global){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
