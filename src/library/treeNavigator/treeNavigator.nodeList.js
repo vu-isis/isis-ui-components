@@ -67,7 +67,7 @@ angular.module(
 
                 self.init = function() {
 
-                    if (self.nodes.length === 0) {
+                    if (self.nodes && self.nodes.length === 0) {
                         self.treeCtrl.loadSomeChildrenForNode(null, self.parentNode);
                     }
                     
