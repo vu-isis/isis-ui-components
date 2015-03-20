@@ -15,7 +15,7 @@ angular.module(
     .directive(
         'treeNavigatorNodeList', function (ISISRecursionHelper) {
 
-            function NodeListController($log) {
+            function NodeListController() {
 
                 var self = this;
 
