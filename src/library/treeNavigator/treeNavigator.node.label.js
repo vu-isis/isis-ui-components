@@ -140,7 +140,7 @@ angular.module(
 
             NodeLabelController.prototype._onDragStart = function(e) {
 
-                //e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.effectAllowed = 'move';
                 //e.dataTransfer.setData('node', this.node);
 
                 if (this.labelEl) {
