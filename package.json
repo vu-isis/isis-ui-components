@@ -23,7 +23,7 @@
     "gulp-sass": "^0.7.3",
     "gulp-util": "^3.0.1",
     "moment": "^2.8.2",
-    "ng-sortable": "0.0.3",
+    "ng-sortable": "^1.2.0",
     "node-sass": "^0.9.5-rc1",
     "parents": "^1.0.0",
     "path": "^0.4.9",
