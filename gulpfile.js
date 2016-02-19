@@ -86,7 +86,9 @@ server = express(),
 livereload = require( 'connect-livereload' ),
 refresh = require( 'gulp-livereload' ),
 lrserver = require( 'tiny-lr' )(),
+sourcemaps = require('gulp-sourcemaps'),
 prettify = require( 'gulp-js-prettify' );
+
 
 // Utility tasks
 
@@ -146,10 +148,12 @@ gulp.task( 'compile-docs-styles', function () {
   console.log( 'Compiling styles...' );
 
   gulp.src( sourcePaths.docsStyles )
+  .pipe(sourcemaps.init())
   .pipe( sass( {
     errLogToConsole: true,
     sourceComments: 'map'
   } ) )
+  .pipe(sourcemaps.write())
   .pipe( rename( function ( path ) {
     path.dirname = '';
   } ) )
@@ -222,10 +226,12 @@ gulp.task( 'compile-library-styles', function () {
 
   gulp.src( sourcePaths.libraryStyles )
     // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
+  .pipe(sourcemaps.init())
   .pipe( sass( {
     errLogToConsole: true,
     sourceComments: 'map'
   } ) )
+  .pipe(sourcemaps.write())
   .pipe( rename( function ( path ) {
     path.dirname = '';
   } ) )
