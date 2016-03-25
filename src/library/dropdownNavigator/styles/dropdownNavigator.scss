@@ -66,6 +66,30 @@ ul.dropdown-navigator {
     margin: 0 .75ex;
   }
 
+/*
+This set uses :focus rather than :hover
+to enable the menu.
 
+  > div.hierarchical-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  > li:focus {
+    visibility: visible;
+
+    > div.hierarchical-menu {
+      pointer-events: none;
+      visibility: visible;
+      z-index: 3;
+
+      > ul.menu-contents {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+  */
 
 }
