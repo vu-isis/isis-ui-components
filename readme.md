@@ -27,7 +27,7 @@ Include library CSS:
 
 - jQuery
 - Angular (1.3.13)
-- jQuery UI 
+- jQuery UI
 - Bootstrap
 
 
@@ -40,5 +40,16 @@ Key gulp tasks:
 - register-watchers
 
 By default gulp runs in debug mode and generates source maps.
+
+For example the following can be used to visualize the project elements:
+```bash
+git clone git@github.com:vu-isis/isis-ui-components.git
+cd isis-ui-components
+gulp clean-build
+gulp compile-all
+python -m SimpleHTTPServer
+```
+The navigate to the following link in the browser:
+  http://127.0.0.1:8000/dist/docs/isis-ui-components-docs.html
 
 Use gulp with the `--production` flag to not to run in debug mode.
