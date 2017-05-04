@@ -51,5 +51,6 @@
   },
   "browserify-shim": {
     "showdown": "Showdown"
-  }
+  },
+  "version": "0.2.21"
 }
