@@ -1,13 +1,13 @@
 {
   "devDependencies": {
     "angular-markdown-directive": "^0.3.0",
-    "angular-momentjs": "^0.1.8",
     "angular-sanitize": "0.0.1",
+    "babel-eslint": "^2.0.2",
     "browserify": "^5.10.1",
     "browserify-shim": "^3.7.0",
     "code-mirror": "~3.22.0",
-    "concat-stream": "^1.4.6",
     "codemirror": "^4.6.0",
+    "concat-stream": "^1.4.6",
     "connect-livereload": "^0.4.0",
     "cssify": "~0.6.0",
     "express": "^4.8.6",
@@ -16,16 +16,17 @@
     "gulp-browserify": "^0.5.0",
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.3.4",
+    "gulp-eslint": "^0.8.0",
     "gulp-js-prettify": "^0.1.0",
-    "gulp-jshint": "^1.8.4",
     "gulp-livereload": "^2.1.1",
     "gulp-rename": "^1.2.0",
-    "gulp-sass": "^0.7.3",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.1",
     "moment": "^2.8.2",
-    "ng-sortable": "0.0.3",
+    "ng-sortable": "^1.2.0",
+    "node-sass": "^3.4.2",
     "parents": "^1.0.0",
-    "node-sass": "^0.9.5-rc1",
     "path": "^0.4.9",
     "process": "^0.7.0",
     "run-sequence": "^0.3.6",
@@ -43,19 +44,13 @@
   },
   "browser": {
     "showdown": "./vendor/showdown_for_browserify.js",
-    "angular-bindonce": "./vendor/bindonce_fixed.js",
-    "angular-dragdrop_JQuery-based": "./bower_components/angular-dragdrop/src/angular-dragdrop.min.js",
     "ngDragDrop": "./bower_components/angular-native-dragdrop/draganddrop.js",
     "angular-ui-sortable": "./bower_components/angular-ui-sortable/sortable.min.js",
-    "angular-moment": "./bower_components/angular-moment/angular-moment.min.js",
     "codemirror-css": "./bower_components/codemirror/lib/codemirror.css",
-    "angular-ui-codemirror": "./bower_components/angular-ui-codemirror/ui-codemirror.js",
-    "ng-grid": "./bower_components/ng-grid/ng-grid-2.0.13.min.js",
-    "ng-grid-css": "./bower_components/ng-grid/ng-grid.min.css",
-    "ui-utils": "./bower_components/angular-ui-utils/ui-utils.js"
+    "angular-ui-codemirror": "./bower_components/angular-ui-codemirror/ui-codemirror.js"
   },
   "browserify-shim": {
-    "showdown": "Showdown",
-    "moment": "moment"
-  }
+    "showdown": "Showdown"
+  },
+  "version": "0.2.21"
 }

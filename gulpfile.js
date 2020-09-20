@@ -39,14 +39,11 @@ sourcePaths = {
 
     'src/library/contextmenu/*.js',
     'src/library/dropdownNavigator/*.js',
-    'src/library/simpleDialog/*.js',
     'src/library/treeNavigator/*.js',
     'src/library/hierarchicalMenu/*.js',
     'src/library/itemList/*.js',
-    'src/library/decisionTable/*.js',
     'src/library/validationErrorMarker/*.js',
     'src/library/taxonomyTerms/*.js',
-    'src/library/valueWidgets/*.js',
     'src/library/decisionTable/*.js'
   ],
   libraryTemplates: [
@@ -74,7 +71,7 @@ buildPaths = {
 },
 
 gulp = require( 'gulp' ),
-jshint = require( 'gulp-jshint' ),
+eslint = require('gulp-eslint'),
 browserify = require( 'browserify' ),
 source = require( 'vinyl-source-stream' ),
 concat = require( 'gulp-concat' ),
@@ -89,7 +86,9 @@ server = express(),
 livereload = require( 'connect-livereload' ),
 refresh = require( 'gulp-livereload' ),
 lrserver = require( 'tiny-lr' )(),
+sourcemaps = require('gulp-sourcemaps'),
 prettify = require( 'gulp-js-prettify' );
+
 
 // Utility tasks
 
@@ -108,8 +107,8 @@ gulp.task( 'lint-docs', function () {
   console.log( 'Linting docs...' );
 
   gulp.src( sourcePaths.docsScripts )
-  .pipe( jshint() )
-  .pipe( jshint.reporter( 'default' ) );
+    .pipe(eslint())
+    .pipe(eslint.format());
 
 } );
 
@@ -149,10 +148,12 @@ gulp.task( 'compile-docs-styles', function () {
   console.log( 'Compiling styles...' );
 
   gulp.src( sourcePaths.docsStyles )
+  .pipe(sourcemaps.init())
   .pipe( sass( {
     errLogToConsole: true,
     sourceComments: 'map'
   } ) )
+  .pipe(sourcemaps.write())
   .pipe( rename( function ( path ) {
     path.dirname = '';
   } ) )
@@ -180,8 +181,8 @@ gulp.task( 'lint-library', function () {
   console.log( 'Linting library...' );
 
   gulp.src( sourcePaths.libraryScripts )
-  .pipe( jshint() )
-  .pipe( jshint.reporter( 'default' ) );
+    .pipe(eslint())
+    .pipe(eslint.format());
 
 } );
 
@@ -225,10 +226,12 @@ gulp.task( 'compile-library-styles', function () {
 
   gulp.src( sourcePaths.libraryStyles )
     // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
+  .pipe(sourcemaps.init())
   .pipe( sass( {
     errLogToConsole: true,
     sourceComments: 'map'
   } ) )
+  .pipe(sourcemaps.write())
   .pipe( rename( function ( path ) {
     path.dirname = '';
   } ) )
@@ -266,9 +269,9 @@ gulp.task( 'compile-all', function ( cb ) {
 gulp.task( 'prettify', function () {
   gulp.src( './src/**/*.js' )
   .pipe( prettify( {
-    'indent_size': 2,
+    'indent_size': 4,
     'indent_char': ' ',
-    'space_in_paren': true,
+    'space_in_paren': false,
     'indent_level': 0,
     'indent_with_tabs': false,
     'preserve_newlines': true,
@@ -281,7 +284,7 @@ gulp.task( 'prettify', function () {
     'break_chained_methods': true,
     'eval_code': false,
     'unescape_strings': false,
-    'wrap_line_length': 100
+    'wrap_line_length': 120
   } ) )
   .pipe( gulp.dest( './src' ) ); // edit in place
 } );

@@ -10,6 +10,10 @@ ul.dropdown-navigator {
     box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
   }
 
+  :focus  {
+    outline-width: 0;
+  }
+
   > li {
     display: inline-block;
     padding: 0;
@@ -18,7 +22,8 @@ ul.dropdown-navigator {
     position: relative;
 
     > .hierarchical-menu {
-      display: none;
+      visibility: hidden;
+      transition: visibility 0s, opacity 0.2s linear;
       position: absolute;
     }
 
@@ -34,7 +39,9 @@ ul.dropdown-navigator {
     cursor: pointer;
 
     > .hierarchical-menu{
-      display: block;
+      transition-delay: 0.3s;
+      visibility: visible;
+      opacity: 1;
     }
 
   }
@@ -63,6 +70,30 @@ ul.dropdown-navigator {
     margin: 0 .75ex;
   }
 
+/*
+This set uses :focus rather than :hover
+to enable the menu.
 
+  > div.hierarchical-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  > li:focus {
+    visibility: visible;
+
+    > div.hierarchical-menu {
+      pointer-events: none;
+      visibility: visible;
+      z-index: 3;
+
+      > ul.menu-contents {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+  */
 
 }

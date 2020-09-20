@@ -32,6 +32,5 @@
   },
   "_source": "git://github.com/ganarajpr/angular-dragdrop.git",
   "_target": "~1.0.6",
-  "_originalSource": "angular-native-dragdrop",
-  "_direct": true
+  "_originalSource": "angular-native-dragdrop"
 }
